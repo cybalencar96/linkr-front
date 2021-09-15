@@ -5,10 +5,8 @@ export default function FrontPageLogoBox() {
         <BlackLogoSpace>
             <LogoTextBox>
                 <Logo>linkr</Logo>
-                <Slogan>
-                    <p>save, share and discover</p>
-                    <p>the best links on the web</p>
-                </Slogan>
+                <Slogan>save, share and discover</Slogan>
+                <Slogan>the best links on the web</Slogan>
             </LogoTextBox>
         </BlackLogoSpace>
     )
@@ -17,7 +15,7 @@ export default function FrontPageLogoBox() {
 const BlackLogoSpace = styled.div`
     width: 62.5vw;
     height: 100vh;
-    background-color: #000;
+    background-color: #151515;
     margin-top: -72px;
     @media (max-width: 992px){
         width: 100vw;
@@ -45,14 +43,17 @@ const Logo = styled.h1`
     font-size: 106px;
     @media (max-width: 992px){
         font-size: 76px;
+        margin-bottom: -10px
     }
 `;
 
-const Slogan = styled.div`
+const Slogan = styled.p`
     font-family: 'Oswald', sans-serif;
     font-weight: bold;
     font-size: 43px;
+    line-height: 64px;
     @media (max-width: 992px){
         font-size: 23px;
+        line-height: 34px;
     }
 `;

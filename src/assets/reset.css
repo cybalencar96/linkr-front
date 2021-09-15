@@ -50,8 +50,10 @@ body{
 	color: #fff;
 	font-family: 'Lato', sans-serif;
 }
-
 /* Chamada das fontes */
 /*  font-family: 'Lato', sans-serif;
 	font-family: 'Oswald', sans-serif;
 	font-family: 'Passion One', cursive; */
+a {
+	text-decoration: none;
+}

@@ -9,6 +9,8 @@ const FrontPageButton = styled.button`
     font-size: 27px;
     color: #ffffff;
     font-family: 'Oswald', sans-serif;
+    margin-bottom: 22px;
+    border: none;
 `;
 
 export default FrontPageButton;

@@ -7,6 +7,8 @@ import { useContext, useState } from "react";
 import { sendLoginRequest } from "../../services/Linkr";
 import UserContext from "../../contexts/UserContext";
 import { useHistory } from "react-router";
+import FrontPageTextLink from "../shared/FrontPageTextLink";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -26,11 +28,11 @@ export default function LoginPage() {
                 history.push("/timeline");
             })
             .catch(err => {
-                if (err.response.status === 401 || err.response.status === 403){
+                if (err.response.status === 401 || err.response.status === 403) {
                     alert("Incorrect email or password!");
                     return;
                 }
-                if (err.response.status === 400){
+                if (err.response.status === 400) {
                     alert("Invalid email!");
                     return;
                 }
@@ -57,6 +59,9 @@ export default function LoginPage() {
                     required
                 />
                 <FrontPageButton type="submit">Log In</FrontPageButton>
+                <Link to="/signup">
+                    <FrontPageTextLink>First time? Create an account!</FrontPageTextLink>
+                </Link>
             </FrontPageFormStyled>
         </PageStyled>
     )

@@ -10,6 +10,7 @@ const FrontPageInput = styled.input`
     font-weight: bold;
     padding-left: 17px;
     margin-bottom: 10px;
+    border: none;
     &::placeholder{
         color: #9F9F9F;
     }
