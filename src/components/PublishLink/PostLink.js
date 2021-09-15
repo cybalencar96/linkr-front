@@ -116,6 +116,7 @@ const PostDiv = styled.div`
 
 const InputLink = styled.input`
     background-color: #EFEFEF;
+
     @media (max-width: 992px){
         height: 30px;
     }
@@ -123,6 +124,7 @@ const InputLink = styled.input`
 const InputComment = styled.input`
     height: 66px;
     background-color: #EFEFEF;
+
     @media (max-width: 992px){
         height: 47px;
     }
@@ -132,6 +134,7 @@ const Image = styled.img`
     height: 50px;
     border-radius: 26.5px;
     margin-top: 15px;
+
     @media (max-width: 992px){
         display: none;
     }
@@ -144,6 +147,10 @@ const ContainerSubmit = styled.form`
     flex-direction: column;
     background-color: white;
     margin-left: 10px;
+
+    @media (max-width: 992px){
+        margin: 0px;
+    }
 
 `
 const PublishButton = styled.button`
@@ -159,6 +166,7 @@ const PublishButton = styled.button`
     border-radius: 5px;
     border: none;
     cursor: pointer;
+    
     @media (max-width: 992px){
         margin-top: 6px;
         height: 22px;
