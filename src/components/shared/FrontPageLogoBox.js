@@ -48,7 +48,7 @@ const Logo = styled.h1`
     }
 `;
 
-const Slogan = styled.p`
+const Slogan = styled.div`
     font-family: 'Oswald', sans-serif;
     font-weight: bold;
     font-size: 43px;
