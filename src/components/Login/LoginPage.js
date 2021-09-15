@@ -59,7 +59,7 @@ export default function LoginPage() {
                     required
                 />
                 <FrontPageButton type="submit">Log In</FrontPageButton>
-                <Link to="/signup">
+                <Link to="/sign-up">
                     <FrontPageTextLink>First time? Create an account!</FrontPageTextLink>
                 </Link>
             </FrontPageFormStyled>

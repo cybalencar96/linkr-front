@@ -14,7 +14,7 @@ export default function App() {
                     <Route path="/" exact>
                         <LoginPage />
                     </Route>
-                    <Route path="/signup" exact>
+                    <Route path="/sign-up" exact>
 
                     </Route>
                     <Route path="/timeline" exact>
