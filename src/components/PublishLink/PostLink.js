@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components"
+import UserContext from "../../contexts/UserContext";
+import { sendPostLinkRequest } from "../../services/Linkr";
 export default function PostLink () {
 
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
+    const { userData } = useContext(UserContext);
 
     function publish (event) {
 
         console.log("publicando...")
         event.preventDefault(); 
-
-
-
+        const body = {
+            "text": comment,
+            "link": url
+        }
+        const config ={
+            headers: {
+                "Authorization": `Bearer ${userData.token}`
+            }
+        }
+        sendPostLinkRequest(body, config)
+            .then((response) => console.log(response.data))
+            .catch(error => console.log(error))
+            .finally(() => console.log("finalizou"));
     }
     return (
         <PostDiv>
@@ -31,6 +44,8 @@ export default function PostLink () {
 }
 
 const PostDiv = styled.div`
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
     max-width: 611px;
     width: 611px;
     height: 210px;
@@ -49,8 +64,14 @@ const PostDiv = styled.div`
         max-width: 530px;
         width: 530px;
         outline: none;
+        font-size: 15px;
     }
-
+    input::placeholder{
+        color: #949494
+    }
+    input:not(:focus), input:focus{
+        padding-left: 10px;
+    }
 `
 
 const InputLink = styled.input`
@@ -77,6 +98,9 @@ const ContainerSubmit = styled.form`
 
 `
 const PublishButton = styled.button`
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
     background-color: #1877F2;
     width: 112px;
     height: 31px;
@@ -84,5 +108,6 @@ const PublishButton = styled.button`
     color: #FFFFFF;
     margin-top: 20px;
     border-radius: 5px;
+    border: none;
     cursor: pointer;
 `
