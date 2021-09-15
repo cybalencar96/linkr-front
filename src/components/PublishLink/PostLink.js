@@ -8,7 +8,7 @@ export default function PostLink () {
     const [comment, setComment] = useState("");
     const { userData } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    
+    const [postsTimelime, setPostsTimeline] = useState([]);
     function publish (event) {
 
         event.preventDefault(); 
@@ -27,9 +27,10 @@ export default function PostLink () {
         sendPostLinkRequest(body, config)
             .then((response) => {
                 console.log(response.data);
+                setPostsTimeline([...postsTimelime, response.data]);
             })
             .catch(error => {
-                alert("oops! server error.");
+                alert("oops! Houve um erro ao publicar seu link");
             })
             .finally(() => {
                 setIsLoading(false);
@@ -59,7 +60,7 @@ export default function PostLink () {
                         onChange={(e) => setComment(e.target.value)}
                         disabled={isLoading}
                     />
-                    <PublishButton type="submit" disabled={isLoading}>{isLoading? "Publish..." : "Publish"}</PublishButton>
+                    <PublishButton type="submit" disabled={isLoading}>{isLoading? "Publishing..." : "Publish"}</PublishButton>
                 </ContainerSubmit>
             </ContainerPost>
         </PostDiv>
@@ -95,7 +96,6 @@ const PostDiv = styled.div`
     input:not(:focus), input:focus{
         padding-left: 10px;
     }
-
 
     @media (max-width: 992px){
         max-width: 100vw;
