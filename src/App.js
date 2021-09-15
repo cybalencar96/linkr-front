@@ -1,15 +1,27 @@
 import "./assets/reset.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import LoginPage from "./components/Login/LoginPage";
+import UserContext from "./contexts/UserContext";
+import { useState } from "react";
 
 export default function App() {
+    const [userData, setUserData] = useState()
+
     return (
-        <BrowserRouter>
-            <Switch>
-                <Route path="/">
-                    <LoginPage />
-                </Route>
-            </Switch>
-        </BrowserRouter>
+        <UserContext.Provider value={{userData, setUserData}}>
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/" exact>
+                        <LoginPage />
+                    </Route>
+                    <Route path="/sign-up" exact>
+
+                    </Route>
+                    <Route path="/timeline" exact>
+
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+        </UserContext.Provider>
     )
 }
