@@ -1,5 +1,15 @@
-export default function App () {
+import "./assets/reset.css";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import LoginPage from "./components/Login/LoginPage";
+
+export default function App() {
     return (
-        <h1>Hello World</h1>
+        <BrowserRouter>
+            <Switch>
+                <Route path="/">
+                    <LoginPage />
+                </Route>
+            </Switch>
+        </BrowserRouter>
     )
 }
