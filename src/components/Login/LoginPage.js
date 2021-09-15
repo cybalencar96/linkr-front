@@ -25,6 +25,17 @@ export default function LoginPage() {
                 setUserData(res.data);
                 history.push("/timeline");
             })
+            .catch(err => {
+                if (err.response.status === 401 || err.response.status === 403){
+                    alert("Incorrect email or password!");
+                    return;
+                }
+                if (err.response.status === 400){
+                    alert("Invalid email!");
+                    return;
+                }
+                alert(err);
+            })
     }
 
     return (
@@ -36,12 +47,14 @@ export default function LoginPage() {
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    required
                 />
                 <FrontPageInput
                     placeholder="password"
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    required
                 />
                 <FrontPageButton type="submit">Log In</FrontPageButton>
             </FrontPageFormStyled>

@@ -55,4 +55,4 @@ const Slogan = styled.div`
     @media (max-width: 992px){
         font-size: 23px;
     }
-`
+`;
