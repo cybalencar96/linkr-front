@@ -6,6 +6,11 @@ function sendLoginRequest (body){
     return axios.post(`${BASE_URL}/sign-in`, body);
 }
 
+function sendSignupRequest (body){
+    return axios.post(`${BASE_URL}/sign-up`, body)
+}
+
 export {
     sendLoginRequest,
+    sendSignupRequest
 }
