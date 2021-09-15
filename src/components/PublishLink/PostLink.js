@@ -95,20 +95,46 @@ const PostDiv = styled.div`
     input:not(:focus), input:focus{
         padding-left: 10px;
     }
+
+
+    @media (max-width: 992px){
+        max-width: 100vw;
+        width: 100vw;
+        justify-content: center;
+        height: 164px;
+
+        h1 {
+            margin: 0 auto;
+            font-size: 17px;
+        }
+        input {
+            width: 90vw;
+            font-size: 13px;
+        }
+    }
 `
 
 const InputLink = styled.input`
     background-color: #EFEFEF;
+    @media (max-width: 992px){
+        height: 30px;
+    }
 `
 const InputComment = styled.input`
     height: 66px;
     background-color: #EFEFEF;
+    @media (max-width: 992px){
+        height: 47px;
+    }
 `
 const Image = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
     margin-top: 15px;
+    @media (max-width: 992px){
+        display: none;
+    }
 `
 const ContainerPost = styled.div`
     margin-top: 15px;
@@ -133,4 +159,9 @@ const PublishButton = styled.button`
     border-radius: 5px;
     border: none;
     cursor: pointer;
+    @media (max-width: 992px){
+        margin-top: 6px;
+        height: 22px;
+        font-size: 13px;
+    }
 `
