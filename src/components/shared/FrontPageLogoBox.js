@@ -17,7 +17,9 @@ const BlackLogoSpace = styled.div`
     height: 100vh;
     background-color: #151515;
     margin-top: -72px;
+    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
     @media (max-width: 992px){
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         width: 100vw;
         height: 175px;
     }
