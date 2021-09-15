@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const FrontPageInput = styled.input`
-    width: 90%;
+    width: 80%;
     height: 65px;
     border-radius: 6px;
     background-color: #ffffff;

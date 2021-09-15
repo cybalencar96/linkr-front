@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const FrontPageButton = styled.button`
-    width: 90%;
+    width: 80%;
     height: 65px;
     border-radius: 6px;
     background-color: #1877F2;
@@ -13,6 +13,9 @@ const FrontPageButton = styled.button`
     border: none;
     &:disabled{
         opacity: 0.7;
+    }
+    @media (max-width: 992px){
+        width: 90%;
     }
 `;
 
