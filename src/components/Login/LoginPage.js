@@ -1,14 +1,17 @@
 import PageStyled from "../shared/PageStyled";
-import LoginFormStyled from "../shared/LoginFormStyled";
+import FrontPageFormStyled from "../shared/FrontPageFormStyled";
 import FrontPageLogoBox from "../shared/FrontPageLogoBox";
+import FrontPageInput from "../shared/FrontPageInput";
 
 export default function LoginPage() {
     return(
         <PageStyled>
             <FrontPageLogoBox />
-            <LoginFormStyled>
-
-            </LoginFormStyled>
+            <FrontPageFormStyled >
+                <FrontPageInput placeholder="e-mail" />
+                <FrontPageInput placeholder="password"/>
+            </FrontPageFormStyled>
         </PageStyled>
     )
 }
+

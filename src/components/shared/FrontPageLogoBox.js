@@ -19,7 +19,7 @@ const BlackLogoSpace = styled.div`
     height: 100vh;
     background-color: #000;
     margin-top: -72px;
-    @media (max-width: 768px){
+    @media (max-width: 992px){
         width: 100vw;
         height: 175px;
     }
@@ -28,7 +28,7 @@ const BlackLogoSpace = styled.div`
 const LogoTextBox = styled.div`
     margin: 30vh 8%;
     width: 442px;
-    @media (max-width: 768px){
+    @media (max-width: 992px){
         margin: 10px 0;
         width: 100%;
         display: flex;
@@ -43,7 +43,7 @@ const Logo = styled.h1`
     font-family: 'Passion One', cursive;
     font-weight: bold;
     font-size: 106px;
-    @media (max-width: 768px){
+    @media (max-width: 992px){
         font-size: 76px;
     }
 `;
@@ -52,7 +52,7 @@ const Slogan = styled.p`
     font-family: 'Oswald', sans-serif;
     font-weight: bold;
     font-size: 43px;
-    @media (max-width: 768px){
+    @media (max-width: 992px){
         font-size: 23px;
     }
 `
