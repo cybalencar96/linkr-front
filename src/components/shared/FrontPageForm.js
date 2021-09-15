@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const FrontPageFormStyled = styled.form`
+const FrontPageForm = styled.form`
     width: 37.5vw;
     height: 80vh;
     display: flex;
@@ -14,4 +14,4 @@ const FrontPageFormStyled = styled.form`
     }
 `;
 
-export default FrontPageFormStyled;
+export default FrontPageForm;

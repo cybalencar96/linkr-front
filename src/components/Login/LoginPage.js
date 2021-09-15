@@ -1,5 +1,5 @@
 import PageStyled from "../shared/PageStyled";
-import FrontPageFormStyled from "../shared/FrontPageFormStyled";
+import FrontPageForm from "../shared/FrontPageForm";
 import FrontPageLogoBox from "../shared/FrontPageLogoBox";
 import FrontPageInput from "../shared/FrontPageInput";
 import FrontPageButton from "../shared/FrontPageButton";
@@ -13,10 +13,12 @@ import { Link } from "react-router-dom";
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const { setUserData } = useContext(UserContext);
     let history = useHistory();
 
     function login(e) {
+        setIsLoading(true);
         e.preventDefault();
         const body = {
             email,
@@ -38,18 +40,20 @@ export default function LoginPage() {
                 }
                 alert(err);
             })
+            .finally(()=> setIsLoading(false));
     }
 
     return (
         <PageStyled>
             <FrontPageLogoBox />
-            <FrontPageFormStyled onSubmit={login} >
+            <FrontPageForm onSubmit={login} >
                 <FrontPageInput
                     placeholder="e-mail"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
+                    disabled={isLoading}
                 />
                 <FrontPageInput
                     placeholder="password"
@@ -57,12 +61,13 @@ export default function LoginPage() {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
+                    disabled={isLoading}
                 />
-                <FrontPageButton type="submit">Log In</FrontPageButton>
-                <Link to="/sign-up">
+                <FrontPageButton type="submit" disabled={isLoading}>Log In</FrontPageButton>
+                <Link to={isLoading ? "" : "/sign-up"}>
                     <FrontPageTextLink>First time? Create an account!</FrontPageTextLink>
                 </Link>
-            </FrontPageFormStyled>
+            </FrontPageForm>
         </PageStyled>
     )
 }

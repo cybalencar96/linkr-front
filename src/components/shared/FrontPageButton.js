@@ -11,6 +11,9 @@ const FrontPageButton = styled.button`
     font-family: 'Oswald', sans-serif;
     margin-bottom: 22px;
     border: none;
+    &:disabled{
+        opacity: 0.7;
+    }
 `;
 
 export default FrontPageButton;
