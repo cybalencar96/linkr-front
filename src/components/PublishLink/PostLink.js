@@ -7,11 +7,14 @@ export default function PostLink () {
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
     const { userData } = useContext(UserContext);
-
+    const [isLoading, setIsLoading] = useState(false);
+    
     function publish (event) {
 
-        console.log("publicando...")
         event.preventDefault(); 
+        
+        setIsLoading(true);
+
         const body = {
             "text": comment,
             "link": url
@@ -22,21 +25,41 @@ export default function PostLink () {
             }
         }
         sendPostLinkRequest(body, config)
-            .then((response) => console.log(response.data))
-            .catch(error => console.log(error))
-            .finally(() => console.log("finalizou"));
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                alert("oops! server error.");
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setComment("");
+                setUrl("");
+            })
     }
+    
     return (
         <PostDiv>
-            <Image src="https://s3-alpha-sig.figma.com/img/c479/3a0f/8f11858fb84ab14ab8ee5937e83743ed?Expires=1632700800&Signature=OKojIkACmP0ZV5xzluC~O3goBNw~oVr8wt3fYj~Fl6xmsrbdzjWH84BD~RjzalkJUm9JirikhLifLXwvsGbuA2Qw8AlCcLpan6v1Zl-12YivCDl-MncL95EsBrDUDILQi4~zKHFkuDI1SyJY9zv-kpxwuYhRJKn5f9FWD3qacGe35BRPS4gxbBsdJbvuWD0W29FXcGl0DGnsF5gninW2UUKGeMUWBN1-2vh3n6wy6qo5KEFaOzeM3emkFcYYmXpouyjfJY0rKlfKwcYlH-YkivEvFoY4tluJ1wgCCdgHPiRgiCHBqHBIO3b9kk9HU7XDddXMoeNNlVMOBlvyEvlybw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA"/>
+            <Image src={userData.user.avatar}/>
             <ContainerPost>
                 <ContainerSubmit onSubmit={publish}>
-                    <h1>
-                        O que você tem pra favoritar hoje?
-                    </h1>
-                    <InputLink type="url" placeholder="http://..." value={url} onChange={(e) => setUrl(e.target.value)} required></InputLink>
-                    <InputComment type="text" placeholder="Muito irado esse link falando de #javascript" value={comment} onChange={(e) => setComment(e.target.value)}></InputComment>
-                    <PublishButton type="submit">Publish</PublishButton>
+                    <h1>O que você tem pra favoritar hoje?</h1>
+                    <InputLink 
+                        type="url" 
+                        placeholder="http://..." 
+                        value={url} 
+                        onChange={(e) => setUrl(e.target.value)} 
+                        required
+                        disabled={isLoading}
+                    />
+                    <InputComment 
+                        type="text" 
+                        placeholder="Muito irado esse link falando de #javascript" 
+                        value={comment} 
+                        onChange={(e) => setComment(e.target.value)}
+                        disabled={isLoading}
+                    />
+                    <PublishButton type="submit" disabled={isLoading}>{isLoading? "Publish..." : "Publish"}</PublishButton>
                 </ContainerSubmit>
             </ContainerPost>
         </PostDiv>
