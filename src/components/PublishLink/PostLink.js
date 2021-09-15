@@ -81,7 +81,9 @@ const PostDiv = styled.div`
         color: #707070;
         line-height: 24px;
     }
-    input {
+    input, textarea {
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
         border: none;
         border-radius: 5px;
         margin-top: 8px;
@@ -90,10 +92,10 @@ const PostDiv = styled.div`
         outline: none;
         font-size: 15px;
     }
-    input::placeholder{
+    input::placeholder, textarea::placeholder{
         color: #949494
     }
-    input:not(:focus), input:focus{
+    input:not(:focus), input:focus, textarea:not(:focus), textarea:focus{
         padding-left: 10px;
     }
 
@@ -107,7 +109,7 @@ const PostDiv = styled.div`
             margin: 0 auto;
             font-size: 17px;
         }
-        input {
+        input, textarea {
             width: 90vw;
             font-size: 13px;
         }
@@ -121,7 +123,7 @@ const InputLink = styled.input`
         height: 30px;
     }
 `
-const InputComment = styled.input`
+const InputComment = styled.textarea`
     height: 66px;
     background-color: #EFEFEF;
 
@@ -166,7 +168,7 @@ const PublishButton = styled.button`
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    
+
     @media (max-width: 992px){
         margin-top: 6px;
         height: 22px;
