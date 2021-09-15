@@ -1,13 +1,13 @@
 import PageStyled from "../shared/PageStyled";
-import FrontPageForm from "../shared/FrontPageForm";
-import FrontPageLogoBox from "../shared/FrontPageLogoBox";
-import FrontPageInput from "../shared/FrontPageInput";
-import FrontPageButton from "../shared/FrontPageButton";
+import FrontPageForm from "../shared/FrontPages/FrontPageForm";
+import FrontPageLogoBox from "../shared/FrontPages/FrontPageLogoBox";
+import FrontPageInput from "../shared/FrontPages/FrontPageInput";
+import FrontPageButton from "../shared/FrontPages/FrontPageButton";
 import { useContext, useState } from "react";
 import { sendLoginRequest } from "../../services/Linkr";
 import UserContext from "../../contexts/UserContext";
 import { useHistory } from "react-router";
-import FrontPageTextLink from "../shared/FrontPageTextLink";
+import FrontPageTextLink from "../shared/FrontPages/FrontPageTextLink";
 import { Link } from "react-router-dom";
 
 export default function LoginPage() {
