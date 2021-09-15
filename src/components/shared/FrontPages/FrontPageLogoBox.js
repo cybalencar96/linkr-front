@@ -26,7 +26,7 @@ const BlackLogoSpace = styled.div`
 `;
 
 const LogoTextBox = styled.div`
-    margin: 30vh 8%;
+    margin: 30vh 16%;
     width: 442px;
     @media (max-width: 992px){
         margin: 10px 0;
