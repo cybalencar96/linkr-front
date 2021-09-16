@@ -12,6 +12,7 @@ export default function HashtagsInTranding () {
     const [trendingHashtags, setTrendingHashtags] = useState(null);
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
+
     const history = useHistory();
     const config = {
         headers: {

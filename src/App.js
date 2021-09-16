@@ -21,11 +21,10 @@ export default function App() {
                     <Route path="/sign-up" exact>
                         <SignupPage />
                     </Route>
-                    {/* <Route path="/timeline" exact>
-                        <PostLink />
-                    </Route> */}
                     <Route path="/timeline" exact>  
                         <TimelinePage />
+                    </Route>
+                    <Route path="/hashtag/:hashtag" exact>  
                     </Route>
                 </Switch>
             </BrowserRouter>
