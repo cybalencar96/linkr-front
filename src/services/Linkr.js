@@ -14,8 +14,13 @@ function getPosts(config) {
     return axios.get(`${BASE_URL}/posts`,config)
 }
 
+function sendPostLinkRequest (body, config){
+    return axios.post(`${BASE_URL}/posts`, body, config);
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
     getPosts,
+    sendPostLinkRequest
 }
