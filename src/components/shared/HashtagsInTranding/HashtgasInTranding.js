@@ -33,10 +33,17 @@ export default function HashtagsInTranding () {
         return 	<Loading/>
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            if(searchInput)
+            history.push(`/hashtag/:${searchInput}`)
+        }
+    }
+
     return (
         <ContainerTranding>
            <h1>trending</h1>
-           <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onChange={(e) => setSearchInput(e.target.value)}/>
+           <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
            <UlHashtags>
                 {trendingHashtags.hashtags.map( hashtag => {
                     return (

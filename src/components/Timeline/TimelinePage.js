@@ -11,7 +11,6 @@ import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtgasInTranding";
 import styled from "styled-components";
 
-
 export default function TimelinePage() {
     const {userData, posts, setPosts} = useContext(UserContext);
     const [loading, setLoading] = useState(false);
