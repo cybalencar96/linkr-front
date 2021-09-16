@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react"
-import { HeartDislikeSharp } from "react-ionicons";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
@@ -12,15 +11,16 @@ export default function HashtagsInTranding () {
     const [trendingHashtags, setTrendingHashtags] = useState(null);
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
-
     const history = useHistory();
-    const config = {
-        headers: {
-            Authorization : `Bearer ${userData.token}`
-        }
-    }
     
     useEffect(() => {
+        
+        const config = {
+            headers: {
+                Authorization : `Bearer ${userData.token}`
+            }
+        }
+
         getHashtags(config).then((response) => {
             console.log(response);
             setTrendingHashtags(response.data);
@@ -28,7 +28,8 @@ export default function HashtagsInTranding () {
         .catch((error) => {
             alert("Ops!! Houve um erro ao carregar trending");
         })
-    }, [])
+        
+    }, [userData.token])
 
     if (!trendingHashtags) {
         return 	<Loading/>
