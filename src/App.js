@@ -6,6 +6,7 @@ import { useState } from "react";
 import SignupPage from "./components/Signup/SignupPage";
 import TimelinePage from "./components/Timeline/TimelinePage";
 import MyLikesPage from "./components/MyLikes/MyLikesPage";
+
 export default function App() {
     const [userData, setUserData] = useState()
 

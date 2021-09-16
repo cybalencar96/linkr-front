@@ -16,11 +16,15 @@ function getPosts(config) {
 
 function getMyLikedPosts(config) {
     return axios.get(`${BASE_URL}/posts/liked`,config)
+
+function sendPostLinkRequest (body, config){
+    return axios.post(`${BASE_URL}/posts`, body, config);
 }
 
 export {
     sendLoginRequest,
     sendSignupRequest,
     getPosts,
-    getMyLikedPosts
+    getMyLikedPosts,
+    sendPostLinkRequest
 }
