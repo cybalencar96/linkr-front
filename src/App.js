@@ -27,6 +27,12 @@ export default function App() {
                             <PostLink />
                         </PageStyled>
                     </Route>
+                    <Route path="/my-posts" exact>
+
+                    </Route>
+                    <Route path="/my-likes" exact>
+
+                    </Route>
                 </Switch>
             </BrowserRouter>
         </UserContext.Provider>
