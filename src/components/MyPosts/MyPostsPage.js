@@ -1,18 +1,19 @@
 import PageStyled from "../shared/PageStyled";
 import Topbar from "../shared/Topbar/Topbar";
-import { MyLikesContainer } from "./MyLikesStyled";
+import { MyPostsContainer } from "./MyPostsStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
-import { getMyLikedPosts } from "../../services/Linkr";
+import { getPostsById } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 
 
-export default function MyLikesPage() {
+export default function MyPostsPage() {
     const {userData} = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState("");
+    console.log(userData)
     const config = {
         headers: {
             Authorization: `Bearer ${userData.token}`
@@ -21,7 +22,7 @@ export default function MyLikesPage() {
 
     useEffect(() => {
         setLoading(true);
-        getMyLikedPosts(config)
+        getPostsById(userData.user.id,config)
         .then(res => {
             setLoading(false);
             setPosts(res.data.posts)
@@ -41,12 +42,12 @@ export default function MyLikesPage() {
     return (
         <PageStyled>
             <Topbar/>
-            <MyLikesContainer>
-                    <Title>my likes</Title>
+            <MyPostsContainer>
+                    <Title>my posts</Title>
                     {
                         posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"
                     }
-            </MyLikesContainer>
+            </MyPostsContainer>
         </PageStyled>
     )
 }

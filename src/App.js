@@ -7,6 +7,7 @@ import SignupPage from "./components/Signup/SignupPage";
 import Topbar from "./components/shared/Topbar/Topbar"
 import TimelinePage from "./components/Timeline/TimelinePage";
 import MyLikesPage from "./components/MyLikes/MyLikesPage";
+import MyPostsPage from "./components/MyPosts/MyPostsPage";
 
 export default function App() {
     const [userData, setUserData] = useState(null)
@@ -33,7 +34,7 @@ export default function App() {
                     </Route>
 
                     <Route path="/my-posts" exact>
-
+                        <MyPostsPage />
                     </Route>
 
                     
