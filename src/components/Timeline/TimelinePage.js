@@ -3,16 +3,17 @@ import Topbar from "../shared/Topbar/Topbar";
 import { TimelineContainer } from "./TimelineStyle";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
+import PostLink from "../PublishLink/PostLink";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
-
+import HashtagsInTranding from "../shared/HashtagsInTranding/HashtgasInTranding";
 
 export default function TimelinePage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState("");
+    const [loading, setLoading] = useState(false);
     
     const config = {
         headers: {
@@ -40,13 +41,14 @@ export default function TimelinePage() {
     }
 
     return (
-        <PageStyled>
-            <Topbar/>
+        <PageStyled centralized>
             <TimelineContainer>
+                    <div>
                     <Title>timeline</Title>
-                    {
-                        posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"
-                    }
+                    <PostLink/>   
+                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
+                    </div>
+                    <HashtagsInTranding />
             </TimelineContainer>
         </PageStyled>
     )
