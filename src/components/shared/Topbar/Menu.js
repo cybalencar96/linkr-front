@@ -77,6 +77,7 @@ const OptionBox = styled.ul`
         font-size: 17px;
         line-height: 20px;
         letter-spacing: 0.05em;
+        cursor: pointer;
     }
 
     @media (max-width) {

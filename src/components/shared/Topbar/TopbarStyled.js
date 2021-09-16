@@ -17,9 +17,7 @@ const TopbarContainer = styled.header`
         font-family: 'Passion One', cursive;
         font-size: 35px;
         font-weight: 700;
-        
     }
-
 `
 
 export {
