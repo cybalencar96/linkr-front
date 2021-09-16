@@ -7,7 +7,7 @@ const TopbarContainer = styled.header`
     top: 0;
     left:0;
     background-color: #151515;
-
+    z-index: 5;
     display: flex;
     justify-content: space-between;
     align-items: center;

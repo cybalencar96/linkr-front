@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import UserImage from "../UserImage";
 import { ChevronDown, ChevronUp } from 'react-ionicons'
-import { useContext, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import UserContext from "../../../contexts/UserContext";
 
@@ -9,6 +9,22 @@ export default function Menu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { setUserData } = useContext(UserContext);
     let history = useHistory();
+    let ref = useRef();
+
+    // Fechar ao clicar fora
+    useEffect(() => {
+        function checkIfClickedOutside(e) {
+            // Se o menu esta aberto e o target clickado não esta no menu, feche o menu
+            if (isMenuOpen && ref.current && !ref.current.contains(e.target)) {
+                setIsMenuOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", checkIfClickedOutside)
+        return () => {
+            // Limpando event listener
+            document.removeEventListener("mousedown", checkIfClickedOutside)
+        }
+    }, [isMenuOpen])
 
     function logout() {
         setUserData(null);
@@ -16,7 +32,7 @@ export default function Menu() {
     }
 
     return (
-        <UserMenuBox onClick={() => setIsMenuOpen(!isMenuOpen)} >
+        <UserMenuBox ref={ref} onClick={() => setIsMenuOpen(!isMenuOpen)} >
             {isMenuOpen ?
                 (<ChevronUp color={'#00000'} height="30px" width="30px" />) :
                 (<ChevronDown color={'#00000'} height="30px" width="30px" />)
@@ -30,6 +46,7 @@ export default function Menu() {
                     <li onClick={logout}>Logout</li>
                 </OptionBox>) : ""
             }
+
         </UserMenuBox>
     )
 }
@@ -39,6 +56,7 @@ const UserMenuBox = styled.div`
     align-items: center;
     gap: 10px;
     position: relative;
+    z-index: 10;
 `;
 
 const OptionBox = styled.ul`
