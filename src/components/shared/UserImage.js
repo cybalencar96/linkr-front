@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export default function UserImage ({src,width,height,...otherProps}) {
+export default function UserImage ({src, width, height,...otherProps}) {
 
     return (
         <Image

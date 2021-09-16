@@ -7,7 +7,7 @@ import UserContext from "../../../contexts/UserContext";
 
 export default function Menu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     let history = useHistory();
     let ref = useRef();
 
@@ -38,7 +38,7 @@ export default function Menu() {
                 (<ChevronDown color={'#00000'} height="30px" width="30px" style={{cursor:'pointer'}}/>)
             }
 
-            <UserImage width="53px" height="53px" cu/>
+            <UserImage src={userData.user.avatar} width="53px" height="53px" cu/>
             {isMenuOpen ?
                 (<OptionBox >
                     <Link to="/my-posts" ><li>My posts</li></Link>
