@@ -18,9 +18,6 @@ export default function App() {
                     <Route path="/sign-up" exact>
                         <SignupPage />
                     </Route>
-                    {/* <Route path="/timeline" exact>
-
-                    </Route> */}
                     <Route path="/timeline" exact>
                         <PostLink />
                     </Route>
