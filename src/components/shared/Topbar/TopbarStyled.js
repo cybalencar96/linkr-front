@@ -12,13 +12,14 @@ const TopbarContainer = styled.header`
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-
-    p {
+    
+    & p {
         font-family: 'Passion One', cursive;
         font-size: 35px;
         font-weight: 700;
+        color: white;
     }
-`
+`;
 
 export {
     TopbarContainer

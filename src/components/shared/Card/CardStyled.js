@@ -23,7 +23,7 @@ const CardLeft = styled.section`
     align-items: center;
     
 
-    & img {
+    & a {
         margin: 10px 0 20px 0;
         
     }
