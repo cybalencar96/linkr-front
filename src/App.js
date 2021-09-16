@@ -9,10 +9,10 @@ import TimelinePage from "./components/Timeline/TimelinePage";
 import MyLikesPage from "./components/MyLikes/MyLikesPage";
 
 export default function App() {
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState(null);
 
     return (
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{userData, setUserData}} >
             <BrowserRouter>
                 {userData ? <Topbar /> : ""}
                 <Switch>
@@ -24,8 +24,11 @@ export default function App() {
                         <SignupPage />
                     </Route>
 
-                    <Route path="/timeline" exact>
+                    <Route path="/timeline" exact>  
                         <TimelinePage />
+                    </Route>
+
+                    <Route path="/hashtag/:hashtag" exact>  
                     </Route>
 
                     <Route path="/my-likes" exact>
@@ -33,10 +36,7 @@ export default function App() {
                     </Route>
 
                     <Route path="/my-posts" exact>
-
                     </Route>
-
-                    
                 </Switch>
             </BrowserRouter>
         </UserContext.Provider>
