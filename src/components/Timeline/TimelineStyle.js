@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
 const TimelineContainer = styled.div`
+    margin: 0 auto;
     width: 70%;
-    margin: 50px auto 0 auto;
+
+    @media (max-width: 992px) {
+        width: auto;
+        margin: 0;
+    }
 `
 
 export {

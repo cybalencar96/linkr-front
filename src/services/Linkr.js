@@ -10,7 +10,12 @@ function sendSignupRequest (body){
     return axios.post(`${BASE_URL}/sign-up`, body)
 }
 
+function getPosts(config) {
+    return axios.get(`${BASE_URL}/posts`,config)
+}
+
 export {
     sendLoginRequest,
-    sendSignupRequest
+    sendSignupRequest,
+    getPosts,
 }

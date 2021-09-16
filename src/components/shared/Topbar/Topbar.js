@@ -11,7 +11,7 @@ export default function Topbar() {
             <p>Linkr</p>
             <div className="userMenu">
                 <ChevronDownOutline color={'#00000'} height="25px" width="25px"/>
-                <UserImage/>
+                <UserImage src={userData.user.avatar}/>
             </div>
         </TopbarContainer>
     )

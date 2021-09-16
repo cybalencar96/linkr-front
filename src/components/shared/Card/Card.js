@@ -1,33 +1,60 @@
 import { CardContainer, LinkContent, CardRigth, CardLeft } from "./CardStyled";
-import { useContext } from "react";
-import UserContext from "../../../contexts/UserContext";
 import { HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
-import {Hashtag} from '../PageStyled'
+import { Hashtag } from '../PageStyled'
+import { Link } from 'react-router-dom'
 
-const qtdLikes = 13
-export default function Card() {
-    const {userData} = useContext(UserContext)
-    
+export default function Card(post) {
+
+    const {
+        commentCount,
+        id,
+        likes,
+        link,
+        linkDescription,
+        linkImage,
+        linkTitle,
+        text,
+        user
+    } = post.post
+
+    function renderDescription() {
+        const formatedText = text.split(" ").map(word => {
+            if (word[0] === "#") {
+                return <Link to={`/hashtag/${word.substring(1)}`}><Hashtag> #{word.substring(1)}</Hashtag></Link>
+            } else {
+                return " " + word
+            }
+        })
+        return formatedText
+    }
+
+
     return (
         <CardContainer>
             <CardLeft>
-                <UserImage />
+                <Link to={`/user/${user.id}`}>
+                    <UserImage src={user.avatar}/>
+                </Link>
                 <HeartOutline color={'#00000'} height="20px" width="20px"/>
-                <p>{qtdLikes} likes</p>
+                <p>{likes.length} likes</p>
             </CardLeft>
 
             <CardRigth>
-                <h3 className="username">Username</h3>
-                <p className="description">Muito maneiro esse tutorial de Material UI com React, deem uma olhada!  <Hashtag>#react</Hashtag>  <Hashtag>#material</Hashtag></p>
-                <LinkContent>
-                    <div className="linkContent">
-                        <h3 className="linkTitle">Como aplicar o Material UI em um projeto React</h3>
-                        <p className="linkDescription">Hey! I have moved this tutorial to my personal blog. Same content, new location. Sorry about making you click through to another page.</p>
-                        <p className="linkUrl">https://medium.com/@pshrmn/a-simple-react-router</p>
-                    </div>
-                    <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"/>
-                </LinkContent>
+                <h3 className="username">{user.username}</h3>
+                <p className="description">{renderDescription()}</p>
+                
+                <a href={link}>
+                    <LinkContent>
+                        <div className="linkContent">
+                            <h3 className="linkTitle">{linkTitle}</h3>
+                            <p className="linkDescription">{linkDescription}</p>
+                            <p className="linkUrl">{link}</p>
+                        </div>
+                        <img src={linkImage}/>
+                    </LinkContent>
+                </a>
+
             </CardRigth>
         </CardContainer>
     )

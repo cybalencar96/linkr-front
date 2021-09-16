@@ -1,13 +1,10 @@
 import styled from "styled-components"
-import { useContext } from "react"
-import UserContext from "../../contexts/UserContext"
 
-export default function UserImage ({width,height,...otherProps}) {
-    const {userData} = useContext(UserContext);
+export default function UserImage ({src,width,height,...otherProps}) {
 
     return (
         <Image
-            src={userData.user.avatar}
+            src={src}
             alt="" width={width}
             height={height}
             {...otherProps}
