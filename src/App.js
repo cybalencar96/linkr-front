@@ -10,10 +10,9 @@ import MyLikesPage from "./components/MyLikes/MyLikesPage";
 
 export default function App() {
     const [userData, setUserData] = useState(null);
-    const [posts, setPosts] = useState("");
 
     return (
-        <UserContext.Provider value={{userData, setUserData, posts, setPosts}} >
+        <UserContext.Provider value={{userData, setUserData}} >
             <BrowserRouter>
                 {userData ? <Topbar /> : ""}
                 <Switch>

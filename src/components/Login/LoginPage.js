@@ -26,10 +26,12 @@ export default function LoginPage() {
         }
         sendLoginRequest(body)
             .then(res => {
+                setIsLoading(false)
                 setUserData(res.data);
                 history.push("/timeline");
             })
             .catch(err => {
+                setIsLoading(false)
                 if (err.response.status === 401 || err.response.status === 403) {
                     alert("Incorrect email or password!");
                     return;
@@ -40,7 +42,6 @@ export default function LoginPage() {
                 }
                 alert(err);
             })
-            .finally(()=> setIsLoading(false));
     }
 
     return (

@@ -6,7 +6,7 @@ export default function PostLink () {
 
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
-    const {userData, posts, setPosts} = useContext(UserContext);
+    const {userData} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
 
     function publish (event) {
@@ -26,10 +26,7 @@ export default function PostLink () {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                console.log(response.data);
-                console.log(response);
-                //Vejam aí se é macabro mesmo e me digam se presta. Tenho medo que sejam boas há há  #macabro #demonhão
-                setPosts([...posts, response.data.post]);
+                
             })
             .catch(error => {
                 console.log(error);

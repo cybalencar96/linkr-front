@@ -9,19 +9,16 @@ import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtgasInTranding";
-import styled from "styled-components";
 
 export default function TimelinePage() {
-    const {userData, posts, setPosts} = useContext(UserContext);
+    const {userData} = useContext(UserContext);
+    const [posts, setPosts] = useState("");
     const [loading, setLoading] = useState(false);
     
     const config = {
         headers: {
             Authorization: `Bearer ${userData.token}`
         }
-    }
-    function imprime () {
-        console.log(posts);
     }
 
     useEffect(() => {
@@ -30,7 +27,6 @@ export default function TimelinePage() {
         .then(res => {
             setLoading(false);
             setPosts(res.data.posts)
-            console.log(res.data.posts)
         })
         .catch(err => {
             setLoading(false);
@@ -43,25 +39,17 @@ export default function TimelinePage() {
     if (!posts) {
         return 	<Loading/>
     }
-    
+
     return (
         <PageStyled centralized>
             <TimelineContainer>
                     <div>
                     <Title>timeline</Title>
                     <PostLink/>   
-                    {
-                       
-                        posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"
-                    }
+                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
                     </div>
                     <HashtagsInTranding />
-
             </TimelineContainer>
         </PageStyled>
     )
 }
-
-const Container = styled.div`
-    display:flex;
-`

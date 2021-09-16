@@ -8,7 +8,7 @@ import Loading from "../Loading";
 
 export default function HashtagsInTranding () {
 
-    const [trendingHashtags, setTrendingHashtags] = useState(null);
+    const [trendingHashtags, setTrendingHashtags] = useState([]);
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
@@ -31,10 +31,6 @@ export default function HashtagsInTranding () {
         
     }, [userData.token])
 
-    if (!trendingHashtags) {
-        return 	<Loading/>
-    }
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             if(searchInput)
@@ -47,7 +43,7 @@ export default function HashtagsInTranding () {
            <h1>trending</h1>
            <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
            <UlHashtags>
-                {trendingHashtags.hashtags.map( hashtag => {
+                {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
                         <LiHashtags onClick={() => history.push(`/hashtag/:${hashtag.name}`)}># {hashtag.name}</LiHashtags>
                     )
