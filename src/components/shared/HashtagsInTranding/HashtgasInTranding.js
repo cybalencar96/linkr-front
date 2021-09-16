@@ -71,6 +71,10 @@ const ContainerTranding = styled.div`
     h1, input{
         margin: 9px 0 12px 18px;
     }
+
+    @media(max-width: 994px){
+        display: none;
+    }
 `;
 
 const UlHashtags = styled.ul`
