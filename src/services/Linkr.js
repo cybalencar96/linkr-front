@@ -14,8 +14,21 @@ function sendPostLinkRequest (body, config){
     
     return axios.post(`${BASE_URL}/posts`, body, config);
 }
+
+function getPosts(config) {
+    return axios.get(`${BASE_URL}/posts`,config)
+}
+
+function getHashtags(config) {
+
+    return axios.get(`${BASE_URL}/hashtags/trending`, config);
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
-    sendPostLinkRequest
+    sendPostLinkRequest,
+    getPosts,
+    getHashtags,
 }
+

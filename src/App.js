@@ -5,11 +5,14 @@ import UserContext from "./contexts/UserContext";
 import { useState } from "react";
 import SignupPage from "./components/Signup/SignupPage";
 import PostLink from "./components/PublishLink/PostLink";
+import TimelinePage from "./components/Timeline/TimelinePage";
+
 export default function App() {
     const [userData, setUserData] = useState()
+    const [posts, setPosts] = useState("");
 
     return (
-        <UserContext.Provider value={{userData, setUserData}}>
+        <UserContext.Provider value={{userData, setUserData, posts, setPosts}}>
             <BrowserRouter>
                 <Switch>
                     <Route path="/" exact>
@@ -19,10 +22,10 @@ export default function App() {
                         <SignupPage />
                     </Route>
                     {/* <Route path="/timeline" exact>
-
-                    </Route> */}
-                    <Route path="/timeline" exact>
                         <PostLink />
+                    </Route> */}
+                    <Route path="/timeline" exact>  
+                        <TimelinePage />
                     </Route>
                 </Switch>
             </BrowserRouter>
