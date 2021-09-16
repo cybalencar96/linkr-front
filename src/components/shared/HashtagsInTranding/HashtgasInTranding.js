@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react"
 import { HeartDislikeSharp } from "react-ionicons";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components"
-import UserContext from "../../contexts/UserContext";
-import { getHashtags } from "../../services/Linkr";
-import Loading from "../shared/Loading";
+import UserContext from "../../../contexts/UserContext";
+import { getHashtags } from "../../../services/Linkr";
+import Loading from "../Loading";
 
 
 export default function HashtagsInTranding () {

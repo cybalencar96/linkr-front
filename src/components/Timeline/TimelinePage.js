@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
-import HashtagsInTranding from "../HashtagsInTranding/HashtgasInTranding";
+import HashtagsInTranding from "../shared/HashtagsInTranding/HashtgasInTranding";
 import styled from "styled-components";
 
 
