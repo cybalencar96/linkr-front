@@ -83,5 +83,9 @@ const OptionBox = styled.ul`
     @media (max-width) {
         width: 130px;
         height: 97px;
+        li{
+            font-size: 15px;
+            line-height: 18px;
+        }
     }
 `;
