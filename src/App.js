@@ -4,9 +4,8 @@ import LoginPage from "./components/Login/LoginPage";
 import UserContext from "./contexts/UserContext";
 import { useState } from "react";
 import SignupPage from "./components/Signup/SignupPage";
-import PostLink from "./components/PublishLink/PostLink";
 import Topbar from "./components/shared/Topbar/Topbar"
-import PageStyled from "./components/shared/PageStyled";
+import TimelinePage from "./components/Timeline/TimelinePage";
 
 export default function App() {
     const [userData, setUserData] = useState(null)
@@ -23,9 +22,7 @@ export default function App() {
                         <SignupPage />
                     </Route>
                     <Route path="/timeline" exact>
-                        <PageStyled>
-                            <PostLink />
-                        </PageStyled>
+                        <TimelinePage />
                     </Route>
                     <Route path="/my-posts" exact>
 
