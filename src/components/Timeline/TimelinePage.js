@@ -45,20 +45,19 @@ export default function TimelinePage() {
     }
     
     return (
-        <PageStyled>
-            <Topbar/>
-            <Container>
+        <PageStyled centralized>
             <TimelineContainer>
+                    <div>
                     <Title>timeline</Title>
                     <PostLink/>   
                     {
                        
                         posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"
                     }
+                    </div>
+                    <HashtagsInTranding />
+
             </TimelineContainer>
-            <HashtagsInTranding />
-            </Container>
-            
         </PageStyled>
     )
 }

@@ -64,6 +64,7 @@ const ContainerTranding = styled.div`
     font-size: 27px;
     color: #FFFFFF;
     width: 301px;
+    min-width: 301px;
     max-height: 435px;
     background-color: #171717;
     border-radius: 16px;
