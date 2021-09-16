@@ -3,9 +3,10 @@ import { ChevronDownOutline } from 'react-ionicons'
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext"
 import UserImage from "../UserImage";
+
 export default function Topbar() {
-    const {userData} = useContext(UserContext)
-    console.log(userData)
+    const {userData} = useContext(UserContext);
+
     return(
         <TopbarContainer>
             <p>Linkr</p>
