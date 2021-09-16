@@ -56,6 +56,7 @@ const LinkContent = styled.div`
     border: 1px solid #4D4D4D;
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
 
     & .linkContent {
         padding: 20px;
