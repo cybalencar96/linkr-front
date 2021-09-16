@@ -34,11 +34,11 @@ export default function Menu() {
     return (
         <UserMenuBox ref={ref} onClick={() => setIsMenuOpen(!isMenuOpen)} >
             {isMenuOpen ?
-                (<ChevronUp color={'#00000'} height="30px" width="30px" />) :
-                (<ChevronDown color={'#00000'} height="30px" width="30px" />)
+                (<ChevronUp color={'#00000'} height="30px" width="30px" style={{cursor:'pointer'}} />) :
+                (<ChevronDown color={'#00000'} height="30px" width="30px" style={{cursor:'pointer'}}/>)
             }
 
-            <UserImage width="53px" height="53px" />
+            <UserImage width="53px" height="53px" cu/>
             {isMenuOpen ?
                 (<OptionBox >
                     <Link to="/my-posts" ><li>My posts</li></Link>
