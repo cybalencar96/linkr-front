@@ -1,7 +1,7 @@
 import { CardContainer, LinkContent, CardRigth, CardLeft } from "./CardStyled";
 import { HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
-import { Hashtag } from '../PageStyled'
+import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
 
 export default function Card(post) {
@@ -21,7 +21,7 @@ export default function Card(post) {
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
             if (word[0] === "#") {
-                return <Link to={`/hashtag/${word.substring(1)}`}><Hashtag> #{word.substring(1)}</Hashtag></Link>
+                return <Link to={`/hashtag/${word.substring(1)}`}><HashtagSpan> #{word.substring(1)}</HashtagSpan></Link>
             } else {
                 return " " + word
             }
