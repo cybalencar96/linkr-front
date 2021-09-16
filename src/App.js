@@ -4,7 +4,8 @@ import LoginPage from "./components/Login/LoginPage";
 import UserContext from "./contexts/UserContext";
 import { useState } from "react";
 import SignupPage from "./components/Signup/SignupPage";
-import PostLink from "./components/PublishLink/PostLink";
+import TimelinePage from "./components/Timeline/TimelinePage";
+
 export default function App() {
     const [userData, setUserData] = useState()
 
@@ -18,11 +19,8 @@ export default function App() {
                     <Route path="/sign-up" exact>
                         <SignupPage />
                     </Route>
-                    {/* <Route path="/timeline" exact>
-
-                    </Route> */}
                     <Route path="/timeline" exact>
-                        <PostLink />
+                        <TimelinePage />
                     </Route>
                 </Switch>
             </BrowserRouter>
