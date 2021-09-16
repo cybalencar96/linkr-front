@@ -16,7 +16,8 @@ const Image = styled.img`
     width: ${props => props.width ? props.width : "50px"};
     height: ${props => props.height ? props.height : "50px"};
     border-radius: 26.5px;
-
-`
+    object-fit: cover;
+    cursor: pointer;
+`;
 
 
