@@ -1,29 +1,35 @@
 import styled from "styled-components"
 import UserImage from "../UserImage";
-import { ChevronDown } from 'react-ionicons'
+import { ChevronDown, ChevronUp } from 'react-ionicons'
 import { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import UserContext from "../../../contexts/UserContext";
 
 export default function Menu() {
-    const { isMenuOpen, setIsMenuOpen } = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { setUserData } = useContext(UserContext);
     let history = useHistory();
 
     function logout() {
         setUserData(null);
-        history.push("/")
+        history.push("/");
     }
 
     return (
-        <UserMenuBox>
-            <ChevronDown color={'#00000'} height="30px" width="30px" />
+        <UserMenuBox onClick={() => setIsMenuOpen(!isMenuOpen)} >
+            {isMenuOpen ?
+                (<ChevronUp color={'#00000'} height="30px" width="30px" />) :
+                (<ChevronDown color={'#00000'} height="30px" width="30px" />)
+            }
+
             <UserImage width="53px" height="53px" />
-            <OptionBox >
-                <Link to="/my-posts" ><li>My posts</li></Link>
-                <Link to="/my-likes" ><li>My likes</li></Link>
-                <li onClick={logout}>Logout</li>
-            </OptionBox>
+            {isMenuOpen ?
+                (<OptionBox >
+                    <Link to="/my-posts" ><li>My posts</li></Link>
+                    <Link to="/my-likes" ><li>My likes</li></Link>
+                    <li onClick={logout}>Logout</li>
+                </OptionBox>) : ""
+            }
         </UserMenuBox>
     )
 }
