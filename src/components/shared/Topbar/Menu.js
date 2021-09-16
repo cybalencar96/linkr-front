@@ -2,16 +2,17 @@ import styled from "styled-components"
 import UserImage from "../UserImage";
 import { ChevronDown } from 'react-ionicons'
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import UserContext from "../../../contexts/UserContext";
-
 
 export default function Menu() {
     const { isMenuOpen, setIsMenuOpen } = useState(false);
-    const {setUserData} = useContext(UserContext);
+    const { setUserData } = useContext(UserContext);
+    let history = useHistory();
 
-    function logout(){
-        
+    function logout() {
+        setUserData(null);
+        history.push("/")
     }
 
     return (
