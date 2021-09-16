@@ -10,12 +10,4 @@ const PageStyled = styled.div`
     }
 `;
 
-const Hashtag = styled.span`
-    font-weight: 700;
-    color: white;
-    font-size: ${props => props.fontSize ? props.fontSize : "17px"};
-`
 export default PageStyled;
-export {
-    Hashtag
-}
