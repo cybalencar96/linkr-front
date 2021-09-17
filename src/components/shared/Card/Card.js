@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
+import ReactTooltip from "react-tooltip";
 
 export default function Card({post}) {
     const {
@@ -63,6 +64,31 @@ export default function Card({post}) {
                 .finally(() => setIsLoading(false))
         }
     }
+    function createTooltip(){
+        let tooltip = "";
+        const likesiDsList = likesState.map(like => like.userId)
+        const isLikedOnServer = likesiDsList.includes(userData.user.id);
+        if(isLikedOnServer){
+            const indexOfUser = likesiDsList.indexOf(userData.user.id);
+            const OtherUsers = likesState.map((like, i) => i === indexOfUser ? null : like.username)
+                .filter((username) => !!username);
+            tooltip += `Você,`;
+            if(likesState.length > 1){
+                tooltip += ` ${OtherUsers[0]},`;
+            }
+        }else{
+            if(likesState.length > 0){
+                tooltip += ` ${likesState[0].username},`;
+            }
+            if(likesState.length > 1){
+                tooltip += ` ${likesState[1].username}`;
+            }
+        }
+        if(likesState.length > 2){
+            tooltip += ` e outras ${likesState.length - 2}`;
+        }
+        return tooltip;
+    }
 
     return (
         <CardContainer>
@@ -72,7 +98,8 @@ export default function Card({post}) {
                 </Link>
                 {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike}/> :
                  <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike}/>}
-                <p>{likesState.length} likes</p>
+                <p data-tip={createTooltip()}>{likesState.length} likes</p>
+                <ReactTooltip place="bottom" type="light" effect="solid"/>
             </CardLeft>
 
             <CardRigth>
