@@ -105,6 +105,7 @@ const PostDiv = styled.div`
         width: 100vw;
         justify-content: center;
         height: 164px;
+        border-radius: 0;
 
         h1 {
             margin: 0 auto;
