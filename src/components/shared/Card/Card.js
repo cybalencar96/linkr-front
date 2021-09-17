@@ -19,11 +19,10 @@ export default function Card({post}) {
         text,
         user
     } = post
-
     const [ likesState, setLikesState] = useState(likes.map(like => {
         return {
             userId: like.userId,
-            username: like.username // Do jeito que esta na documentação da API teria que ser like.user.username, mas n funfa
+            username: like["user.username"]
         }
     }));
     const [ isLoading, setIsLoading] = useState(false)
