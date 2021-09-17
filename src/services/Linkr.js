@@ -30,6 +30,10 @@ function getPostsByUserId (userId, config){
     return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 }
 
+function getPostsByHashtag (hashtag, config) {
+    return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, config);
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -37,6 +41,7 @@ export {
     getPosts,
     getHashtags,
     getMyLikedPosts,
-    getPostsByUserId
+    getPostsByUserId,
+    getPostsByHashtag,
 }
 

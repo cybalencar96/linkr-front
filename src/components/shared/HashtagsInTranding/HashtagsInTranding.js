@@ -44,7 +44,7 @@ export default function HashtagsInTranding () {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={() => history.push(`/hashtag/:${hashtag.name}`)}>#{hashtag.name}</LiHashtags>
+                        <LiHashtags onClick={() => history.push(`/hashtag/${hashtag.name}`)}>#{hashtag.name}</LiHashtags>
                     )
                 }
             )}
