@@ -8,7 +8,8 @@ import { useParams } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
-
+import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
+import NoPosts from "../shared/NoPosts";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -40,13 +41,13 @@ export default function UserPostsPage() {
     }
 
     return (
-        <PageStyled>
-            <Topbar/>
+        <PageStyled centralized>
             <UserPostsContainer>
+                    <div>
                     <Title>{posts[0].user.username}'s posts</Title>
-                    {
-                        posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"
-                    }
+                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts />}
+                    </div>
+                    <HashtagsInTranding />
             </UserPostsContainer>
         </PageStyled>
     )
