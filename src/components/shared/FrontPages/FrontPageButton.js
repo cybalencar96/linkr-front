@@ -11,6 +11,7 @@ const FrontPageButton = styled.button`
     font-family: 'Oswald', sans-serif;
     margin-bottom: 22px;
     border: none;
+    cursor: pointer;
     &:disabled{
         opacity: 0.7;
     }
