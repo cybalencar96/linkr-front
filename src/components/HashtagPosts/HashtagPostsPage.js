@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { HashtagPostContainer } from "./HashtagPostsStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
@@ -12,28 +11,25 @@ import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const {hashtag} = useParams();
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
+        useEffect(() => {
 
-    useEffect(() => {
-        setLoading(true);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+
         getPostsByHashtag(hashtag, config)
         .then(response => {
-            setLoading(false);
             setPosts(response.data.posts)
         })
         .catch(error => {
-            setLoading(false);
             alert("Failed to get posts from this hashtag, please refresh page")
         })
-    },[posts])
+    },[posts, userData.token])
 
     if (!posts) {
         return 	<Loading/>
