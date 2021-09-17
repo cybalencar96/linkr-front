@@ -3,7 +3,7 @@ import Topbar from "../shared/Topbar/Topbar";
 import { TimelineContainer } from "./TimelineStyle";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
-import PostLink from "../PublishLink/PostLink";
+import PostLink from "../shared/PublishLink/PostLink";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../services/Linkr";

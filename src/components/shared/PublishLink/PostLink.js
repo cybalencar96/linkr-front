@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import styled from "styled-components"
-import UserContext from "../../contexts/UserContext";
-import { sendPostLinkRequest } from "../../services/Linkr";
+import UserContext from "../../../contexts/UserContext";
+import { sendPostLinkRequest } from "../../../services/Linkr";
 export default function PostLink () {
 
     const [url, setUrl] = useState("");
