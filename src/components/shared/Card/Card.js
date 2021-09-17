@@ -41,7 +41,6 @@ export default function Card({post}) {
         return formatedText
     }
     function toggleLike () {
-        console.log(isLoading, )
         if (isLoading){
             return;
         }
@@ -49,7 +48,6 @@ export default function Card({post}) {
         if(isLiked){
             sendDislikeRequest(id, userData.token)
                 .then(res => {
-                    console.log(res.data)
                     setLikesState(res.data.post.likes)
                 })
                 .catch(err => alert(err))
@@ -57,7 +55,6 @@ export default function Card({post}) {
         }else{
             sendLikeRequest(id, userData.token)
                 .then(res => {
-                    console.log(res.data)
                     setLikesState(res.data.post.likes)
                 })
                 .catch(err => alert(err))
