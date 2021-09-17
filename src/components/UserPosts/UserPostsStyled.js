@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const UserPostsContainer = styled.div`
-    margin: 0 auto;
-    width: 70%;
+    display: flex;
+    gap:20px;
 
     @media (max-width: 992px) {
         width: auto;

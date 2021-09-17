@@ -7,7 +7,8 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
-
+import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
+import NoPosts from "../shared/NoPosts";
 
 export default function MyPostsPage() {
     const { userData } = useContext(UserContext);
@@ -40,6 +41,7 @@ export default function MyPostsPage() {
     }
 
     return (
+
         <PageStyled>
             <Topbar />
             <MyPostsContainer>
