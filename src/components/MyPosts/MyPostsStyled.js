@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const TimelineContainer = styled.div`
-    display: flex;
-    gap:20px;
+const MyPostsContainer = styled.div`
+    margin: 0 auto;
+    width: 70%;
 
     @media (max-width: 992px) {
         width: auto;
@@ -11,5 +11,5 @@ const TimelineContainer = styled.div`
 `
 
 export {
-    TimelineContainer
+    MyPostsContainer
 }

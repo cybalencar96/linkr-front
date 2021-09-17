@@ -6,9 +6,9 @@ export default function PostLink () {
 
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
-    const { userData } = useContext(UserContext);
+    const {userData} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    const [postsTimelime, setPostsTimeline] = useState([]);
+
     function publish (event) {
 
         event.preventDefault(); 
@@ -26,10 +26,10 @@ export default function PostLink () {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                console.log(response.data);
-                setPostsTimeline([...postsTimelime, response.data]);
+                
             })
             .catch(error => {
+                console.log(error);
                 alert("oops! Houve um erro ao publicar seu link");
             })
             .finally(() => {
@@ -73,8 +73,9 @@ const PostDiv = styled.div`
     max-width: 611px;
     width: 611px;
     height: 210px;
+    border-radius: 16px;
     display: flex;
-
+    margin-bottom: 30px;
     background-color: #FFFFFF;
     h1 {
         font-size: 20px;
@@ -87,7 +88,7 @@ const PostDiv = styled.div`
         border: none;
         border-radius: 5px;
         margin-top: 8px;
-        max-width: 530px;
+        max-width: 503px;
         width: 530px;
         outline: none;
         font-size: 15px;
@@ -135,7 +136,7 @@ const Image = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
-    margin-top: 15px;
+    margin: 15px 0px 0px 15px;
 
     @media (max-width: 992px){
         display: none;
@@ -168,6 +169,9 @@ const PublishButton = styled.button`
     border-radius: 5px;
     border: none;
     cursor: pointer;
+    &:hover{
+        box-shadow: 0px  4px 4px  0px  #00000046;
+    }
 
     @media (max-width: 992px){
         margin-top: 6px;

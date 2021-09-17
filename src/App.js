@@ -8,12 +8,13 @@ import Topbar from "./components/shared/Topbar/Topbar"
 import TimelinePage from "./components/Timeline/TimelinePage";
 import MyLikesPage from "./components/MyLikes/MyLikesPage";
 import UserPostsPage from "./components/UserPosts/UserPostsPage";
+import MyPostsPage from "./components/MyPosts/MyPostsPage";
 
 export default function App() {
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState(null);
 
     return (
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{userData, setUserData}} >
             <BrowserRouter>
                 {userData ? <Topbar /> : ""}
                 <Switch>
@@ -25,8 +26,11 @@ export default function App() {
                         <SignupPage />
                     </Route>
 
-                    <Route path="/timeline" exact>
+                    <Route path="/timeline" exact>  
                         <TimelinePage />
+                    </Route>
+
+                    <Route path="/hashtag/:hashtag" exact>  
                     </Route>
 
                     <Route path="/my-likes" exact>
@@ -34,14 +38,12 @@ export default function App() {
                     </Route>
 
                     <Route path="/my-posts" exact>
-
+                        <MyPostsPage />
                     </Route>
 
                     <Route path="/user/:id" exact>
                         <UserPostsPage />
                     </Route>
-
-                    
                 </Switch>
             </BrowserRouter>
         </UserContext.Provider>

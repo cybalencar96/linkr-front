@@ -7,19 +7,23 @@ function sendLoginRequest (body){
 }
 
 function sendSignupRequest (body){
-    return axios.post(`${BASE_URL}/sign-up`, body)
-}
-
-function getPosts(config) {
-    return axios.get(`${BASE_URL}/posts`,config)
-}
-
-function getMyLikedPosts(config) {
-    return axios.get(`${BASE_URL}/posts/liked`,config)
+    return axios.post(`${BASE_URL}/sign-up`, body);
 }
 
 function sendPostLinkRequest (body, config){
     return axios.post(`${BASE_URL}/posts`, body, config);
+}
+
+function getPosts(config) {
+    return axios.get(`${BASE_URL}/posts`, config);
+}
+
+function getHashtags(config) {
+    return axios.get(`${BASE_URL}/hashtags/trending`, config);
+}
+
+function getMyLikedPosts(config) {
+    return axios.get(`${BASE_URL}/posts/liked`, config);
 }
 
 function getPostsByUserId (userId, config){
@@ -29,8 +33,10 @@ function getPostsByUserId (userId, config){
 export {
     sendLoginRequest,
     sendSignupRequest,
-    getPosts,
-    getMyLikedPosts,
     sendPostLinkRequest,
+    getPosts,
+    getHashtags,
+    getMyLikedPosts,
     getPostsByUserId
 }
+
