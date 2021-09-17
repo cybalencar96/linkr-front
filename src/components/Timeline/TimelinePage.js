@@ -8,12 +8,11 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
-import HashtagsInTranding from "../shared/HashtagsInTranding/HashtgasInTranding";
+import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 
 export default function TimelinePage() {
     const {userData} = useContext(UserContext);
     const [posts, setPosts] = useState("");
-    const [loading, setLoading] = useState(false);
     
     const config = {
         headers: {
@@ -22,16 +21,12 @@ export default function TimelinePage() {
     }
 
     useEffect(() => {
-        setLoading(true);
         getPosts(config)
         .then(res => {
-            setLoading(false);
-            setPosts(res.data.posts)
+            setPosts(res.data.posts);
         })
         .catch(err => {
-            setLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
+            alert("Houve uma falha ao obter os posts, por favor atualize a página");
         })
     },[])
 

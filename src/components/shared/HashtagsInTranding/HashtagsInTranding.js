@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
-import Loading from "../Loading";
 
 
 export default function HashtagsInTranding () {
@@ -45,7 +44,7 @@ export default function HashtagsInTranding () {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={() => history.push(`/hashtag/:${hashtag.name}`)}># {hashtag.name}</LiHashtags>
+                        <LiHashtags onClick={() => history.push(`/hashtag/:${hashtag.name}`)}>#{hashtag.name}</LiHashtags>
                     )
                 }
             )}
@@ -66,8 +65,8 @@ const ContainerTranding = styled.div`
     border-radius: 16px;
     margin: 132px 0 0 0;
 
-    h1, input{
-        margin: 9px 0 12px 18px;
+    h1{
+        margin: 9px 0 0 18px;
     }
 
     @media(max-width: 994px){
@@ -88,6 +87,9 @@ const LiHashtags = styled.li`
     color: white;
     margin: 13px 18px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
     &:hover {
         text-shadow: 0 0 4px #fff, 0 0 4px #ff0;
     }
@@ -95,17 +97,21 @@ const LiHashtags = styled.li`
 
 const InputButtonTrending = styled.input`
     height: 30px;
-    background-color: #EFEFEF;
+    background-color: rgba(50, 50, 50, 1);
     font-family: 'Lato', sans-serif;
-    font-weight: 300;
+    font-weight: 700;
     border: none;
     border-radius: 5px;
     margin-top: 8px;
-    max-width: 503px;
+    width: calc(100% - 36px );
     outline: none;
     font-size: 15px;
+    margin: 9px 18px;
+    color: #ffffff;
+
 
     &::placeholder, &::placeholder{
+        font-weight: 300;
         color: #949494;
     }
     &:not(:focus), &:focus{
