@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import styled from "styled-components"
-import UserContext from "../../contexts/UserContext";
-import { sendPostLinkRequest } from "../../services/Linkr";
+import UserContext from "../../../contexts/UserContext";
+import { sendPostLinkRequest } from "../../../services/Linkr";
 export default function PostLink () {
 
     const [url, setUrl] = useState("");
@@ -105,6 +105,7 @@ const PostDiv = styled.div`
         width: 100vw;
         justify-content: center;
         height: 164px;
+        border-radius: 0;
 
         h1 {
             margin: 0 auto;
@@ -137,6 +138,7 @@ const Image = styled.img`
     height: 50px;
     border-radius: 26.5px;
     margin: 15px 0px 0px 15px;
+    object-fit: cover;
 
     @media (max-width: 992px){
         display: none;

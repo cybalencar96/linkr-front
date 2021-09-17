@@ -8,7 +8,8 @@ const Title = styled.h1`
     margin: 50px 0 40px 0;
 
     @media (max-width: 992px) {
-        padding-left: 30px
+        margin: 19px auto;
+        width: 90vw;
     }
 `
 

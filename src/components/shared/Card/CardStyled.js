@@ -1,51 +1,69 @@
 import styled from "styled-components";
 
 const CardContainer = styled.article`
-    width:610px;
+    width: 610px;
     height: 280px;
     background-color: #171717;
     border-radius: 16px;
     display: flex;
+    justify-content: space-around;
     margin-bottom: 30px;
 
     @media (max-width: 992px) {
-        width: 100%;
+        width: 100vw;
         height: 240px;
+        border-radius: 0;
     }
 `
 
 const CardLeft = styled.section`
     width: 15%;
-    min-width:90px;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     
-
     & a {
         margin: 10px 0 20px 0;
         
     }
+
+   @media (max-width: 992px) {
+        width: 18.4%;
+    } 
 `
 
 
 const CardRigth = styled.section`
-        width:85%;
+        width: 85%;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         padding: 0 0 10px 0;
+        
 
         & .username {
             font-size: 19px;
         }
 
         & .description {
+            width: 90%;
+            height: 53px;
             font-size: 17px;
             color: #B7B7B7;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
+        & .description span{
+            font-weight: 700;
+            color: white;
+        }
+        @media (max-width: 992px) {
+            width: 81.6%;
+            padding: 0 0 10px 0px;
+        } 
 `;
 
 const LinkContent = styled.div`
@@ -99,6 +117,9 @@ const LinkContent = styled.div`
 
         & img {
             width: 110px
+        }
+        & .linkContent{
+            padding: 5px 10px;
         }
         & .linkContent .linkTitle{
             font-size: 11px;

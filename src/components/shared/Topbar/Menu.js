@@ -38,7 +38,7 @@ export default function Menu() {
                 (<ChevronDown color={'#00000'} height="30px" width="30px" style={{cursor:'pointer'}}/>)
             }
 
-            <UserImage src={userData.user.avatar} width="53px" height="53px" cu/>
+            <UserImage src={userData.user.avatar} topbar/>
             {isMenuOpen ?
                 (<OptionBox >
                     <Link to="/my-posts" ><li>My posts</li></Link>
