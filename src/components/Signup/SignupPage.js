@@ -28,6 +28,7 @@ export default function SignupPage() {
         }
         sendSignupRequest(body)
             .then((res) => {
+                setIsLoading(false)
                 history.push("/");
             })
             .catch((err) => {
@@ -40,8 +41,8 @@ export default function SignupPage() {
                     return;
                 }
                 alert(err);
+                setIsLoading(false)
             })
-            .finally(() => setIsLoading(false));
     }
 
     return (
