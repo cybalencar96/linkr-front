@@ -12,39 +12,44 @@ import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 import NoPosts from "../shared/NoPosts";
 
 export default function TimelinePage() {
-    const {userData} = useContext(UserContext);
+    const { userData } = useContext(UserContext);
     const [posts, setPosts] = useState("");
-    
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
 
     useEffect(() => {
+        if (userData) {
+            renderPosts();
+        }
+    }, [userData])
+
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
         getPosts(config)
-        .then(res => {
-            setPosts(res.data.posts);
-        })
-        .catch(err => {
-            alert("Houve uma falha ao obter os posts, por favor atualize a página");
-        })
-    },[])
+            .then(res => {
+                setPosts(res.data.posts);
+            })
+            .catch(err => {
+                alert("Houve uma falha ao obter os posts, por favor atualize a página");
+            })
+    }
 
 
     if (!posts) {
-        return 	<Loading/>
+        return <Loading />
     }
 
     return (
         <PageStyled centralized>
             <TimelineContainer>
-                    <div>
+                <div>
                     <Title>timeline</Title>
-                    <PostLink/>   
-                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts />}
-                    </div>
-                    <HashtagsInTranding />
+                    <PostLink />
+                    {posts.length !== 0 ? posts.map(post => <Card post={post} />) : <NoPosts />}
+                </div>
+                <HashtagsInTranding />
             </TimelineContainer>
         </PageStyled>
     )

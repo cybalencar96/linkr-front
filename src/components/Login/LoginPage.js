@@ -3,7 +3,7 @@ import FrontPageForm from "../shared/FrontPages/FrontPageForm";
 import FrontPageLogoBox from "../shared/FrontPages/FrontPageLogoBox";
 import FrontPageInput from "../shared/FrontPages/FrontPageInput";
 import FrontPageButton from "../shared/FrontPages/FrontPageButton";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { sendLoginRequest } from "../../services/Linkr";
 import UserContext from "../../contexts/UserContext";
 import { useHistory } from "react-router";
@@ -14,8 +14,14 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { setUserData } = useContext(UserContext);
+    const { userData ,setUserData } = useContext(UserContext);
     let history = useHistory();
+
+    useEffect(() => {
+        if (userData){
+            history.push("/timeline");
+        }
+    }, [userData])
 
     function login(e) {
         setIsLoading(true);
@@ -26,8 +32,9 @@ export default function LoginPage() {
         }
         sendLoginRequest(body)
             .then(res => {
-                setIsLoading(false)
+                setIsLoading(false);
                 setUserData(res.data);
+                localStorage.setItem("userData", JSON.stringify(res.data));
                 history.push("/timeline");
             })
             .catch(err => {

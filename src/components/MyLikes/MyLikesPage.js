@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { MyLikesContainer } from "./MyLikesStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
@@ -15,25 +14,26 @@ export default function MyLikesPage() {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState("");
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
-
     useEffect(() => {
-        setLoading(true);
-        getMyLikedPosts(config)
-        .then(res => {
-            setLoading(false);
-            setPosts(res.data.posts)
-        })
-        .catch(err => {
-            setLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
-        })
-    },[])
+        if (userData) {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userData.token}`
+                }
+            }
+            setLoading(true);
+            getMyLikedPosts(config)
+            .then(res => {
+                setLoading(false);
+                setPosts(res.data.posts)
+            })
+            .catch(err => {
+                setLoading(false);
+                alert("Houve uma falha ao obter os posts, por favor atualize a página")
+                console.log(err)
+            })
+        }
+    },[userData])
 
 
     if (!posts) {
