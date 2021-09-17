@@ -37,6 +37,7 @@ const CardRigth = styled.section`
         flex-direction: column;
         justify-content: space-around;
         padding: 0 0 10px 0;
+        
 
         & .username {
             font-size: 19px;
@@ -45,6 +46,12 @@ const CardRigth = styled.section`
         & .description {
             font-size: 17px;
             color: #B7B7B7;
+            word-break: break-all;
+        }
+
+        & .description span{
+            font-weight: 700;
+            color: white;
         }
 `;
 
@@ -99,6 +106,9 @@ const LinkContent = styled.div`
 
         & img {
             width: 110px
+        }
+        & .linkContent{
+            padding: 5px 10px;
         }
         & .linkContent .linkTitle{
             font-size: 11px;
