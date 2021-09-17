@@ -1,11 +1,13 @@
 import { CardContainer, LinkContent, CardRigth, CardLeft } from "./CardStyled";
-import { HeartOutline } from 'react-ionicons'
+import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
+import { useContext, useState } from "react";
+import UserContext from "../../../contexts/UserContext";
+import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
 
-export default function Card(post) {
-
+export default function Card({post}) {
     const {
         commentCount,
         id,
@@ -16,7 +18,17 @@ export default function Card(post) {
         linkTitle,
         text,
         user
-    } = post.post
+    } = post
+
+    const [ likesState, setLikesState] = useState(likes.map(like => {
+        return {
+            userId: like.userId,
+            username: like.username // Do jeito que esta na documentação da API teria que ser like.user.username, mas n funfa
+        }
+    }));
+    const [ isLoading, setIsLoading] = useState(false)
+    const { userData} = useContext(UserContext);
+    const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
@@ -28,7 +40,30 @@ export default function Card(post) {
         })
         return formatedText
     }
-
+    function toggleLike () {
+        console.log(isLoading, )
+        if (isLoading){
+            return;
+        }
+        setIsLoading(true)
+        if(isLiked){
+            sendDislikeRequest(id, userData.token)
+                .then(res => {
+                    console.log(res.data)
+                    setLikesState(res.data.post.likes)
+                })
+                .catch(err => alert(err))
+                .finally(() => setIsLoading(false))
+        }else{
+            sendLikeRequest(id, userData.token)
+                .then(res => {
+                    console.log(res.data)
+                    setLikesState(res.data.post.likes)
+                })
+                .catch(err => alert(err))
+                .finally(() => setIsLoading(false))
+        }
+    }
 
     return (
         <CardContainer>
@@ -36,8 +71,9 @@ export default function Card(post) {
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
                 </Link>
-                <HeartOutline color={'#00000'} height="20px" width="20px"/>
-                <p>{likes.length} likes</p>
+                {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike}/> :
+                 <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike}/>}
+                <p>{likesState.length} likes</p>
             </CardLeft>
 
             <CardRigth>
