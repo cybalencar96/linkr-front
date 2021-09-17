@@ -41,10 +41,10 @@ const CardRigth = styled.section`
         flex-direction: column;
         justify-content: space-around;
         padding: 0 0 10px 0;
-        
 
         & .username {
             font-size: 19px;
+            cursor: pointer;
         }
 
         & .description {
