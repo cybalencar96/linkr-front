@@ -10,10 +10,6 @@ import Loading from "../shared/Loading";
 import { getPostsByHashtag } from "../../services/Linkr";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 
-
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
-
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
     const [loading, setLoading] = useState(false);
