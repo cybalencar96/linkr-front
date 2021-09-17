@@ -26,7 +26,7 @@ function getMyLikedPosts(config) {
     return axios.get(`${BASE_URL}/posts/liked`, config);
 }
 
-function getPostsById(userId,config) {
+function getPostsByUserId (userId, config){
     return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 }
 
@@ -37,6 +37,6 @@ export {
     getPosts,
     getHashtags,
     getMyLikedPosts,
-    getPostsById
+    getPostsByUserId
 }
 
