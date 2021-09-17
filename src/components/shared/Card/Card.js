@@ -7,7 +7,6 @@ import { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
-import { useEffect } from "react/cjs/react.development";
 
 export default function Card({post}) {
     const {
@@ -30,15 +29,6 @@ export default function Card({post}) {
     const [ isLoading, setIsLoading] = useState(false)
     const { userData} = useContext(UserContext);
     const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
-
-    useEffect(() => {
-        setLikesState(likes.map(like => {
-            return {
-                userId: like.userId,
-                username: like["user.username"]
-            }
-        }))
-    }, [likes])
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
