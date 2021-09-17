@@ -41,7 +41,9 @@ export default function Card(post) {
             </CardLeft>
 
             <CardRigth>
-                <h3 className="username">{user.username}</h3>
+                <Link to={`/user/${user.id}`}>
+                    <h3 className="username">{user.username}</h3>
+                </Link>
                 <p className="description">{renderDescription()}</p>
                 
                 <a href={link}>
