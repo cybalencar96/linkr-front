@@ -96,8 +96,8 @@ export default function Card({post}) {
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
                 </Link>
-                {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike}/> :
-                 <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike}/>}
+                {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}} /> :
+                 <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}}/>}
                 <p data-tip={createTooltip()}>{likesState.length} likes</p>
                 <ReactTooltip place="bottom" type="light" effect="solid"/>
             </CardLeft>
