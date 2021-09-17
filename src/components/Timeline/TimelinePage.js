@@ -45,7 +45,7 @@ export default function TimelinePage() {
             <TimelineContainer>
                 <div>
                     <Title>timeline</Title>
-                    <PostLink />
+                    <PostLink renderPosts={renderPosts}/>
                     {posts.length !== 0 ? posts.map(post => <Card post={post} />) : "Nenhum post encontrado"}
                 </div>
                 <HashtagsInTranding />
