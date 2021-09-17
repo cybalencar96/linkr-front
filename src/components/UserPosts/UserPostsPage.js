@@ -16,24 +16,27 @@ export default function UserPostsPage() {
     const [posts, setPosts] = useState("");
     const params = useParams();
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
+    
     useEffect(() => {
-        setLoading(true);
-        getPostsByUserId(params.id, config)
-        .then(res => {
-            setLoading(false);
-            setPosts(res.data.posts)
-        })
-        .catch(err => {
-            setLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
-        })
-    },[])
+        if (userData) {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userData.token}`
+                }
+            }
+            setLoading(true);
+            getPostsByUserId(params.id, config)
+            .then(res => {
+                setLoading(false);
+                setPosts(res.data.posts)
+            })
+            .catch(err => {
+                setLoading(false);
+                alert("Houve uma falha ao obter os posts, por favor atualize a página")
+                console.log(err)
+            })
+        }
+    },[userData])
 
     if (!posts) {
         return 	<Loading/>
