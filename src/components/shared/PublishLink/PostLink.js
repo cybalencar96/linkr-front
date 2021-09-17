@@ -137,6 +137,7 @@ const Image = styled.img`
     height: 50px;
     border-radius: 26.5px;
     margin: 15px 0px 0px 15px;
+    object-fit: cover;
 
     @media (max-width: 992px){
         display: none;
