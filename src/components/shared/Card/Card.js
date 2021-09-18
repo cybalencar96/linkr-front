@@ -69,16 +69,16 @@ export default function Card({post}) {
             const indexOfUser = likesiDsList.indexOf(userData.user.id);
             const OtherUsers = likesState.map((like, i) => i === indexOfUser ? null : like.username)
                 .filter((username) => !!username);
-            tooltip += `Você,`;
+            tooltip += `Você`;
             if(likesState.length > 1){
-                tooltip += ` ${OtherUsers[0]},`;
+                tooltip += `, ${OtherUsers[0]},`;
             }
         }else{
             if(likesState.length > 0){
-                tooltip += ` ${likesState[0].username},`;
+                tooltip += ` ${likesState[0].username}`;
             }
             if(likesState.length > 1){
-                tooltip += ` ${likesState[1].username}`;
+                tooltip += `, ${likesState[1].username}`;
             }
         }
         if(likesState.length > 2){
