@@ -21,7 +21,6 @@ export default function HashtagsInTranding () {
         }
 
         getHashtags(config).then((response) => {
-            console.log(response);
             setTrendingHashtags(response.data);
         })
         .catch((error) => {

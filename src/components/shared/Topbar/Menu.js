@@ -28,6 +28,7 @@ export default function Menu() {
 
     function logout() {
         setUserData(null);
+        localStorage.removeItem("userData");
         history.push("/");
     }
 
