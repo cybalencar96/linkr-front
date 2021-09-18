@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { TimelineContainer } from "./TimelineStyle";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
@@ -46,8 +45,8 @@ export default function TimelinePage() {
             <TimelineContainer>
                 <div>
                     <Title>timeline</Title>
-                    <PostLink />
-                    {posts.length !== 0 ? posts.map(post => <Card post={post} />) : <NoPosts />}
+                    <PostLink renderPosts={renderPosts} />
+                    {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} />) : <NoPosts />}
                 </div>
                 <HashtagsInTranding />
             </TimelineContainer>
