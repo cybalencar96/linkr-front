@@ -71,11 +71,11 @@ export default function Card({post}) {
                 .filter((username) => !!username);
             tooltip += `Você`;
             if(likesState.length > 1){
-                tooltip += `, ${OtherUsers[0]},`;
+                tooltip += `, ${OtherUsers[0]}`;
             }
         }else{
             if(likesState.length > 0){
-                tooltip += ` ${likesState[0].username}`;
+                tooltip += likesState[0].username;
             }
             if(likesState.length > 1){
                 tooltip += `, ${likesState[1].username}`;
