@@ -82,7 +82,7 @@ export default function Card({post}) {
             }
         }
         if(likesState.length > 2){
-            tooltip += ` e outras ${likesState.length - 2}`;
+            tooltip += ` e outras ${likesState.length - 2} ${likesState.length === 3 ? "pessoa" : "pessoas"}`;
         }
         return tooltip;
     }
