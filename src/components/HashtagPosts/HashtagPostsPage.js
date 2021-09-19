@@ -10,6 +10,7 @@ import { getPostsByHashtag } from "../../services/Linkr";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import styled from "styled-components";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -18,6 +19,7 @@ export default function UserPostsPage() {
     const {hashtag} = useParams();
 
     useEffect(() => {
+
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
@@ -26,11 +28,9 @@ export default function UserPostsPage() {
         getPostsByHashtag(hashtag, config)
         .then(response => {
             setPosts(response.data.posts);
-            setIsLoading(false);
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
-            setIsLoading(false);
         })
     },[posts, userData.token]) //posts, userData.token
 
@@ -42,12 +42,36 @@ export default function UserPostsPage() {
     return (
         <PageStyled centralized>
             <HashtagPostContainer>
-                <div>
-                    <Title># {hashtag}</Title>
+                <Separator>
+                    <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
                     {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
-                </div>
-                <HashtagsInTranding ss={setIsLoading}/>
-            </HashtagPostContainer>
+                </Separator>
+                <HashtagsInTranding/>
+            </HashtagPostContainer>{hashtag}
         </PageStyled>
     )
 }
+
+const TittleWithLimitattor = styled(Title)`
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media(max-width: 996px){
+        margin: 19px auto;
+        width: 86vw;
+    }
+`;
+
+const Separator = styled.div`
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+const Hashtauge = styled.span`
+    width: 100%;
+    font-size: 43px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+`;

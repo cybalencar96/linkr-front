@@ -86,7 +86,8 @@ export default function Card({post}) {
         }
         return tooltip;
     }
-
+    console.log(createTooltip());
+    console.log(likesState);
     return (
         <CardContainer>
             <CardLeft>
