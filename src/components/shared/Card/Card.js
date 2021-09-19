@@ -97,7 +97,7 @@ export default function Card({post}) {
           .then(() => {
             setIsLoading(false);
             setConfirmDeleteState(false);
-            window.location.reload();
+            window.location.reload();//loc
           })
           .catch(() => {
             setIsLoading(false);
