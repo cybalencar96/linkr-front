@@ -67,8 +67,11 @@ const CardRigth = styled.section`
 
         & .seeMore {
             padding: 10px 0;
+            cursor: pointer;
         }
-
+        & .seeMore:hover {
+            color: lightgray
+        }
         @media (max-width: 992px) {
             width: 81.6%;
             padding: 0 0 10px 0px;
