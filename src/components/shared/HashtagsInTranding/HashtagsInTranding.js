@@ -5,13 +5,14 @@ import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
 
 
-export default function HashtagsInTranding () {
+export default function HashtagsInTranding (props) {
 
     const [trendingHashtags, setTrendingHashtags] = useState([]);
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
-    
+
+    console.log(props)
     useEffect(() => {
         
         const config = {
@@ -35,7 +36,6 @@ export default function HashtagsInTranding () {
             history.push(`/hashtag/:${searchInput}`)
         }
     }
-
     return (
         <ContainerTranding>
            <h1>trending</h1>
@@ -43,7 +43,7 @@ export default function HashtagsInTranding () {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={() => history.push(`/hashtag/${hashtag.name}`)}>#{hashtag.name}</LiHashtags>
+                        <LiHashtags onClick={()=>{history.push(`/hashtag/${hashtag.name}`);}}>#{hashtag.name}</LiHashtags>
                     )
                 }
             )}
