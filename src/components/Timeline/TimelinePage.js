@@ -13,6 +13,7 @@ import NoPosts from "../shared/NoPosts";
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const [posts, setPosts] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (userData) {
@@ -48,7 +49,7 @@ export default function TimelinePage() {
                     <PostLink renderPosts={renderPosts} />
                     {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} />) : <NoPosts />}
                 </div>
-                <HashtagsInTranding />
+                <HashtagsInTranding setIsLoading={setIsLoading}/>
             </TimelineContainer>
         </PageStyled>
     )

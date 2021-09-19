@@ -12,7 +12,6 @@ export default function HashtagsInTranding (props) {
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
 
-    console.log(props)
     useEffect(() => {
         
         const config = {
@@ -43,7 +42,7 @@ export default function HashtagsInTranding (props) {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={()=>{history.push(`/hashtag/${hashtag.name}`);}}>#{hashtag.name}</LiHashtags>
+                        <LiHashtags onClick={()=>{props.setIsLoading(true);history.push(`/hashtag/${hashtag.name}`);}}>#{hashtag.name}</LiHashtags>
                     )
                 }
             )}

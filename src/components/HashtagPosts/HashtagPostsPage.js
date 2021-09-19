@@ -27,12 +27,14 @@ export default function UserPostsPage() {
         }
         getPostsByHashtag(hashtag, config)
         .then(response => {
+            setTimeout(() => {setIsLoading(false)}, 3500)
+
             setPosts(response.data.posts);
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
-    },[posts, userData.token]) //posts, userData.token
+    },[posts, userData.token]);
 
     if(!posts){
         return(
@@ -46,8 +48,8 @@ export default function UserPostsPage() {
                     <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
                     {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
                 </Separator>
-                <HashtagsInTranding/>
-            </HashtagPostContainer>{hashtag}
+                <HashtagsInTranding setIsLoading={setIsLoading}/>
+            </HashtagPostContainer>
         </PageStyled>
     )
 }
