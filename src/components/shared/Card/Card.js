@@ -32,7 +32,7 @@ export default function Card({post}) {
     const [ isLoading, setIsLoading] = useState(false)
     const { userData} = useContext(UserContext);
     const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
-    const [reallyDeleteHabit, ConfirmDeleteState] = useState(false); 
+    const [ConfirmDeleteState, setConfirmDeleteState] = useState(false); 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
             if (word[0] === "#") {
@@ -95,9 +95,8 @@ export default function Card({post}) {
         console.log(postId, userData.token);
         sendDeletePostRequest(postId, userData.token)
           .then(() => {
-            console.log("SUUCEOSSOO")
             setIsLoading(false);
-            ConfirmDeleteState(false);
+            setConfirmDeleteState(false);
             window.location.reload();
           })
           .catch(() => {
@@ -107,17 +106,17 @@ export default function Card({post}) {
                 "Could not delete your post! Please repeat the procedure."
               );
             }, 900);
-            ConfirmDeleteState(false);
+            setConfirmDeleteState(false);
           });
       }
     
     return (
         <>
-        <Superposition reallyDeleteHabit={reallyDeleteHabit}>
+        <Superposition ConfirmDeleteState={ConfirmDeleteState}>
             <ConfirmDeleteScreen>
                 <p>Tem certeza que deseja <br/> excluir essa publicação?</p>
                 <SuperpositionButtons>
-                    <CancelButton disabled={isLoading ? true : false} onClick={() => ConfirmDeleteState(false)}>
+                    <CancelButton disabled={isLoading ? true : false} onClick={() => setConfirmDeleteState(false)}>
                         Não, voltar
                     </CancelButton>
                     <ConfirmButton disabled={isLoading ? true : false} onClick={() => deletePost(id)}>
@@ -125,7 +124,7 @@ export default function Card({post}) {
                     </ConfirmButton>
                 </SuperpositionButtons>
             </ConfirmDeleteScreen>
-      </Superposition>
+        </Superposition>
         <CardContainer>
             <CardLeft>
                 <Link to={`/user/${user.id}`}>
@@ -145,7 +144,7 @@ export default function Card({post}) {
                 </Link>
                 <div>
                     <IconEdit />
-                    <IconDelete onClick={() => ConfirmDeleteState(true)}/>
+                    <IconDelete onClick={() => setConfirmDeleteState(true)}/>
                 </div>
                 </IconsDiv>}
                 <p className="description">{renderDescription()}</p>
@@ -185,8 +184,6 @@ const IconsDiv = styled.div`
     justify-content: space-between;
 `;
 
-//confirm teela t1
-
 const Superposition = styled.div`
   width: 100vw;
   height: 100vh;
@@ -195,7 +192,7 @@ const Superposition = styled.div`
   left: 0;
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 1;
-  display: ${(props) => (props.reallyDeleteHabit ? "inherit" : "none")};
+  display: ${(props) => (props.ConfirmDeleteState ? "inherit" : "none")};
 `;
 
 const ConfirmDeleteScreen = styled.div`
