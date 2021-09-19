@@ -1,9 +1,9 @@
 import styled from "styled-components"
 
-export default function NoPosts({props}) {
+export default function NoPosts(props) {
     return (
-        <NoPostsContainer>
-            Nenhum post encontrado
+        <NoPostsContainer centralized={props.centralized}>
+            {props.content ? props.content : "Nenhum post encontrado"}
         </NoPostsContainer>
     )
 }
@@ -13,7 +13,8 @@ const NoPostsContainer = styled.article`
     height: 280px;
     background-color: #333;
     font-size: 25px;
-
+    ${props => props.centralized && "display: flex; justify-content: center; align-items: center"};
+    
     @media (max-width: 992px) {
         width: 100vw;
         height: 240px;
