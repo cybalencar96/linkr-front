@@ -6,16 +6,24 @@ import FrontPageButton from "../shared/FrontPages/FrontPageButton";
 import { useHistory } from "react-router";
 import FrontPageTextLink from "../shared/FrontPages/FrontPageTextLink";
 import { Link } from "react-router-dom";
-import {  useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { sendSignupRequest } from "../../services/Linkr";
+import UserContext from "../../contexts/UserContext";
 
 export default function SignupPage() {
-    const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [pictureUrl, setPictureUrl] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const { userData } = useContext(UserContext);
     let history = useHistory();
+
+    useEffect(() => {
+        if (userData) {
+            history.push("/timeline");
+        }
+    }, [userData])
 
     function signup(e) {
         e.preventDefault();

@@ -1,12 +1,14 @@
 import { CardContainer, LinkContent, CardRigth, CardLeft } from "./CardStyled";
-import { HeartOutline } from 'react-ionicons'
+import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../../../contexts/UserContext";
+import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
+import ReactTooltip from "react-tooltip";
 
-export default function Card(post) {
-
+export default function Card({post}) {
     const {
         commentCount,
         id,
@@ -17,7 +19,16 @@ export default function Card(post) {
         linkTitle,
         text,
         user
-    } = post.post
+    } = post
+    const [ likesState, setLikesState] = useState(likes.map(like => {
+        return {
+            userId: like.userId,
+            username: like["user.username"]
+        }
+    }));
+    const [ isLoading, setIsLoading] = useState(false)
+    const { userData} = useContext(UserContext);
+    const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
 
     const [seeMore, setSeeMore] = useState(false)
 
@@ -35,6 +46,53 @@ export default function Card(post) {
         setSeeMore(() => !seeMore);
     }
 
+    function toggleLike () {
+        if (isLoading){
+            return;
+        }
+        setIsLoading(true)
+        if(isLiked){
+            sendDislikeRequest(id, userData.token)
+                .then(res => {
+                    setLikesState(res.data.post.likes)
+                })
+                .catch(err => alert(err))
+                .finally(() => setIsLoading(false))
+        }else{
+            sendLikeRequest(id, userData.token)
+                .then(res => {
+                    setLikesState(res.data.post.likes)
+                })
+                .catch(err => alert(err))
+                .finally(() => setIsLoading(false))
+        }
+    }
+    
+    function createTooltip(){
+        let tooltip = "";
+        const likesiDsList = likesState.map(like => like.userId)
+        const isLikedOnServer = likesiDsList.includes(userData.user.id);
+        if(isLikedOnServer){
+            const indexOfUser = likesiDsList.indexOf(userData.user.id);
+            const OtherUsers = likesState.map((like, i) => i === indexOfUser ? null : like.username)
+                .filter((username) => !!username);
+            tooltip += `Você`;
+            if(likesState.length > 1){
+                tooltip += `, ${OtherUsers[0]}`;
+            }
+        }else{
+            if(likesState.length > 0){
+                tooltip += likesState[0].username;
+            }
+            if(likesState.length > 1){
+                tooltip += `, ${likesState[1].username}`;
+            }
+        }
+        if(likesState.length > 2){
+            tooltip += ` e outras ${likesState.length - 2} ${likesState.length === 3 ? "pessoa" : "pessoas"}`;
+        }
+        return tooltip;
+    }
 
     return (
         <CardContainer seeMore={seeMore}>
@@ -42,14 +100,19 @@ export default function Card(post) {
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
                 </Link>
-                <HeartOutline color={'#00000'} height="20px" width="20px"/>
-                <p>{likes.length} likes</p>
+                {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}} /> :
+                 <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}}/>}
+                <p data-tip={createTooltip()}>{likesState.length} likes</p>
+                <ReactTooltip place="bottom" type="light" effect="solid"/>
             </CardLeft>
 
             <CardRigth seeMore={seeMore}>
-                <h3 className="username">{user.username}</h3>
+                <Link to={`/user/${user.id}`}>
+                    <h3 className="username">{user.username}</h3>
+                </Link>
                 <p className="description" seeMore={seeMore}>{renderDescription()}</p>
                 <p className="seeMore" onClick={toggleSeeMore}>{seeMore ? "Ver Menos" : "Ver Mais"}</p>
+
                 <a href={link}>
                     <LinkContent seeMore={seeMore}>
                         <div className="linkContent">

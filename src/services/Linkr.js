@@ -1,6 +1,14 @@
 import axios from "axios";
 
-const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr"
+const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
+
+function createConfig (token){
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+}
 
 function sendLoginRequest (body){
     return axios.post(`${BASE_URL}/sign-in`, body);
@@ -30,6 +38,13 @@ function getPostsByUserId (userId, config){
     return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 }
 
+function sendLikeRequest (postId, token) {
+    return axios.post(`${BASE_URL}/posts/${postId}/like`, {}, createConfig(token))
+}
+function sendDislikeRequest (postId, token) {
+    return axios.post(`${BASE_URL}/posts/${postId}/dislike`, {}, createConfig(token))
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -37,6 +52,8 @@ export {
     getPosts,
     getHashtags,
     getMyLikedPosts,
-    getPostsByUserId
+    getPostsByUserId,
+    sendLikeRequest,
+    sendDislikeRequest
 }
 
