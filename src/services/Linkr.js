@@ -43,11 +43,15 @@ function getPostsByHashtag (hashtag, config) {
 }
 
 function sendLikeRequest (postId, token) {
-    return axios.post(`${BASE_URL}/posts/${postId}/like`, {}, createConfig(token))
+    return axios.post(`${BASE_URL}/posts/${postId}/like`, {}, createConfig(token));
 }
 
 function sendDislikeRequest (postId, token) {
-    return axios.post(`${BASE_URL}/posts/${postId}/dislike`, {}, createConfig(token))
+    return axios.post(`${BASE_URL}/posts/${postId}/dislike`, {}, createConfig(token));
+}
+
+function sendDeletePostRequest (postId, token) {
+    return axios.delete(`${BASE_URL}/posts/${postId}`, createConfig(token));
 }
 
 export {
@@ -60,6 +64,7 @@ export {
     getPostsByUserId,
     getPostsByHashtag,
     sendLikeRequest,
-    sendDislikeRequest
+    sendDislikeRequest,
+    sendDeletePostRequest,
 }
 

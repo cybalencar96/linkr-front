@@ -5,8 +5,11 @@ import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
 import { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
+import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest} from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
+import {FaTrash} from "react-icons/fa";
+import {RiPencilFill} from "react-icons/ri";
+import styled from "styled-components";
 
 export default function Card({post}) {
     const {
@@ -29,7 +32,7 @@ export default function Card({post}) {
     const [ isLoading, setIsLoading] = useState(false)
     const { userData} = useContext(UserContext);
     const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
-
+    const [reallyDeleteHabit, ConfirmDeleteState] = useState(false); 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
             if (word[0] === "#") {
@@ -86,8 +89,43 @@ export default function Card({post}) {
         }
         return tooltip;
     }
+
+    function deletePost(postId) {
+        setIsLoading(true);
+        console.log(postId, userData.token);
+        sendDeletePostRequest(postId, userData.token)
+          .then(() => {
+            console.log("SUUCEOSSOO")
+            setIsLoading(false);
+            ConfirmDeleteState(false);
+            window.location.reload();
+          })
+          .catch(() => {
+            setIsLoading(false);
+            setTimeout(() => {
+              alert(
+                "Could not delete your post! Please repeat the procedure."
+              );
+            }, 900);
+            ConfirmDeleteState(false);
+          });
+      }
     
     return (
+        <>
+        <Superposition reallyDeleteHabit={reallyDeleteHabit}>
+            <ConfirmDeleteScreen>
+                <p>Tem certeza que deseja <br/> excluir essa publicação?</p>
+                <SuperpositionButtons>
+                    <CancelButton disabled={isLoading ? true : false} onClick={() => ConfirmDeleteState(false)}>
+                        Não, voltar
+                    </CancelButton>
+                    <ConfirmButton disabled={isLoading ? true : false} onClick={() => deletePost(id)}>
+                        {isLoading ? "Excluindo..." : "Sim, excluir"}
+                    </ConfirmButton>
+                </SuperpositionButtons>
+            </ConfirmDeleteScreen>
+      </Superposition>
         <CardContainer>
             <CardLeft>
                 <Link to={`/user/${user.id}`}>
@@ -100,9 +138,16 @@ export default function Card({post}) {
             </CardLeft>
 
             <CardRigth>
+                { userData.user.id !== user.id ? "" :
+                <IconsDiv>
                 <Link to={`/user/${user.id}`}>
                     <h3 className="username">{user.username}</h3>
                 </Link>
+                <div>
+                    <IconEdit />
+                    <IconDelete onClick={() => ConfirmDeleteState(true)}/>
+                </div>
+                </IconsDiv>}
                 <p className="description">{renderDescription()}</p>
                 
                 <a href={link}>
@@ -115,8 +160,121 @@ export default function Card({post}) {
                         <img src={linkImage}/>
                     </LinkContent>
                 </a>
-
             </CardRigth>
         </CardContainer>
+        </>
     )
 }
+
+const IconDelete = styled(FaTrash)`
+    margin-left: 25px;
+    &:hover{
+        color: red;
+    }
+`;
+
+const IconEdit = styled(RiPencilFill)`
+    &:hover{
+        color: green;
+    }
+`;
+
+const IconsDiv = styled.div`
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+`;
+
+//confirm teela t1
+
+const Superposition = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  display: ${(props) => (props.reallyDeleteHabit ? "inherit" : "none")};
+`;
+
+const ConfirmDeleteScreen = styled.div`
+  position: relative;
+  top: calc((100vh - 262px) / 2);
+  left: calc((100vw - 597px) / 2);
+  width: 597px;
+  height: 262px;
+  border-radius: 50px;
+  background-color: #333333;
+  font-family: "Lato", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 34px;
+    color: #ffffff;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 994px) {
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+  }
+`;
+
+const SuperpositionButtons = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CancelButton = styled.button`
+  background-color: #ffffff;
+  color: #1877f2;
+  line-height: 22px;
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 27px;
+
+  &:hover {
+    cursor: pointer;
+    border: 5px solid #1877f2;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ConfirmButton = styled.button`
+  background-color: #1877f2;
+  color: #ffffff;
+  line-height: 22px;
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+    border: 5px solid crimson;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
