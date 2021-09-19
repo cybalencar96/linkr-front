@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { sendPostLinkRequest } from "../../../services/Linkr";
-export default function PostLink () {
+export default function PostLink ({renderPosts}) {
 
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
@@ -26,7 +26,7 @@ export default function PostLink () {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                
+                renderPosts()
             })
             .catch(error => {
                 console.log(error);
