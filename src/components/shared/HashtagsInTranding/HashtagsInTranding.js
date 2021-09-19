@@ -61,7 +61,6 @@ const ContainerTranding = styled.div`
     max-height: 435px;
     background-color: #171717;
     border-radius: 16px;
-    margin: 132px 0 0 0;
 
     h1{
         margin: 9px 0 0 18px;

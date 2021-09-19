@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export default function NoPosts() {
+export default function NoPosts({props}) {
     return (
         <NoPostsContainer>
             Nenhum post encontrado

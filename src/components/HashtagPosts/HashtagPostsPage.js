@@ -44,21 +44,24 @@ export default function UserPostsPage() {
     return (
         <PageStyled centralized>
             <HashtagPostContainer>
-                <Separator>
-                    <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
-                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
-                </Separator>
-                <HashtagsInTranding setIsLoading={setIsLoading}/>
+                <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
+                <div className="content">
+                    <Separator>
+                        {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
+                    </Separator>
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                </div>
             </HashtagPostContainer>
         </PageStyled>
     )
 }
 
 const TittleWithLimitattor = styled(Title)`
-    width: 60%;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
     @media(max-width: 996px){
         margin: 19px auto;
         width: 86vw;
