@@ -25,11 +25,12 @@ export default function UserPostsPage() {
                 Authorization: `Bearer ${userData.token}`
             }
         }
+
         getPostsByHashtag(hashtag, config)
         .then(response => {
-            setTimeout(() => {setIsLoading(false)}, 3500)
 
             setPosts(response.data.posts);
+            setTimeout(() => {setIsLoading(false)}, 3500)
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
