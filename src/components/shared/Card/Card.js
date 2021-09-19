@@ -3,6 +3,7 @@ import { HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
+import { useState } from "react/cjs/react.development";
 
 export default function Card(post) {
 
@@ -18,6 +19,8 @@ export default function Card(post) {
         user
     } = post.post
 
+    const [seeMore, setSeeMore] = useState(false)
+
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
             if (word[0] === "#") {
@@ -28,10 +31,13 @@ export default function Card(post) {
         })
         return formatedText
     }
+    function toggleSeeMore() {
+        setSeeMore(() => !seeMore);
+    }
 
 
     return (
-        <CardContainer>
+        <CardContainer seeMore={seeMore}>
             <CardLeft>
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
@@ -40,18 +46,20 @@ export default function Card(post) {
                 <p>{likes.length} likes</p>
             </CardLeft>
 
-            <CardRigth>
+            <CardRigth seeMore={seeMore}>
                 <h3 className="username">{user.username}</h3>
-                <p className="description">{renderDescription()}</p>
-                
+                <p className="description" seeMore={seeMore}>{renderDescription()}</p>
+                <p className="seeMore" onClick={toggleSeeMore}>{seeMore ? "Ver Menos" : "Ver Mais"}</p>
                 <a href={link}>
-                    <LinkContent>
+                    <LinkContent seeMore={seeMore}>
                         <div className="linkContent">
                             <h3 className="linkTitle">{linkTitle}</h3>
                             <p className="linkDescription">{linkDescription}</p>
                             <p className="linkUrl">{link}</p>
                         </div>
-                        <img src={linkImage}/>
+                        <div class="imgContainer">
+                            <img src={linkImage}/>
+                        </div>
                     </LinkContent>
                 </a>
 
