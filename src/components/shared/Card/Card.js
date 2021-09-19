@@ -3,7 +3,7 @@ import { HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 
 export default function Card(post) {
 
