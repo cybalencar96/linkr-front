@@ -87,7 +87,7 @@ const LiHashtags = styled.li`
     cursor: pointer;
     text-overflow: ellipsis;
     overflow: hidden;
-
+    white-space: nowrap;
     &:hover {
         text-shadow: 0 0 4px #fff, 0 0 4px #ff0;
     }
