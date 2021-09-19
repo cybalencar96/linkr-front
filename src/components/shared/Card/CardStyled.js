@@ -3,7 +3,6 @@ import styled from "styled-components";
 const CardContainer = styled.article`
     width: 610px;
     min-height: 280px;
-    height: ${props => props.seeMore ? "auto" : "280px"};
     background-color: #171717;
     border-radius: 16px;
     display: flex;
@@ -13,7 +12,7 @@ const CardContainer = styled.article`
 
     @media (max-width: 992px) {
         width: 100vw;
-        height: 240px;
+        min-height: 240px;
         border-radius: 0;
     }
 `
@@ -39,7 +38,6 @@ const CardLeft = styled.section`
 const CardRigth = styled.section`
         width: 85%;
         min-height: 260px;
-        height: ${props => props.seeMore ? "auto" : "260px"};
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -51,14 +49,19 @@ const CardRigth = styled.section`
 
         }
 
-        & .description {
+        & .descriptionContainer {
             width: 90%;
-            min-height: 53px;
-            height: ${props => props.seeMore ? "auto" : "53px"};
+            margin-bottom: 20px;
+        }
+
+        & .description {
+            width: 100%;
             font-size: 17px;
             color: #B7B7B7;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        }
+
+        & .showText {
+            color: li
         }
 
         & .description span{
@@ -67,7 +70,7 @@ const CardRigth = styled.section`
         }
 
         & .seeMore {
-            padding: 10px 0;
+            padding: 0 10px;
             cursor: pointer;
         }
         & .seeMore:hover {
@@ -83,8 +86,7 @@ const LinkContent = styled.div`
     border-radius: 11px;
     background-color: rgba(23,23,23,0);
     width: 90%;
-    min-height: 135px;
-    height: ${props => props.seeMore ? "auto" : "135px"};
+    height: 155px;
 
     border: 1px solid #4D4D4D;
     display: flex;
@@ -124,6 +126,7 @@ const LinkContent = styled.div`
     & img {
         width:154px;
         height:154px;
+        object-fit: cover;
         border-radius: 0px 12px 13px 0px;
     }
 
@@ -134,10 +137,11 @@ const LinkContent = styled.div`
     }
 
     @media (max-width: 992px) {
-        height: 110px;
+        min-height: 110px;
 
         & img {
-            width: 110px
+            width: 110px;
+            object-fit: cover;
         }
         & .linkContent{
             padding: 5px 10px;

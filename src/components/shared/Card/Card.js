@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
+import ShowMore from "react-show-more";
 
 export default function Card({post}) {
     const {
@@ -110,8 +111,13 @@ export default function Card({post}) {
                 <Link to={`/user/${user.id}`}>
                     <h3 className="username">{user.username}</h3>
                 </Link>
-                <p className="description" seeMore={seeMore}>{renderDescription()}</p>
-                <p className="seeMore" onClick={toggleSeeMore}>{seeMore ? "Ver Menos" : "Ver Mais"}</p>
+                <div className="descriptionContainer">  
+                    <ShowMore anchorClass="seeMore">
+                        <span className="description">{renderDescription()}</span>
+                    </ShowMore>
+                </div>
+                
+                {/* <p className="seeMore" onClick={toggleSeeMore}>{seeMore ? "Ver Menos" : "Ver Mais"}</p> */}
 
                 <a href={link}>
                     <LinkContent seeMore={seeMore}>
