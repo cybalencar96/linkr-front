@@ -14,11 +14,11 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { userData ,setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     let history = useHistory();
 
     useEffect(() => {
-        if (userData){
+        if (userData) {
             history.push("/timeline");
         }
     }, [userData])
