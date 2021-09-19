@@ -11,7 +11,7 @@ import {FaTrash} from "react-icons/fa";
 import {RiPencilFill} from "react-icons/ri";
 import styled from "styled-components";
 
-export default function Card({post}) {
+export default function Card({post,renderPosts}) {
     const {
         commentCount,
         id,
@@ -97,7 +97,8 @@ export default function Card({post}) {
           .then(() => {
             setIsLoading(false);
             setConfirmDeleteState(false);
-            window.location.reload();//loc
+            // window.location.reload();//loc
+            renderPosts();
           })
           .catch(() => {
             setIsLoading(false);
