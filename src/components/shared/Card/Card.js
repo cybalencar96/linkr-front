@@ -92,12 +92,10 @@ export default function Card({post,renderPosts}) {
 
     function deletePost(postId) {
         setIsLoading(true);
-        console.log(postId, userData.token);
         sendDeletePostRequest(postId, userData.token)
           .then(() => {
             setIsLoading(false);
             setConfirmDeleteState(false);
-            // window.location.reload();//loc
             renderPosts();
           })
           .catch(() => {
