@@ -32,7 +32,7 @@ export default function HashtagsInTranding (props) {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             if(searchInput)
-            history.push(`/hashtag/:${searchInput}`)
+            history.push(`/hashtag/${searchInput}`)
         }
     }
     return (
@@ -43,7 +43,7 @@ export default function HashtagsInTranding (props) {
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
                         <Link to={`/hashtag/${hashtag.name}`}>
-                            <LiHashtags onClick={() => props.setIsLoading(true)}># {hashtag.name}</LiHashtags>
+                            <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
                         </Link>
                     )
                 }

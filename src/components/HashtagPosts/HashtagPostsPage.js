@@ -13,14 +13,13 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
 
-export default function UserPostsPage() {
+export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
-
+ 
     useEffect(() => {
-
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
@@ -28,7 +27,7 @@ export default function UserPostsPage() {
         }
         getPostsByHashtag(hashtag, config)
         .then(response => {
-            setTimeout(() => {setIsLoading(false)}, 2000)
+            setTimeout(() => {setIsLoading(false)}, 1000)
             setPosts(response.data.posts);
         })
         .catch(error => {
@@ -47,7 +46,7 @@ export default function UserPostsPage() {
                 <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
                 <div className="content">
                     <Separator>
-                        {isLoading ? <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/>  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
+                        {isLoading ? <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/>  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
                     </Separator>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
