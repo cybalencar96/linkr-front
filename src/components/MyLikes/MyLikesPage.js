@@ -49,7 +49,7 @@ export default function MyLikesPage() {
                 <Title>my likes</Title>
                 <div className="content">
                     <div>
-                        {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} renderPosts={renderPosts} typePage={1}/>) : <NoPosts/>}
                     </div>
                     <HashtagsInTranding />
                 </div>

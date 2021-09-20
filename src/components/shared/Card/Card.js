@@ -11,7 +11,7 @@ import {FaTrash} from "react-icons/fa";
 import {RiPencilFill} from "react-icons/ri";
 import styled from "styled-components";
 
-export default function Card({post,renderPosts}) {
+export default function Card({post, renderPosts, typePage}) {
     const {
         commentCount,
         id,
@@ -48,10 +48,21 @@ export default function Card({post,renderPosts}) {
             return;
         }
         setIsLoading(true)
-        if(isLiked){
+        if(typePage){
             sendDislikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
+                    renderPosts();
+                    
+                })
+                .catch(err => alert(err))
+                .finally(() => setIsLoading(false))
+        }
+        if(isLiked){
+            sendDislikeRequest(id, userData.token)
+                .then(res => {
+                    setLikesState(res.data.post.likes)  
+                    renderPosts();                  
                 })
                 .catch(err => alert(err))
                 .finally(() => setIsLoading(false))
@@ -129,7 +140,7 @@ export default function Card({post,renderPosts}) {
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
                 </Link>
-                {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}} /> :
+                {typePage === 1 ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}} /> : isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}} /> :
                  <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{cursor: 'pointer'}}/>}
                 <p data-tip={createTooltip()}>{likesState.length} likes</p>
                 <ReactTooltip place="bottom" type="light" effect="solid"/>
