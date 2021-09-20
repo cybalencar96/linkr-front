@@ -133,11 +133,25 @@ const LinkContent = styled.div`
             font-size: 9px;
         }
     }
-`
+`;
+
+const EditPostInput = styled.textarea`
+    width: 90%;
+    height: 53px;
+    font-size: 17px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    border: none;
+    border-radius: 5px;
+    margin-top: 8px;
+    outline: none;
+    font-size: 15px;
+`;
 
 export {
     CardContainer,
     LinkContent,
     CardRigth,
-    CardLeft
+    CardLeft,
+    EditPostInput
 }
