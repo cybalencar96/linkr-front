@@ -13,6 +13,7 @@ const CardContainer = styled.article`
     @media (max-width: 992px) {
         width: 100vw;
         border-radius: 0;
+        min-height: 232px;
     }
 `
 
@@ -71,6 +72,7 @@ const CardRigth = styled.section`
         }
 
         @media (max-width: 992px) {
+            min-height: 212px;
             width: 81.6%;
             padding: 0 0 10px 0px;
             & .usernameLink {
@@ -134,10 +136,10 @@ const LinkContent = styled.div`
     }
 
     @media (max-width: 992px) {
-        height: 110px;
+        height: 115px;
 
         & img {
-            width: 110px
+            width: 115px
         }
         & .linkContent{
             padding: 5px 10px;
