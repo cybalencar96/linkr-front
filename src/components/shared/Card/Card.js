@@ -42,6 +42,7 @@ export default function Card({ post, renderPosts }) {
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
+            setEditingText(text);
         }
         
     }, [isEditing]);
@@ -127,9 +128,6 @@ export default function Card({ post, renderPosts }) {
     function toggleEditBox() {
         if (!isPostFromLocalUser){
             return;
-        }
-        if (isEditing) {
-            setEditingText(text);
         }
         setIsEditing(!isEditing);
     }
