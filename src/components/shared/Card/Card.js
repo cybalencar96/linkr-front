@@ -11,7 +11,7 @@ import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import styled from "styled-components";
 
-export default function Card({ post, renderPosts }) {
+export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
         commentCount,
         id,
@@ -67,15 +67,33 @@ export default function Card({ post, renderPosts }) {
             sendDislikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
+                    if(isMyLikesPage)
+                        renderPosts()
                 })
-                .catch(err => alert(err))
+                .catch(err => {
+                    if(err.response.status === 404){
+                        alert("Post has been deleted!");
+                        return;
+                    }
+                        
+                    alert(err)
+                })
                 .finally(() => setIsLoading(false))
         } else {
             sendLikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
+                    if(isMyLikesPage)
+                        renderPosts()
                 })
-                .catch(err => alert(err))
+                .catch(err => {
+                    if(err.response.status === 404){
+                        alert("Post has been deleted!");
+                        return;
+                    }
+                    
+                    alert(err)
+                })
                 .finally(() => setIsLoading(false))
         }
     }
