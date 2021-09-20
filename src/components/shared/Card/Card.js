@@ -138,9 +138,11 @@ export default function Card({post,renderPosts}) {
             </CardLeft>
 
             <CardRigth>
-                { userData.user.id !== user.id ? "" :
+                { userData.user.id !== user.id ? <IconsDiv><Link to={userData.user.id !== user.id ? `/user/${user.id}` : `/my-posts/`}>
+                    <h3 className="username">{user.username}</h3>
+                </Link></IconsDiv> :
                 <IconsDiv>
-                <Link to={`/user/${user.id}`}>
+                <Link to={userData.user.id !== user.id ? `/user/${user.id}` : `/my-posts/`}>
                     <h3 className="username">{user.username}</h3>
                 </Link>
                 <div>

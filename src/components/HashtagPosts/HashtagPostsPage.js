@@ -19,13 +19,17 @@ export default function UserPostsPage() {
     const {hashtag} = useParams();
 
     useEffect(() => {
+        if (userData) {
+            renderPosts();
+        }
+    },[posts, userData.token])
 
+    function renderPosts() {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
-
         getPostsByHashtag(hashtag, config)
         .then(response => {
 
@@ -35,7 +39,7 @@ export default function UserPostsPage() {
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
-    },[posts, userData.token]);
+    }
 
     if(!posts){
         return(
@@ -47,7 +51,7 @@ export default function UserPostsPage() {
             <HashtagPostContainer>
                 <Separator>
                     <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
-                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : "Nenhum post encontrado"}
+                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : "Nenhum post encontrado"}
                 </Separator>
                 <HashtagsInTranding setIsLoading={setIsLoading}/>
             </HashtagPostContainer>

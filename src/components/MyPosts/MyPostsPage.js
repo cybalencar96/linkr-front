@@ -16,24 +16,27 @@ export default function MyPostsPage() {
 
     useEffect(() => {
         if (userData) {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${userData.token}`
-                }
-            }
-            setLoading(true);
-            getPostsByUserId(userData.user.id, config)
-                .then(res => {
-                    setLoading(false);
-                    setPosts(res.data.posts)
-                })
-                .catch(err => {
-                    setLoading(false);
-                    alert("Houve uma falha ao obter os posts, por favor atualize a página")
-                })
+            renderPosts();
         }
     }, [userData])
 
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+        setLoading(true);
+        getPostsByUserId(userData.user.id, config)
+            .then(res => {
+                setLoading(false);
+                setPosts(res.data.posts)
+            })
+            .catch(err => {
+                setLoading(false);
+                alert("Houve uma falha ao obter os posts, por favor atualize a página")
+            })
+    }
 
     if (!posts) {
         return <Loading />
@@ -45,7 +48,7 @@ export default function MyPostsPage() {
             <MyPostsContainer>
                 <div>
                     <Title>my posts</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post} />) : <NoPosts />}
+                    {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
                 </div>
                 <HashtagsInTranding />
             </MyPostsContainer>
