@@ -2,7 +2,7 @@ import { CardContainer, LinkContent, CardRigth, CardLeft, EditPostInput } from "
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
@@ -23,12 +23,15 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         text,
         user
     } = post
-    const [likesState, setLikesState] = useState(likes.map(like => {
+    
+    const [ likesState, setLikesState] = useState(likes.map(like => {
+
         return {
             userId: like.userId,
             username: like["user.username"]
         }
     }));
+
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
@@ -127,6 +130,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     function deletePost(postId) {
         setIsLoading(true);
         sendDeletePostRequest(postId, userData.token)
+
             .then(() => {
                 setIsLoading(false);
                 setConfirmDeleteState(false);
@@ -190,18 +194,19 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 </CardLeft>
 
                 <CardRigth>
-                    {!isPostFromLocalUser ? <IconsDiv><Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
+                    {!isPostFromLocalUser ? <IconsDiv><NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                         <h3 className="username">{user.username}</h3>
-                    </Link></IconsDiv> :
+                    </NavLink></IconsDiv> :
                         <IconsDiv>
-                            <Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
+                            <NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                                 <h3 className="username">{user.username}</h3>
-                            </Link>
+                            </NavLink>
                             <div>
                                 <IconEdit onClick={toggleEditBox} />
                                 <IconDelete onClick={() => setConfirmDeleteState(true)} />
                             </div>
-                        </IconsDiv>}
+                        </IconsDiv>
+                    }
 
                     {isEditing ?
                         <EditPostInput
@@ -222,7 +227,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-
                     <a href={link}>
                         <LinkContent>
                             <div className="linkContent">
@@ -230,7 +234,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 <p className="linkDescription">{linkDescription}</p>
                                 <p className="linkUrl">{link}</p>
                             </div>
-                            <img src={linkImage} />
+                            <div class="imgContainer">
+                                <img src={linkImage}/>
+                            </div>
                         </LinkContent>
                     </a>
                 </CardRigth>

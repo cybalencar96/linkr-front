@@ -2,17 +2,18 @@ import styled from "styled-components";
 
 const CardContainer = styled.article`
     width: 610px;
-    height: 280px;
+    min-height: 280px;
     background-color: #171717;
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
     margin-bottom: 30px;
+    padding: 10px 0;
 
     @media (max-width: 992px) {
         width: 100vw;
-        height: 240px;
         border-radius: 0;
+        min-height: 232px;
     }
 `
 
@@ -24,7 +25,7 @@ const CardLeft = styled.section`
     align-items: center;
     
     & a {
-        margin: 10px 0 20px 0;
+        margin: 0 0 20px 0;
         
     }
 
@@ -36,33 +37,47 @@ const CardLeft = styled.section`
 
 const CardRigth = styled.section`
         width: 85%;
-        height: 100%;
+        min-height: 260px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         padding: 0 0 10px 0;
 
+        & .usernameLink {
+            width: 85%;
+        }
+
         & .username {
+            width:100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-size: 19px;
+            padding: 0 0 10px 0;
             cursor: pointer;
         }
 
         & .description {
             width: 90%;
-            height: 53px;
+            min-height: 53px;
             font-size: 17px;
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin-bottom: 15px;
         }
 
         & .description span{
             font-weight: 700;
             color: white;
         }
+
         @media (max-width: 992px) {
+            min-height: 212px;
             width: 81.6%;
             padding: 0 0 10px 0px;
+            & .usernameLink {
+                width:calc(85% - 10vw)
+            }
         } 
 `;
 
@@ -71,6 +86,8 @@ const LinkContent = styled.div`
     background-color: rgba(23,23,23,0);
     width: 90%;
     height: 155px;
+
+
     border: 1px solid #4D4D4D;
     display: flex;
     justify-content: space-between;
@@ -80,7 +97,8 @@ const LinkContent = styled.div`
         padding: 20px;
         display: flex;
         flex-direction: column;
-        justify-content: space-around
+        justify-content: space-around;
+        gap:3px;
     }
 
     & .linkContent .linkTitle{
@@ -105,18 +123,23 @@ const LinkContent = styled.div`
 
     }
 
-
     & img {
         width:154px;
-        height: 100%;
+        height:154px;
         border-radius: 0px 12px 13px 0px;
     }
 
+    & .imgContainer {
+        display: flex;
+        justify-content:center;
+        align-items:center;
+    }
+
     @media (max-width: 992px) {
-        height: 110px;
+        height: 115px;
 
         & img {
-            width: 110px
+            width: 115px
         }
         & .linkContent{
             padding: 5px 10px;
