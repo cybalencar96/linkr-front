@@ -54,6 +54,10 @@ function sendDeletePostRequest (postId, token) {
     return axios.delete(`${BASE_URL}/posts/${postId}`, createConfig(token));
 }
 
+function sendEditPostRequest (postId, text, token){
+    return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -66,5 +70,6 @@ export {
     sendLikeRequest,
     sendDislikeRequest,
     sendDeletePostRequest,
+    sendEditPostRequest
 }
 
