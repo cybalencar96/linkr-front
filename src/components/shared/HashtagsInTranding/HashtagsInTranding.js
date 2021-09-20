@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
@@ -32,7 +32,7 @@ export default function HashtagsInTranding (props) {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             if(searchInput)
-            history.push(`/hashtag/:${searchInput}`)
+            history.push(`/hashtag/${searchInput}`)
         }
     }
     return (
@@ -42,7 +42,9 @@ export default function HashtagsInTranding (props) {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={()=>{props.setIsLoading(true);history.push(`/hashtag/${hashtag.name}`);}}># {hashtag.name}</LiHashtags>
+                        <Link to={`/hashtag/${hashtag.name}`}>
+                            <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
+                        </Link>
                     )
                 }
             )}
@@ -61,7 +63,6 @@ const ContainerTranding = styled.div`
     max-height: 435px;
     background-color: #171717;
     border-radius: 16px;
-    margin: 132px 0 0 0;
 
     h1{
         margin: 9px 0 0 18px;

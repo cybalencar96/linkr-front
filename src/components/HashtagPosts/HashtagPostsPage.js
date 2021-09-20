@@ -13,17 +13,17 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
 
-export default function UserPostsPage() {
+export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
-
+ 
     useEffect(() => {
         if (userData) {
             renderPosts();
         }
-    },[posts, userData.token])
+    },[hashtag, userData.token])
 
     function renderPosts() {
         const config = {
@@ -33,38 +33,42 @@ export default function UserPostsPage() {
         }
         getPostsByHashtag(hashtag, config)
         .then(response => {
-
+            setTimeout(() => {setIsLoading(false)}, 1000)
             setPosts(response.data.posts);
-            setTimeout(() => {setIsLoading(false)}, 3500)
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
     }
 
+
     if(!posts){
         return(
             <Loading />
         )
     }
+  
     return (
         <PageStyled centralized>
             <HashtagPostContainer>
-                <Separator>
-                    <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
-                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
-                </Separator>
-                <HashtagsInTranding setIsLoading={setIsLoading}/>
+                <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
+                <div className="content">
+                    <Separator>
+                        {isLoading ? <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/>  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                    </Separator>
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                </div>
             </HashtagPostContainer>
         </PageStyled>
     )
 }
 
 const TittleWithLimitattor = styled(Title)`
-    width: 60%;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
     @media(max-width: 996px){
         margin: 19px auto;
         width: 86vw;

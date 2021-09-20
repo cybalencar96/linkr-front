@@ -46,11 +46,13 @@ export default function MyPostsPage() {
 
         <PageStyled centralized>
             <MyPostsContainer>
-                <div>
-                    <Title>my posts</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
+                <Title>my posts</Title>
+                <div className="content">
+                    <div>
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} />) : <NoPosts />}
+                    </div>
+                    <HashtagsInTranding />
                 </div>
-                <HashtagsInTranding />
             </MyPostsContainer>
         </PageStyled>
     )

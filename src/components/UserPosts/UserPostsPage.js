@@ -51,11 +51,13 @@ export default function UserPostsPage() {
     return (
         <PageStyled centralized>
             <UserPostsContainer>
+                <Title>{posts[0].user.username}'s posts</Title>
+                <div className="content">
                     <div>
-                    <Title>{posts[0].user.username}'s posts</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts />}
                     </div>
                     <HashtagsInTranding />
+                </div>
             </UserPostsContainer>
         </PageStyled>
     )
