@@ -44,7 +44,7 @@ const CardRigth = styled.section`
 
 
         & .username {
-            width:90%;
+            width:450px;
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 19px;
