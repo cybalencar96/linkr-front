@@ -11,6 +11,7 @@ import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
+import NoPosts from "../shared/NoPosts";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -51,7 +52,7 @@ export default function UserPostsPage() {
             <HashtagPostContainer>
                 <Separator>
                     <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
-                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : "Nenhum post encontrado"}
+                    {isLoading ? <Loader type="Hearts" color="#00BFFF" height={80} width={80} />  : posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
                 </Separator>
                 <HashtagsInTranding setIsLoading={setIsLoading}/>
             </HashtagPostContainer>
