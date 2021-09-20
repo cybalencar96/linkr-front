@@ -9,6 +9,7 @@ import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import HashtagsInTrandingModel from "../shared/HashtagsInTranding/HashtagsInTrandingModel";
 
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);

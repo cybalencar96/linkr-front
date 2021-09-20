@@ -37,18 +37,20 @@ export default function HashtagsInTranding (props) {
     }
     return (
         <ContainerTranding>
-           <h1>trending</h1>
-           <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
-           <UlHashtags>
-                {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
-                    return (
-                        <Link to={`/hashtag/${hashtag.name}`}>
-                            <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
-                        </Link>
-                    )
-                }
-            )}
-           </UlHashtags>
+            <div className="fixed">
+                <h1>trending</h1>
+                <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+                <UlHashtags>
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
+                            return (
+                                <Link to={`/hashtag/${hashtag.name}`}>
+                                    <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
+                                </Link>
+                            )
+                        }
+                    )}
+                </UlHashtags>
+           </div>
         </ContainerTranding>
     )
 }
@@ -61,11 +63,17 @@ const ContainerTranding = styled.div`
     width: 301px;
     min-width: 301px;
     max-height: 435px;
-    background-color: #171717;
     border-radius: 16px;
 
     h1{
         margin: 9px 0 0 18px;
+    }
+
+    & .fixed {
+        position: fixed;
+        width: 301px;
+        background-color: #171717;
+        border-radius: 16px;
     }
 
     @media(max-width: 994px){
