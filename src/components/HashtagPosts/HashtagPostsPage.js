@@ -28,14 +28,13 @@ export default function UserPostsPage() {
         }
         getPostsByHashtag(hashtag, config)
         .then(response => {
-            setTimeout(() => {setIsLoading(false)}, 3500)
-
+            setTimeout(() => {setIsLoading(false)}, 2000)
             setPosts(response.data.posts);
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
-    },[posts, userData.token]);
+    },[hashtag,userData.token]);
 
     if(!posts){
         return(

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
@@ -42,7 +42,9 @@ export default function HashtagsInTranding (props) {
            <UlHashtags>
                 {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
                     return (
-                        <LiHashtags onClick={()=>{props.setIsLoading(true);history.push(`/hashtag/${hashtag.name}`);}}># {hashtag.name}</LiHashtags>
+                        <Link to={`/hashtag/${hashtag.name}`}>
+                            <LiHashtags onClick={() => props.setIsLoading(true)}># {hashtag.name}</LiHashtags>
+                        </Link>
                     )
                 }
             )}
