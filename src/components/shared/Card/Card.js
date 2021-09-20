@@ -41,16 +41,6 @@ export default function Card({ post, renderPosts }) {
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
-            function handleEsc (event) {
-                    if (event.keyCode === 27) {
-                        toggleEditBox();
-                    }
-            };
-            window.addEventListener('keydown', handleEsc);
-    
-            return () => {
-                window.removeEventListener('keydown', handleEsc);
-            };
         }
         
     }, [isEditing]);
@@ -197,10 +187,14 @@ export default function Card({ post, renderPosts }) {
                         <EditPostInput
                             ref={editInputRef}
                             value={editingText}
-                            onKeyPress={e => {
+                            onKeyDown={e => {
                                 if(e.key === 'Enter'){
                                     e.preventDefault();
                                     editPost();
+                                }
+                                if(e.key === 'Escape'){
+                                    e.preventDefault();
+                                    toggleEditBox()
                                 }
                             }}
                             onChange={(e) => setEditingText(e.target.value)}
