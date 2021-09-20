@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { MyLikesContainer } from "./MyLikesStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
@@ -15,13 +14,18 @@ export default function MyLikesPage() {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState("");
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
-
     useEffect(() => {
+        if (userData) {
+            renderPosts();
+        }
+    },[userData])
+
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
         setLoading(true);
         getMyLikedPosts(config)
         .then(res => {
@@ -33,8 +37,7 @@ export default function MyLikesPage() {
             alert("Houve uma falha ao obter os posts, por favor atualize a página")
             console.log(err)
         })
-    },[])
-
+    }
 
     if (!posts) {
         return 	<Loading/>
@@ -43,12 +46,14 @@ export default function MyLikesPage() {
     return (
         <PageStyled centralized>
             <MyLikesContainer>
+                <Title>my likes</Title>
+                <div className="content">
                     <div>
-                    <Title>my likes</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
                     </div>
                     <HashtagsInTranding />
+                </div>
             </MyLikesContainer>
         </PageStyled>
     )
-}
+}   

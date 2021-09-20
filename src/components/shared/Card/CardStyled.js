@@ -40,7 +40,8 @@ const CardRigth = styled.section`
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        
+        padding: 0 0 10px 0;
+
 
         & .username {
             width:90%;
@@ -48,6 +49,7 @@ const CardRigth = styled.section`
             text-overflow: ellipsis;
             font-size: 19px;
             padding: 0 0 10px 0;
+            cursor: pointer;
         }
 
         & .description {
