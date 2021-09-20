@@ -70,7 +70,14 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     if(isMyLikesPage)
                         renderPosts()
                 })
-                .catch(err => alert(err))
+                .catch(err => {
+                    if(err.response.status === 404){
+                        alert("Post has been deleted!");
+                        return;
+                    }
+                        
+                    alert(err)
+                })
                 .finally(() => setIsLoading(false))
         } else {
             sendLikeRequest(id, userData.token)
@@ -79,7 +86,14 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     if(isMyLikesPage)
                         renderPosts()
                 })
-                .catch(err => alert(err))
+                .catch(err => {
+                    if(err.response.status === 404){
+                        alert("Post has been deleted!");
+                        return;
+                    }
+                    
+                    alert(err)
+                })
                 .finally(() => setIsLoading(false))
         }
     }
