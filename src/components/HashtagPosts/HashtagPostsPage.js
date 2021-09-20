@@ -54,7 +54,11 @@ export default function HashtagPostsPage() {
                 <TittleWithLimitattor># {hashtag}</TittleWithLimitattor>
                 <div className="content">
                     <Separator>
-                        {isLoading ? <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/>  : posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                        {isLoading ?
+                            <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/> :
+                            posts.length !== 0 ?
+                                posts.map(post => <Card post={post} renderPosts={renderPosts}/>) :
+                                <NoPosts/>}
                     </Separator>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>

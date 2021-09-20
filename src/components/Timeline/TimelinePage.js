@@ -48,7 +48,7 @@ export default function TimelinePage() {
                 <div className="content">
                     <div posts="posts">
                         <PostLink renderPosts={renderPosts} />
-                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} />) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
