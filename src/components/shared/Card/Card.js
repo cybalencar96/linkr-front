@@ -3,9 +3,9 @@ import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { Link } from 'react-router-dom'
-import { useContext, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest } from "../../../services/Linkr";
+import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
@@ -31,10 +31,29 @@ export default function Card({ post, renderPosts }) {
     }));
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
-    const isLiked = isLoading !== likesState.map(like => like.userId).includes(userData.user.id);
+    const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editingText, setEditingText] = useState(text);
+    const editInputRef = useRef();
+    const [isEditLoading, setIsEditLoading] = useState(false);
+
+    useEffect(() => {
+        if (isEditing) {
+            editInputRef.current.focus();
+            function handleEsc (event) {
+                    if (event.keyCode === 27) {
+                        toggleEditBox();
+                    }
+            };
+            window.addEventListener('keydown', handleEsc);
+    
+            return () => {
+                window.removeEventListener('keydown', handleEsc);
+            };
+        }
+        
+    }, [isEditing]);
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
@@ -114,8 +133,24 @@ export default function Card({ post, renderPosts }) {
             });
     }
 
-    function editPost() {
+    function toggleEditBox() {
+        if (isEditing) {
+            setEditingText(text);
+        }
+        setIsEditing(!isEditing);
+    }
 
+    function editPost() {
+        setIsEditLoading(true);
+        sendEditPostRequest(id, editingText, userData.token)
+            .then(res => {
+                renderPosts();
+                toggleEditBox();
+            })
+            .catch(err => {
+                alert("Could not edit your post! Please repeat the procedure.");
+            })
+            .finally(() => setIsEditLoading(false));
     }
 
     return (
@@ -153,14 +188,25 @@ export default function Card({ post, renderPosts }) {
                                 <h3 className="username">{user.username}</h3>
                             </Link>
                             <div>
-                                <IconEdit onClick={() => setIsEditing(!isEditing)}/>
+                                <IconEdit onClick={toggleEditBox} />
                                 <IconDelete onClick={() => setConfirmDeleteState(true)} />
                             </div>
                         </IconsDiv>}
 
                     {isEditing ?
-                        <EditPostInput value={editingText} onChange={(e) => setEditingText(e.target.value)} /> :
-                        <p className="description">{renderDescription()}</p>
+                        <EditPostInput
+                            ref={editInputRef}
+                            value={editingText}
+                            onKeyPress={e => {
+                                if(e.key === 'Enter'){
+                                    e.preventDefault();
+                                    editPost();
+                                }
+                            }}
+                            onChange={(e) => setEditingText(e.target.value)}
+                            disabled={isEditLoading}
+                        /> :
+                        <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
 
                     <a href={link}>
