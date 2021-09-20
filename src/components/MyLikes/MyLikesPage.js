@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { MyLikesContainer } from "./MyLikesStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
@@ -12,29 +11,32 @@ import NoPosts from "../shared/NoPosts";
 
 export default function MyLikesPage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
-
     useEffect(() => {
-        setLoading(true);
+        if (userData) {
+            renderPosts();
+        }
+    },[userData])
+
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+        setIsLoading(true);
         getMyLikedPosts(config)
         .then(res => {
-            setLoading(false);
+            setIsLoading(false);
             setPosts(res.data.posts)
         })
         .catch(err => {
-            setLoading(false);
+            setIsLoading(false);
             alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
         })
-    },[])
-
+    }
 
     if (!posts) {
         return 	<Loading/>
@@ -43,12 +45,15 @@ export default function MyLikesPage() {
     return (
         <PageStyled centralized>
             <MyLikesContainer>
+                <Title>my likes</Title>
+                <div className="content">
                     <div>
-                    <Title>my likes</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                        {posts.length !== 0 ? posts.map(post => 
+                            <Card post={post} key={post.id} renderPosts={renderPosts} isMyLikesPage />) : <NoPosts/>}
                     </div>
-                    <HashtagsInTranding />
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                </div>
             </MyLikesContainer>
         </PageStyled>
     )
-}
+}   

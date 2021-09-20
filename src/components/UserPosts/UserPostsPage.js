@@ -4,7 +4,7 @@ import { UserPostsContainer } from "./UserPostsStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
@@ -13,28 +13,35 @@ import NoPosts from "../shared/NoPosts";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const params = useParams();
-
-    const config = {
-        headers: {
-            Authorization: `Bearer ${userData.token}`
-        }
-    }
+    const history = useHistory();
+    
     useEffect(() => {
-        setLoading(true);
+        if (userData) {
+            renderPosts();
+        }
+    },[userData])
+
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+        setIsLoading(true);
         getPostsByUserId(params.id, config)
         .then(res => {
-            setLoading(false);
+            setIsLoading(false);
             setPosts(res.data.posts)
         })
         .catch(err => {
-            setLoading(false);
+            setIsLoading(false);
             alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
+            history.push("/my-posts");
         })
-    },[])
+    }
 
     if (!posts) {
         return 	<Loading/>
@@ -43,11 +50,13 @@ export default function UserPostsPage() {
     return (
         <PageStyled centralized>
             <UserPostsContainer>
+                <Title>{posts[0].user.username}'s posts</Title>
+                <div className="content">
                     <div>
-                    <Title>{posts[0].user.username}'s posts</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
                     </div>
-                    <HashtagsInTranding />
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                </div>
             </UserPostsContainer>
         </PageStyled>
     )

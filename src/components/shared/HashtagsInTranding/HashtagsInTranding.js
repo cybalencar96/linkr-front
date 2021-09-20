@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
 
 
-export default function HashtagsInTranding () {
+export default function HashtagsInTranding (props) {
 
     const [trendingHashtags, setTrendingHashtags] = useState([]);
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
-    
+
     useEffect(() => {
         
         const config = {
@@ -32,22 +32,25 @@ export default function HashtagsInTranding () {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             if(searchInput)
-            history.push(`/hashtag/:${searchInput}`)
+            history.push(`/hashtag/${searchInput}`)
         }
     }
-
     return (
         <ContainerTranding>
-           <h1>trending</h1>
-           <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
-           <UlHashtags>
-                {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
-                    return (
-                        <LiHashtags onClick={() => history.push(`/hashtag/:${hashtag.name}`)}>#{hashtag.name}</LiHashtags>
-                    )
-                }
-            )}
-           </UlHashtags>
+            <div className="fixed">
+                <h1>trending</h1>
+                <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+                <UlHashtags>
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
+                            return (
+                                <Link to={`/hashtag/${hashtag.name}`}>
+                                    <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
+                                </Link>
+                            )
+                        }
+                    )}
+                </UlHashtags>
+           </div>
         </ContainerTranding>
     )
 }
@@ -60,15 +63,20 @@ const ContainerTranding = styled.div`
     width: 301px;
     min-width: 301px;
     max-height: 435px;
-    background-color: #171717;
     border-radius: 16px;
-    margin: 132px 0 0 0;
 
     h1{
         margin: 9px 0 0 18px;
     }
 
-    @media(max-width: 994px){
+    & .fixed {
+        position: fixed;
+        width: 301px;
+        background-color: #171717;
+        border-radius: 16px;
+    }
+
+    @media(max-width: 992px){
         display: none;
     }
 `;
@@ -88,7 +96,7 @@ const LiHashtags = styled.li`
     cursor: pointer;
     text-overflow: ellipsis;
     overflow: hidden;
-
+    white-space: nowrap;
     &:hover {
         text-shadow: 0 0 4px #fff, 0 0 4px #ff0;
     }
