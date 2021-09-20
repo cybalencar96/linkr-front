@@ -68,7 +68,7 @@ const ContainerTranding = styled.div`
         margin: 9px 0 0 18px;
     }
 
-    @media(max-width: 994px){
+    @media(max-width: 992px){
         display: none;
     }
 `;

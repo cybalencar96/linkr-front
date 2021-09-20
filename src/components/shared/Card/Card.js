@@ -2,7 +2,7 @@ import { CardContainer, LinkContent, CardRigth, CardLeft, EditPostInput } from "
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
@@ -176,13 +176,13 @@ export default function Card({ post, renderPosts }) {
                 </CardLeft>
 
                 <CardRigth>
-                    {!isPostFromLocalUser ? <IconsDiv><Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
+                    {!isPostFromLocalUser ? <IconsDiv><NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                         <h3 className="username">{user.username}</h3>
-                    </Link></IconsDiv> :
+                    </NavLink></IconsDiv> :
                         <IconsDiv>
-                            <Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
+                            <NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                                 <h3 className="username">{user.username}</h3>
-                            </Link>
+                            </NavLink>
                             <div>
                                 <IconEdit onClick={toggleEditBox} />
                                 <IconDelete onClick={() => setConfirmDeleteState(true)} />

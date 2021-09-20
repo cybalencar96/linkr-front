@@ -42,9 +42,12 @@ const CardRigth = styled.section`
         justify-content: space-around;
         padding: 0 0 10px 0;
 
+        & .usernameLink {
+            width: 85%;
+        }
 
         & .username {
-            width:450px;
+            width:100%;
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 19px;
@@ -70,6 +73,9 @@ const CardRigth = styled.section`
         @media (max-width: 992px) {
             width: 81.6%;
             padding: 0 0 10px 0px;
+            & .usernameLink {
+                width:calc(85% - 10vw)
+            }
         } 
 `;
 
