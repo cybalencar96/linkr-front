@@ -11,7 +11,7 @@ import NoPosts from "../shared/NoPosts";
 
 export default function MyLikesPage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
 
     useEffect(() => {
@@ -26,16 +26,15 @@ export default function MyLikesPage() {
                 Authorization: `Bearer ${userData.token}`
             }
         }
-        setLoading(true);
+        setIsLoading(true);
         getMyLikedPosts(config)
         .then(res => {
-            setLoading(false);
+            setIsLoading(false);
             setPosts(res.data.posts)
         })
         .catch(err => {
-            setLoading(false);
+            setIsLoading(false);
             alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            console.log(err)
         })
     }
 
@@ -52,7 +51,7 @@ export default function MyLikesPage() {
                         {posts.length !== 0 ? posts.map(post => 
                             <Card post={post} key={post.id} renderPosts={renderPosts} isMyLikesPage />) : <NoPosts/>}
                     </div>
-                    <HashtagsInTranding />
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
             </MyLikesContainer>
         </PageStyled>

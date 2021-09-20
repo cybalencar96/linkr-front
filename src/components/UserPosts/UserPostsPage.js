@@ -13,7 +13,7 @@ import NoPosts from "../shared/NoPosts";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const params = useParams();
     const history = useHistory();
@@ -30,17 +30,16 @@ export default function UserPostsPage() {
                 Authorization: `Bearer ${userData.token}`
             }
         }
-        setLoading(true);
+        setIsLoading(true);
         getPostsByUserId(params.id, config)
         .then(res => {
-            setLoading(false);
+            setIsLoading(false);
             setPosts(res.data.posts)
         })
         .catch(err => {
-            setLoading(false);
+            setIsLoading(false);
             alert("Houve uma falha ao obter os posts, por favor atualize a página")
             history.push("/my-posts");
-            console.log(err)
         })
     }
 
@@ -56,7 +55,7 @@ export default function UserPostsPage() {
                     <div>
                         {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
                     </div>
-                    <HashtagsInTranding />
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
             </UserPostsContainer>
         </PageStyled>
