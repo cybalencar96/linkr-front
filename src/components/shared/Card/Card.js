@@ -86,7 +86,7 @@ export default function Card({post}) {
         }
         return tooltip;
     }
-
+    
     return (
         <CardContainer>
             <CardLeft>

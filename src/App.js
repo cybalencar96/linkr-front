@@ -9,7 +9,7 @@ import TimelinePage from "./components/Timeline/TimelinePage";
 import MyLikesPage from "./components/MyLikes/MyLikesPage";
 import UserPostsPage from "./components/UserPosts/UserPostsPage";
 import MyPostsPage from "./components/MyPosts/MyPostsPage";
-
+import HashtagPostPage from "./components/HashtagPosts/HashtagPostsPage";
 export default function App() {
     const [userData, setUserData] = useState(null);
 
@@ -37,7 +37,8 @@ export default function App() {
                         <TimelinePage />
                     </Route>
 
-                    <Route path="/hashtag/:hashtag" exact>
+                    <Route path="/hashtag/:hashtag" exact> 
+                        <HashtagPostPage />
                     </Route>
 
                     <Route path="/my-likes" exact>

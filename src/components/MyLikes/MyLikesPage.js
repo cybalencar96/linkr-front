@@ -43,11 +43,13 @@ export default function MyLikesPage() {
     return (
         <PageStyled centralized>
             <MyLikesContainer>
+                <Title>my likes</Title>
+                <div className="content">
                     <div>
-                    <Title>my likes</Title>
-                    {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post}/>) : <NoPosts/>}
                     </div>
                     <HashtagsInTranding />
+                </div>
             </MyLikesContainer>
         </PageStyled>
     )

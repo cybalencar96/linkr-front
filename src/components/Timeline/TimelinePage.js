@@ -13,6 +13,7 @@ import NoPosts from "../shared/NoPosts";
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const [posts, setPosts] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (userData) {
@@ -43,12 +44,14 @@ export default function TimelinePage() {
     return (
         <PageStyled centralized>
             <TimelineContainer>
-                <div>
-                    <Title>timeline</Title>
-                    <PostLink renderPosts={renderPosts} />
-                    {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} />) : <NoPosts />}
+                <Title>timeline</Title>
+                <div className="content">
+                    <div posts="posts">
+                        <PostLink renderPosts={renderPosts} />
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} />) : <NoPosts />}
+                    </div>
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
-                <HashtagsInTranding />
             </TimelineContainer>
         </PageStyled>
     )
