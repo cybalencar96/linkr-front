@@ -11,7 +11,7 @@ import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import styled from "styled-components";
 
-export default function Card({ post, renderPosts }) {
+export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
         commentCount,
         id,
@@ -67,7 +67,8 @@ export default function Card({ post, renderPosts }) {
             sendDislikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
-                    renderPosts()
+                    if(isMyLikesPage)
+                        renderPosts()
                 })
                 .catch(err => alert(err))
                 .finally(() => setIsLoading(false))
@@ -75,7 +76,8 @@ export default function Card({ post, renderPosts }) {
             sendLikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
-                    renderPosts()
+                    if(isMyLikesPage)
+                        renderPosts()
                 })
                 .catch(err => alert(err))
                 .finally(() => setIsLoading(false))
