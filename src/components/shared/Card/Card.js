@@ -67,6 +67,7 @@ export default function Card({ post, renderPosts }) {
             sendDislikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
+                    renderPosts()
                 })
                 .catch(err => alert(err))
                 .finally(() => setIsLoading(false))
@@ -74,6 +75,7 @@ export default function Card({ post, renderPosts }) {
             sendLikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
+                    renderPosts()
                 })
                 .catch(err => alert(err))
                 .finally(() => setIsLoading(false))

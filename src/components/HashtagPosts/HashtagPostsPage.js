@@ -23,7 +23,7 @@ export default function HashtagPostsPage() {
         if (userData) {
             renderPosts();
         }
-    },[hashtag, userData.token])
+    }, [hashtag, userData])
 
     function renderPosts() {
         const config = {
@@ -57,7 +57,7 @@ export default function HashtagPostsPage() {
                         {isLoading ?
                             <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/> :
                             posts.length !== 0 ?
-                                posts.map(post => <Card post={post} renderPosts={renderPosts}/>) :
+                                posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) :
                                 <NoPosts/>}
                     </Separator>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>

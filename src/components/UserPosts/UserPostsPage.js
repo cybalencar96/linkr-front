@@ -54,7 +54,7 @@ export default function UserPostsPage() {
                 <Title>{posts[0].user.username}'s posts</Title>
                 <div className="content">
                     <div>
-                        {posts.length !== 0 ? posts.map(post => <Card post={post} renderPosts={renderPosts}/>) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
                     </div>
                     <HashtagsInTranding />
                 </div>
