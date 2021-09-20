@@ -3,7 +3,6 @@ import styled from "styled-components";
 const CardContainer = styled.article`
     width: 610px;
     min-height: 280px;
-    height: ${props => props.seeMore ? "auto" : "280px"};
     background-color: #171717;
     border-radius: 16px;
     display: flex;
@@ -13,7 +12,6 @@ const CardContainer = styled.article`
 
     @media (max-width: 992px) {
         width: 100vw;
-        height: ${props => props.seeMore ? "auto" : "240px"};
         border-radius: 0;
     }
 `
@@ -39,7 +37,6 @@ const CardLeft = styled.section`
 const CardRigth = styled.section`
         width: 85%;
         min-height: 260px;
-        height: ${props => props.seeMore ? "auto" : "260px"};
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -56,20 +53,16 @@ const CardRigth = styled.section`
         & .description {
             width: 90%;
             min-height: 53px;
-            height: ${props => props.seeMore ? "auto" : "53px"};
             font-size: 17px;
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin-bottom: 15px;
         }
 
         & .description span{
             font-weight: 700;
             color: white;
-        }
-
-        & .seeMore {
-            padding: 10px 0;
         }
 
         @media (max-width: 992px) {
@@ -82,8 +75,8 @@ const LinkContent = styled.div`
     border-radius: 11px;
     background-color: rgba(23,23,23,0);
     width: 90%;
-    min-height: 135px;
-    height: ${props => props.seeMore ? "auto" : "135px"};
+    height: 155px;
+
 
     border: 1px solid #4D4D4D;
     display: flex;
@@ -133,7 +126,7 @@ const LinkContent = styled.div`
     }
 
     @media (max-width: 992px) {
-        height: ${props => props.seeMore ? "auto" : "110px"};
+        height: 110px;
 
         & img {
             width: 110px

@@ -31,13 +31,9 @@ export default function Card(post) {
         })
         return formatedText
     }
-    function toggleSeeMore() {
-        setSeeMore(() => !seeMore);
-    }
-
 
     return (
-        <CardContainer seeMore={seeMore}>
+        <CardContainer>
             <CardLeft>
                 <Link to={`/user/${user.id}`}>
                     <UserImage src={user.avatar}/>
@@ -46,12 +42,11 @@ export default function Card(post) {
                 <p>{likes.length} likes</p>
             </CardLeft>
 
-            <CardRigth seeMore={seeMore}>
+            <CardRigth>
                 <h3 className="username">{user.username}</h3>
-                <p className="description" seeMore={seeMore}>{renderDescription()}</p>
-                <p className="seeMore" onClick={toggleSeeMore}>{seeMore ? "Ver Menos" : "Ver Mais"}</p>
+                <p className="description">{renderDescription()}</p>
                 <a href={link}>
-                    <LinkContent seeMore={seeMore}>
+                    <LinkContent>
                         <div className="linkContent">
                             <h3 className="linkTitle">{linkTitle}</h3>
                             <p className="linkDescription">{linkDescription}</p>
