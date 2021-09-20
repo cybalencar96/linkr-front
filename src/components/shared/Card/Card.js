@@ -37,6 +37,7 @@ export default function Card({ post, renderPosts }) {
     const [editingText, setEditingText] = useState(text);
     const editInputRef = useRef();
     const [isEditLoading, setIsEditLoading] = useState(false);
+    const isPostFromLocalUser = (userData.user.id === user.id);
 
     useEffect(() => {
         if (isEditing) {
@@ -124,6 +125,9 @@ export default function Card({ post, renderPosts }) {
     }
 
     function toggleEditBox() {
+        if (!isPostFromLocalUser){
+            return;
+        }
         if (isEditing) {
             setEditingText(text);
         }
@@ -170,11 +174,11 @@ export default function Card({ post, renderPosts }) {
                 </CardLeft>
 
                 <CardRigth>
-                    {userData.user.id !== user.id ? <IconsDiv><Link to={userData.user.id !== user.id ? `/user/${user.id}` : `/my-posts/`}>
+                    {!isPostFromLocalUser ? <IconsDiv><Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                         <h3 className="username">{user.username}</h3>
                     </Link></IconsDiv> :
                         <IconsDiv>
-                            <Link to={userData.user.id !== user.id ? `/user/${user.id}` : `/my-posts/`}>
+                            <Link to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
                                 <h3 className="username">{user.username}</h3>
                             </Link>
                             <div>
