@@ -16,25 +16,28 @@ export default function MyLikesPage() {
 
     useEffect(() => {
         if (userData) {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${userData.token}`
-                }
-            }
-            setLoading(true);
-            getMyLikedPosts(config)
-            .then(res => {
-                setLoading(false);
-                setPosts(res.data.posts)
-            })
-            .catch(err => {
-                setLoading(false);
-                alert("Houve uma falha ao obter os posts, por favor atualize a página")
-                console.log(err)
-            })
+            renderPosts();
         }
     },[userData])
 
+    function renderPosts() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+        setLoading(true);
+        getMyLikedPosts(config)
+        .then(res => {
+            setLoading(false);
+            setPosts(res.data.posts)
+        })
+        .catch(err => {
+            setLoading(false);
+            alert("Houve uma falha ao obter os posts, por favor atualize a página")
+            console.log(err)
+        })
+    }
 
     if (!posts) {
         return 	<Loading/>
@@ -53,4 +56,4 @@ export default function MyLikesPage() {
             </MyLikesContainer>
         </PageStyled>
     )
-}
+}   

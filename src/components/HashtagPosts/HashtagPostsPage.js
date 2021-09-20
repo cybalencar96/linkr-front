@@ -20,6 +20,12 @@ export default function HashtagPostsPage() {
     const {hashtag} = useParams();
  
     useEffect(() => {
+        if (userData) {
+            renderPosts();
+        }
+    },[hashtag, userData.token])
+
+    function renderPosts() {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
@@ -33,13 +39,15 @@ export default function HashtagPostsPage() {
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
-    },[hashtag,userData.token]);
+    }
+
 
     if(!posts){
         return(
             <Loading />
         )
     }
+  
     return (
         <PageStyled centralized>
             <HashtagPostContainer>
