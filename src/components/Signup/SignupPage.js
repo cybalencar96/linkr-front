@@ -40,6 +40,7 @@ export default function SignupPage() {
                 history.push("/");
             })
             .catch((err) => {
+                setIsLoading(false)
                 if (err.response.status === 400) {
                     alert("Invalid data, please fill in the fields correctly!");
                     return;
@@ -49,7 +50,6 @@ export default function SignupPage() {
                     return;
                 }
                 alert(err);
-                setIsLoading(false)
             })
     }
 
