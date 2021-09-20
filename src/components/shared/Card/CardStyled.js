@@ -13,7 +13,7 @@ const CardContainer = styled.article`
 
     @media (max-width: 992px) {
         width: 100vw;
-        height: 240px;
+        height: ${props => props.seeMore ? "auto" : "240px"};
         border-radius: 0;
     }
 `
@@ -46,6 +46,9 @@ const CardRigth = styled.section`
         
 
         & .username {
+            width:90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-size: 19px;
             padding: 0 0 10px 0;
         }
@@ -130,7 +133,7 @@ const LinkContent = styled.div`
     }
 
     @media (max-width: 992px) {
-        height: 110px;
+        height: ${props => props.seeMore ? "auto" : "110px"};
 
         & img {
             width: 110px
