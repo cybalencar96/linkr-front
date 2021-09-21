@@ -14,7 +14,7 @@ import HashtagSpan from "../HashtagSpan";
 import { NavLink, Link } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
+import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
 
@@ -49,14 +49,17 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const editInputRef = useRef();
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
+    const [isUserImageValid, setIsUserImageValid] = useState(true);
 
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
             setEditingText(text);
         }
+        setIsUserImageValid(isValidUserImage(user.avatar))
         
     }, [isEditing]);
+
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
@@ -174,14 +177,25 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
             .finally(() => setIsEditLoading(false));
     }
+    
+    function isValidUserImage(url) {
+        validadeUrlImage(url)
+        .then ( res => {
+            setIsUserImageValid(true)
+        })
+        .catch ( err => {
+            console.log(err)
+            setIsUserImageValid(false)
+        })
+    }
 
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
             <CardContainer>
                 <CardLeft>
-                    <Link to={`/user/${user.id}`}>
-                    {linkImage ? <UserImage src={user.avatar} alt="imagem de usuario"/> : <UserImage src="./imageNotFound.jpg" alt="image not found"/>}
+                    <Link to={`/user/${user.id}`}> 
+                    {isUserImageValid ? <UserImage src={user.avatar} alt="userImage"/> : <UserImage src="/imageNotFound.jpg" alt="NotFound"/>}
                     </Link>
                     {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
                         <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
