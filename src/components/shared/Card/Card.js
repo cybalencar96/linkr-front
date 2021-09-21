@@ -1,4 +1,18 @@
-import { CardContainer, LinkContent, CardRigth, CardLeft, EditPostInput } from "./CardStyled";
+import { 
+    CardContainer, 
+    LinkContent, 
+    CardRigth, 
+    CardLeft, 
+    EditPostInput, 
+    IconDelete,
+    IconEdit,
+    IconsDiv,
+    Superposition,
+    ConfirmDeleteScreen,
+    SuperpositionButtons,
+    CancelButton,
+    ConfirmButton 
+} from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
@@ -7,9 +21,7 @@ import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
-import { FaTrash } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
-import styled from "styled-components";
+
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -227,8 +239,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    <a href={link}>
-                        <LinkContent>
+                    <LinkContent>
+                        <a href={link}>
                             <div className="linkContent">
                                 <h3 className="linkTitle">{linkTitle}</h3>
                                 <p className="linkDescription">{linkDescription}</p>
@@ -237,121 +249,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             <div class="imgContainer">
                                 <img src={linkImage}/>
                             </div>
-                        </LinkContent>
-                    </a>
+                        </a>
+                    </LinkContent>
                 </CardRigth>
             </CardContainer>
         </>
     )
 }
 
-const IconDelete = styled(FaTrash)`
-    margin-left: 15px;
-    &:hover{
-        color: red;
-    }
-`;
-
-const IconEdit = styled(RiPencilFill)`
-    &:hover{
-        color: green;
-    }
-`;
-
-const IconsDiv = styled.div`
-    width: 90%;
-    display: flex;
-    justify-content: space-between;
-`;
-
-const Superposition = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 1;
-  display: ${(props) => (props.ConfirmDeleteState ? "inherit" : "none")};
-`;
-
-const ConfirmDeleteScreen = styled.div`
-  position: relative;
-  top: calc((100vh - 262px) / 2);
-  left: calc((100vw - 597px) / 2);
-  width: 597px;
-  height: 262px;
-  border-radius: 50px;
-  background-color: #333333;
-  font-family: "Lato", sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    text-align: center;
-    font-weight: bold;
-    font-size: 34px;
-    color: #ffffff;
-    margin-bottom: 40px;
-  }
-
-  @media (max-width: 994px) {
-    width: 100%;
-    left: 0;
-    border-radius: 0;
-  }
-`;
-
-const SuperpositionButtons = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CancelButton = styled.button`
-  background-color: #ffffff;
-  color: #1877f2;
-  line-height: 22px;
-  width: 134px;
-  height: 37px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 27px;
-
-  &:hover {
-    cursor: pointer;
-    border: 5px solid #1877f2;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const ConfirmButton = styled.button`
-  background-color: #1877f2;
-  color: #ffffff;
-  line-height: 22px;
-  width: 134px;
-  height: 37px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    cursor: pointer;
-    border: 5px solid crimson;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { FaTrash } from "react-icons/fa";
+import { RiPencilFill } from "react-icons/ri";
 
 const CardContainer = styled.article`
     width: 610px;
@@ -44,7 +46,7 @@ const CardRigth = styled.section`
         padding: 0 0 10px 0;
 
         & .usernameLink {
-            width: 85%;
+            max-width: 85%;
         }
 
         & .username {
@@ -86,12 +88,16 @@ const LinkContent = styled.div`
     background-color: rgba(23,23,23,0);
     width: 90%;
     height: 155px;
-
-
     border: 1px solid #4D4D4D;
-    display: flex;
-    justify-content: space-between;
     overflow: hidden;
+
+    & > a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
 
     & .linkContent {
         padding: 20px;
@@ -123,7 +129,7 @@ const LinkContent = styled.div`
 
     }
 
-    & img {
+    & a img {
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
@@ -171,10 +177,131 @@ const EditPostInput = styled.textarea`
     font-size: 15px;
 `;
 
+const IconDelete = styled(FaTrash)`
+    margin-left: 15px;
+    cursor: pointer;
+    &:hover{
+        color: red;
+    }
+`;
+
+const IconEdit = styled(RiPencilFill)`
+    cursor: pointer;
+    &:hover{
+        color: green;
+    }
+`;
+
+const IconsDiv = styled.div`
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+`;
+
+const Superposition = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  display: ${(props) => (props.ConfirmDeleteState ? "inherit" : "none")};
+`;
+
+const ConfirmDeleteScreen = styled.div`
+  position: relative;
+  top: calc((100vh - 262px) / 2);
+  left: calc((100vw - 597px) / 2);
+  width: 597px;
+  height: 262px;
+  border-radius: 50px;
+  background-color: #333333;
+  font-family: "Lato", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 34px;
+    color: #ffffff;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 994px) {
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+  }
+`;
+
+const SuperpositionButtons = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CancelButton = styled.button`
+  background-color: #ffffff;
+  color: #1877f2;
+  line-height: 22px;
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 27px;
+
+  &:hover {
+    cursor: pointer;
+    border: 5px solid #1877f2;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ConfirmButton = styled.button`
+  background-color: #1877f2;
+  color: #ffffff;
+  line-height: 22px;
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+    border: 5px solid crimson;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 export {
     CardContainer,
     LinkContent,
     CardRigth,
     CardLeft,
-    EditPostInput
+    EditPostInput,
+    IconDelete,
+    IconEdit,
+    IconsDiv,
+    Superposition,
+    ConfirmDeleteScreen,
+    SuperpositionButtons,
+    CancelButton,
+    ConfirmButton
 }
