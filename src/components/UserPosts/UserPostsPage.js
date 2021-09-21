@@ -10,6 +10,8 @@ import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions";
+import SearchBar from "../shared/Topbar/SearchBar";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -17,6 +19,7 @@ export default function UserPostsPage() {
     const [posts, setPosts] = useState("");
     const params = useParams();
     const history = useHistory();
+    const {windowWidth} = useWindowDimensions();
     
     useEffect(() => {
         if (userData) {
@@ -49,6 +52,8 @@ export default function UserPostsPage() {
 
     return (
         <PageStyled centralized>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
+
             <UserPostsContainer>
                 <Title>{posts[0].user.username}'s posts</Title>
                 <div className="content">

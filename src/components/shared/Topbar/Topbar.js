@@ -2,11 +2,11 @@ import { TopbarContainer } from "./TopbarStyled";
 import Menu from "./Menu";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
-import useWindowDimensions from "../useWindowDimensions";
+import useWindowDimensions from "../../../services/hooks/useWindowDimensions"
 
 export default function Topbar() {
-    const {windowWidth ,windowHeight} = useWindowDimensions();
-    console.log(windowWidth)
+    const { windowWidth } = useWindowDimensions();
+
     return(
         <TopbarContainer>
             <Link to="/timeline"><p>Linkr</p></Link>

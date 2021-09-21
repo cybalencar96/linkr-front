@@ -10,7 +10,7 @@ import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
 import SearchBar from "../shared/Topbar/SearchBar";
-import useWindowDimensions from "../shared/useWindowDimensions";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);

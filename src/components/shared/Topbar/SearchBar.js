@@ -12,7 +12,7 @@ export default function SearchBar({display}) {
     const [userNameInput, setUserNameInput] = useState("");
     const [userSuggestions, setUserSuggestions] = useState([])
     const history = useHistory();
-    console.log(userSuggestions)
+    
     function searchName(e) {
         e.preventDefault()
         searchUser(userNameInput,userData.token).then(res => {
