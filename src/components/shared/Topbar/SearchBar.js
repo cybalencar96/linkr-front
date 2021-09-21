@@ -5,7 +5,7 @@ import { searchUser } from '../../../services/Linkr'
 import UserContext from "../../../contexts/UserContext";
 import { SearchBarContainer } from './TopbarStyled'
 
-export default function SearchBar() {
+export default function SearchBar({...otherProps}) {
     const {userData} = useContext(UserContext)
     const [userNameInput, setUserNameInput] = useState("");
     const [userSuggestions, setUserSuggestions] = useState([])
@@ -27,7 +27,7 @@ export default function SearchBar() {
     }
 
     return (
-        <SearchBarContainer onSubmit={searchName}>
+        <SearchBarContainer {...otherProps} onSubmit={searchName}>
             <DebounceInput
                 minLength={3}
                 debounceTimeout={300}

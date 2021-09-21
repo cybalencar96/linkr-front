@@ -22,18 +22,18 @@ const TopbarContainer = styled.header`
 `;
 
 const SearchBarContainer = styled.form`
-    width: 30%;
+    width: 540px;
     background-color: white;
     padding: 0 15px;
     height: 45px;
     border-radius: 8px;
-    display: flex;
+    display: ${props => props.display ? props.display : "flex"};
     align-items: center;
     justify-content: space-between;
 
     & input {
         font-size: 19px;
-        width: 70%;
+        width: 90%;
         height: 100%;
         display: flex;
         align-items: center;
@@ -50,6 +50,15 @@ const SearchBarContainer = styled.form`
 
     & .searchIcon {
         cursor: pointer;
+    }
+
+    @media (max-width: 992px) {
+        width: 94%;
+        margin: 10px 0 10px 0;
+
+        & input {
+            font-size: 15px;
+        }
     }
 `
 export {
