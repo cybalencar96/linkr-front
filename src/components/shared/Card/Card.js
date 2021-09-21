@@ -7,11 +7,6 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
-    Superposition,
-    ConfirmDeleteScreen,
-    SuperpositionButtons,
-    CancelButton,
-    ConfirmButton 
 } from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
@@ -21,6 +16,7 @@ import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
+import ExcludeCardModal from "../ExcludeCardModal";
 
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
@@ -181,19 +177,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     return (
         <>
-            <Superposition ConfirmDeleteState={ConfirmDeleteState}>
-                <ConfirmDeleteScreen>
-                    <p>Tem certeza que deseja <br /> excluir essa publicação?</p>
-                    <SuperpositionButtons>
-                        <CancelButton disabled={isLoading ? true : false} onClick={() => setConfirmDeleteState(false)}>
-                            Não, voltar
-                        </CancelButton>
-                        <ConfirmButton disabled={isLoading ? true : false} onClick={() => deletePost(id)}>
-                            {isLoading ? "Excluindo..." : "Sim, excluir"}
-                        </ConfirmButton>
-                    </SuperpositionButtons>
-                </ConfirmDeleteScreen>
-            </Superposition>
+            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
             <CardContainer>
                 <CardLeft>
                     <Link to={`/user/${user.id}`}>
@@ -240,11 +224,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
                     <LinkContent>
-                        <a href={link}>
+                        <a href={link} target="_blank">
                             <div className="linkContent">
-                                <h3 className="linkTitle">{linkTitle}</h3>
-                                <p className="linkDescription">{linkDescription}</p>
-                                <p className="linkUrl">{link}</p>
+                                {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : "xXx Title Not Found xXx"}
+                                {linkDescription ? <p className="linkDescription">{linkDescription}</p> : "xXx Description Not Found xXx"}
+                                {link ? <p className="linkUrl">{link.toLowerCase()}</p> : "xXx Link Not Found xXx"}
                             </div>
                             <div class="imgContainer">
                                 {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="./imageNotFound.jpg" alt="image not found"/>}
