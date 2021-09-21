@@ -10,7 +10,7 @@ export default function Topbar() {
     return(
         <TopbarContainer>
             <Link to="/timeline"><p>Linkr</p></Link>
-            <SearchBar display={windowWidth >= 992 ? "flex" : "none"}/>
+            <SearchBar display={windowWidth < 992 ? "none" : ""}/>
             <Menu />
         </TopbarContainer>
     ) 

@@ -46,7 +46,7 @@ export default function TimelinePage() {
 
     return (
         <PageStyled centralized>
-            <SearchBar display={windowWidth >= 992 ? "none" : "flex"}/>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
 
             <TimelineContainer>
                 <Title>timeline</Title>

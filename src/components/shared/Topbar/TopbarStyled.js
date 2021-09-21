@@ -21,15 +21,40 @@ const TopbarContainer = styled.header`
     }
 `;
 
-const SearchBarContainer = styled.form`
+const SuggestionsContainer = styled.section`
     width: 540px;
+    background-color: #E7E7E7;
+    border-radius: 8px;
+    position: relative;
+    min-height: 45px;
+    display: ${props => props.display ? props.display : "initial"};
+    padding-bottom: 10px;
+
+    position: fixed;
+    top: 15px;
+    left: calc(50vw - 270px);
+
+    @media (max-width: 992px) {
+        width: 94%;
+        position: absolute;
+        top: 90px;
+        left: calc(50vw - 47%);
+    }
+`
+
+const SearchBarContainer = styled.form`
     background-color: white;
     padding: 0 15px;
     height: 45px;
     border-radius: 8px;
-    display: ${props => props.display ? props.display : "flex"};
     align-items: center;
     justify-content: space-between;
+    display: flex;
+    
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
 
     & input {
         font-size: 19px;
@@ -53,15 +78,45 @@ const SearchBarContainer = styled.form`
     }
 
     @media (max-width: 992px) {
-        width: 94%;
-        margin: 10px 0 10px 0;
+        width: 100%;
 
         & input {
             font-size: 15px;
         }
     }
 `
+
+const SuggestedList = styled.ul`
+    margin-top: 45px;
+`
+
+const UserSuggestedContainer = styled.li`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: lightgray;
+    }
+
+    & .username {
+        color: black;
+        max-width:70%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    & .follow {
+        color: #C5C5C5
+    }
+`
+
 export {
     TopbarContainer,
-    SearchBarContainer
+    SearchBarContainer,
+    SuggestionsContainer,
+    SuggestedList,
+    UserSuggestedContainer
 }
