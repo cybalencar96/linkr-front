@@ -79,26 +79,3 @@ function UserSuggested({key,username,userImg,follow}) {
         </UserSuggestedContainer>
     )
 }
-
-const arr = [
-   { avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users/25/avatar",
-id: 25,
-isFollowingLoggedUser: false,
-username: "carlos"},
-
-{avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users/27/avatar",
-id: 27,
-isFollowingLoggedUser: true,
-username: "Carlos"},
-
-{avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users/104/avatar",
-id: 104,
-isFollowingLoggedUser: false,
-username: "carlota"},
-
-{avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users/122/avatar",
-id: 122,
-isFollowingLoggedUser: true,
-username: "carlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlincarlin"
-}
-]

@@ -28,7 +28,6 @@ const SuggestionsContainer = styled.section`
     position: relative;
     min-height: 45px;
     display: ${props => props.display ? props.display : "initial"};
-    padding-bottom: 10px;
 
     position: fixed;
     top: 15px;
@@ -110,6 +109,10 @@ const UserSuggestedContainer = styled.li`
 
     & .follow {
         color: #C5C5C5
+    }
+
+    &:last-child {
+        margin-bottom: 10px;
     }
 `
 
