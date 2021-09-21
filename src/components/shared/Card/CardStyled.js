@@ -4,13 +4,12 @@ import { RiPencilFill } from "react-icons/ri";
 
 const CardContainer = styled.article`
     width: 610px;
-    min-height: 280px;
     background-color: #171717;
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
     margin-bottom: 30px;
-    padding: 10px 0;
+    padding: 20px 0;
 
     @media (max-width: 992px) {
         width: 100vw;
@@ -39,11 +38,10 @@ const CardLeft = styled.section`
 
 const CardRigth = styled.section`
         width: 85%;
-        min-height: 260px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        padding: 0 0 10px 0;
+        gap: 10px;
 
         & .usernameLink {
             max-width: 85%;
@@ -60,12 +58,10 @@ const CardRigth = styled.section`
 
         & .description {
             width: 90%;
-            min-height: 53px;
             font-size: 17px;
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 15px;
         }
 
         & .description span{
