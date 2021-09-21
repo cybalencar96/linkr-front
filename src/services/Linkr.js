@@ -62,6 +62,10 @@ function searchUser (queryStr, token) {
     return axios.get(`${BASE_URL}/users/search?username=${queryStr}`,createConfig(token))
 }
 
+function getUser (userId,token) {
+    return axios.get(`${BASE_URL}/users/${userId}`, createConfig(token))
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -75,6 +79,7 @@ export {
     sendDislikeRequest,
     sendDeletePostRequest,
     sendEditPostRequest,
-    searchUser
+    searchUser,
+    getUser
 }
 

@@ -22,7 +22,7 @@ export default function UserPostsPage() {
         if (userData) {
             renderPosts();
         }
-    },[userData])
+    },[params.id,userData])
 
     function renderPosts() {
         const config = {

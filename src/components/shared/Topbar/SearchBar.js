@@ -1,19 +1,31 @@
 import { useState, useContext } from "react";
-import { Search, SearchOutline } from 'react-ionicons'
+import { SearchOutline } from 'react-ionicons'
 import {DebounceInput} from 'react-debounce-input';
 import { searchUser } from '../../../services/Linkr'
 import UserContext from "../../../contexts/UserContext";
 import { SearchBarContainer,SuggestionsContainer,SuggestedList,UserSuggestedContainer } from './TopbarStyled'
 import UserImage from "../UserImage";
+import { Link, useHistory } from "react-router-dom";
 
 export default function SearchBar({display}) {
     const {userData} = useContext(UserContext)
     const [userNameInput, setUserNameInput] = useState("");
     const [userSuggestions, setUserSuggestions] = useState([])
+    const history = useHistory();
     console.log(userSuggestions)
     function searchName(e) {
         e.preventDefault()
-        alert("to procurando")
+        searchUser(userNameInput,userData.token).then(res => {
+            const userToBeFound = res.data.users.filter(user => user.username === userNameInput)
+            if (userToBeFound.length !== 0) {
+                setUserNameInput("");
+                setTimeout(() => setUserSuggestions([]),100);
+                history.push(`/user/${userToBeFound[0].id}`)
+            } else {
+                setUserSuggestions([]);
+                alert('usuario não encontrado')
+            }
+        })
     }
 
     function writeAndSuggest(e) {
@@ -33,10 +45,16 @@ export default function SearchBar({display}) {
         }
     }
 
+    function closeSuggestions() {
+        setTimeout(() => {
+            setUserSuggestions([])
+            setUserNameInput('')
+        },100)
+    }
+
     return (
         <SuggestionsContainer display={display}>
             <SearchBarContainer onSubmit={searchName}>
-
 
                 <DebounceInput
                     minLength={1}
@@ -44,6 +62,7 @@ export default function SearchBar({display}) {
                     placeholder="Search for people and friends" 
                     onChange={writeAndSuggest} 
                     value={userNameInput}
+                    onBlur={closeSuggestions}
                 />
 
                 <SearchOutline
@@ -57,11 +76,13 @@ export default function SearchBar({display}) {
             
             <SuggestedList>
                 {
-                    userSuggestions.map(userSugestion => <UserSuggested 
-                                                            key={userSugestion.id} 
+                    userSuggestions.map(userSugestion => <UserSuggested
+                                                            userId={userSugestion.id}
                                                             username={userSugestion.username}
                                                             userImg={userSugestion.avatar}
                                                             follow={userSugestion.isFollowingLoggedUser}
+                                                            setUserSuggestions={setUserSuggestions}
+                                                            setUserNameInput={setUserNameInput}
                                                         />)
                 }
             </SuggestedList>
@@ -70,12 +91,20 @@ export default function SearchBar({display}) {
     )
 }
 
-function UserSuggested({key,username,userImg,follow}) {
+function UserSuggested({userId,username,userImg,follow,setUserSuggestions,setUserNameInput}) {
+    const history = useHistory();
+
+    function sendToUserPage(id) {
+        setUserNameInput("");
+        setUserSuggestions([]);
+        history.push(`/user/${id}`)
+    }
+
     return (
-        <UserSuggestedContainer>
-            <UserImage src={userImg}/>
-            <span className="username">{username}</span>
-            {follow ? <span className="follow">• following</span> : <></>}
+        <UserSuggestedContainer onClick={() => sendToUserPage(userId)}>
+                <UserImage src={userImg}/>
+                <span className="username">{username}</span>
+                {follow ? <span className="follow">• following</span> : <></>}
         </UserSuggestedContainer>
     )
 }
