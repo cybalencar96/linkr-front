@@ -21,6 +21,38 @@ const TopbarContainer = styled.header`
     }
 `;
 
+const SearchBarContainer = styled.form`
+    width: 30%;
+    background-color: white;
+    padding: 0 15px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & input {
+        font-size: 19px;
+        width: 70%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border: none;
+    }
+
+    & input::placeholder {
+        color: #C6C6C6;
+    }
+
+    & input:focus {
+        outline: none;
+    }
+
+    & .searchIcon {
+        cursor: pointer;
+    }
+`
 export {
-    TopbarContainer
+    TopbarContainer,
+    SearchBarContainer
 }
