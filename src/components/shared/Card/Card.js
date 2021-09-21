@@ -247,7 +247,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 <p className="linkUrl">{link}</p>
                             </div>
                             <div class="imgContainer">
-                                <img src={linkImage}/>
+                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="./imageNotFound.jpg" alt="image not found"/>}
                             </div>
                         </a>
                     </LinkContent>
@@ -256,4 +256,3 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         </>
     )
 }
-
