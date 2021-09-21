@@ -58,6 +58,10 @@ function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
 
+function searchUser (queryStrConfig) {
+    return axios.get(`${BASE_URL}/users/search`,queryStrConfig)
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -70,6 +74,7 @@ export {
     sendLikeRequest,
     sendDislikeRequest,
     sendDeletePostRequest,
-    sendEditPostRequest
+    sendEditPostRequest,
+    searchUser
 }
 

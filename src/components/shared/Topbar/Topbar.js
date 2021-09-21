@@ -3,7 +3,8 @@ import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Search, SearchOutline } from 'react-ionicons'
-
+import {DebounceInput} from 'react-debounce-input';
+import { searchUser } from '../../../services/Linkr'
 
 export default function Topbar() {
     return(
@@ -22,13 +23,32 @@ function SearchBar() {
         e.preventDefault()
         alert("to procurando")
     }
+
+    function writeAndSuggest(e) {
+        setUserNameInput(e.target.value)
+        if (e.target.value) {
+            const queryConfig = {
+                headers: {
+                    Authorization: `Bearer ?username=${e.target.value}`
+                }
+            }
+    
+            searchUser(queryConfig)
+            .then(res => console.log(res))
+            .catch(err => console.log(err.response))
+        }
+    }
+
     return (
         <SearchBarContainer onSubmit={searchName}>
-            <input 
+            <DebounceInput
+                minLength={3}
+                debounceTimeout={300}
                 placeholder="Search for people and friends" 
-                onChange={e => setUserNameInput(e.target.value)} 
+                onChange={writeAndSuggest} 
                 value={userNameInput}
             />
+
             <SearchOutline
                 color={'#c7c7c7'} 
                 height="25px"
