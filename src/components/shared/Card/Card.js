@@ -181,7 +181,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             <CardContainer>
                 <CardLeft>
                     <Link to={`/user/${user.id}`}>
-                        <UserImage src={user.avatar} />
+                    {linkImage ? <UserImage src={user.avatar} alt="imagem de usuario"/> : <UserImage src="./imageNotFound.jpg" alt="image not found"/>}
                     </Link>
                     {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
                         <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
@@ -226,9 +226,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     <LinkContent>
                         <a href={link} target="_blank">
                             <div className="linkContent">
-                                {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : "xXx Title Not Found xXx"}
-                                {linkDescription ? <p className="linkDescription">{linkDescription}</p> : "xXx Description Not Found xXx"}
-                                {link ? <p className="linkUrl">{link.toLowerCase()}</p> : "xXx Link Not Found xXx"}
+                                {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : <p>xXx Title Not Found xXx</p>}
+                                {linkDescription ? <p className="linkDescription">{linkDescription}</p> : <p>xXx Description Not Found xXx</p>}
+                                {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
                             </div>
                             <div class="imgContainer">
                                 {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="./imageNotFound.jpg" alt="image not found"/>}
