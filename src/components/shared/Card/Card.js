@@ -245,7 +245,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
                             </div>
                             <div class="imgContainer">
-                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="./imageNotFound.jpg" alt="image not found"/>}
+                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
                             </div>
                         </a>
                     </LinkContent>
