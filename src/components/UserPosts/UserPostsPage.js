@@ -13,6 +13,8 @@ import {
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions";
+import SearchBar from "../shared/Topbar/SearchBar";
 import { PublishButton } from "../shared/PublishLink/PostLink";
 
 export default function UserPostsPage() {
@@ -21,6 +23,8 @@ export default function UserPostsPage() {
     const [posts, setPosts] = useState("");
     const { id } = useParams();
     const history = useHistory();
+    const {windowWidth} = useWindowDimensions();
+    
     const [isFollowing, setIsFollowing] = useState(false)
 
     useEffect(() => {
@@ -30,7 +34,7 @@ export default function UserPostsPage() {
             renderPosts();
             getListOfFollowing();
         }
-    }, [userData])
+    },[id,userData])
 
     function renderPosts() {
         getPostsByUserId(id, userData.token)
@@ -90,6 +94,8 @@ export default function UserPostsPage() {
 
     return (
         <PageStyled centralized>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
+
             <UserPostsContainer>
                 <PageTitle titleTxt={`${posts[0].user.username}'s posts`} >
                     <PublishButton disabled={isLoading} isWhite={isFollowing} onClick={toggleFollow} >

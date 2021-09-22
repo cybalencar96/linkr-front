@@ -9,6 +9,7 @@ const TimelineContainer = styled.div`
     @media (max-width: 992px) {
         width: auto;
         margin: 0;
+        margin-top: 100px;
     }
 `
 

@@ -58,6 +58,13 @@ function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
 
+function searchUser (queryStr, token) {
+    return axios.get(`${BASE_URL}/users/search?username=${queryStr}`,createConfig(token))
+}
+
+function getUser (userId,token) {
+    return axios.get(`${BASE_URL}/users/${userId}`, createConfig(token))
+}
 function sendFollowRequest (userId, token){
     return axios.post(`${BASE_URL}/users/${userId}/follow`, {}, createConfig(token));
 }
@@ -87,6 +94,8 @@ export {
     sendDislikeRequest,
     sendDeletePostRequest,
     sendEditPostRequest,
+    searchUser,
+    getUser,
     sendFollowRequest,
     sendUnfollowRequest,
     getListOfFollowingRequest,
