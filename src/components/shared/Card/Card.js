@@ -18,6 +18,8 @@ import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostReq
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
+import getYouTubeID from 'get-youtube-id';
+import YoutubeContext from "../../../contexts/YoutubeContext";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -42,6 +44,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
+    const { setYoutubeVideos } = useContext(YoutubeContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +53,10 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
+    
+    const youtubeId = getYouTubeID(link, {fuzzy: false});
 
+ 
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
@@ -59,7 +65,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsUserImageValid(isValidUserImage(user.avatar))
         
     }, [isEditing]);
-
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
@@ -238,8 +243,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
                     {
-                        true ? 
-                         <YouTbFrame videoUrl={"https://www.youtube.com/watch?v=UahN4VjjAo0"}/>
+                        youtubeId ? 
+                         <YouTbFrame youtubeId={youtubeId}/>
                          :
                         <LinkContent>
                             <a href={link} target="_blank">
