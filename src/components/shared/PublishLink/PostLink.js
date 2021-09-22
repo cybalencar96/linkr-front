@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { sendPostLinkRequest } from "../../../services/Linkr";
@@ -28,7 +29,6 @@ export default function PostLink ({renderPosts}) {
                 renderPosts(true);
             })
             .catch(error => {
-                console.log(error);
                 alert("oops! Houve um erro ao publicar seu link");
             })
             .finally(() => {
@@ -40,7 +40,7 @@ export default function PostLink ({renderPosts}) {
     
     return (
         <PostDiv>
-            <Image src={userData.user.avatar}/>
+            <Link to="/my-posts"><Image src={userData.user.avatar}/></Link>
             <ContainerPost>
                 <ContainerSubmit onSubmit={publish}>
                     <h1>O que você tem pra favoritar hoje?</h1>
@@ -99,6 +99,12 @@ const PostDiv = styled.div`
         padding-left: 10px;
     }
 
+    & a:first-child {
+        width: 50px;
+        height: 50px;
+        margin: 15px 0px 0px 15px;
+    }
+
     @media (max-width: 992px){
         max-width: 100vw;
         width: 100vw;
@@ -136,8 +142,8 @@ const Image = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
-    margin: 15px 0px 0px 15px;
     object-fit: cover;
+    cursor: pointer;
 
     @media (max-width: 992px){
         display: none;

@@ -61,9 +61,11 @@ function sendDeletePostRequest (postId, token) {
 function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
-function apiTeste (config, page){
-    return axios.get(`${BASE_URL}/posts?limit=10&offset=${page}`,config); 
+
+function validadeUrlImage(url) {
+    return axios.get(`${url}`)
 }
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -78,6 +80,6 @@ export {
     sendDislikeRequest,
     sendDeletePostRequest,
     sendEditPostRequest,
-    apiTeste,
+    validadeUrlImage,
 }
 

@@ -67,7 +67,6 @@ export default function HashtagPostsPage() {
         setTimeout(() => {
           page += 11;
           renderPosts();
-          console.log(posts)
         }, 2000);
     };
 

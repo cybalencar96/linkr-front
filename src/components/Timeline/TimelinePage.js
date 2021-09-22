@@ -40,7 +40,6 @@ export default function TimelinePage() {
             .then(res => {
                 
                 if(!page){
-                    console.log("auqi ->>>", reload);
                     setPosts(res.data.posts);
                     setHasNext(true);
                 }
@@ -62,7 +61,6 @@ export default function TimelinePage() {
         setTimeout(() => {
           page += 11;
           renderPosts();
-          console.log(posts);
         }, 2000);
     };
 

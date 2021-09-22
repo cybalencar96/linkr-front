@@ -42,7 +42,6 @@ export default function MyLikesPage() {
             setIsLoading(false);
 
             if(!page){
-                console.log("auqi ->>>", reload);
                 setPosts(res.data.posts);
                 setHasNext(true);
             }
@@ -50,7 +49,6 @@ export default function MyLikesPage() {
                 setPosts(posts.concat(res.data.posts));
             }            
             if(res.data.posts.length < 10){
-                console.log("aqui ->>>", res.data.posts);
                 setHasNext(!hasNext);
             }
         })
@@ -64,7 +62,6 @@ export default function MyLikesPage() {
         setTimeout(() => {
           page += 11;
           renderPosts();
-          console.log(posts)
         }, 2000);
     };
 
