@@ -21,13 +21,8 @@ export default function MyPostsPage() {
     }, [userData])
 
     function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
         setIsLoading(true);
-        getPostsByUserId(userData.user.id, config)
+        getPostsByUserId(userData.user.id, userData.token)
             .then(res => {
                 setIsLoading(false);
                 setPosts(res.data.posts)
