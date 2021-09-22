@@ -5,6 +5,7 @@ import Card from "../shared/Card/Card";
 import PostLink from "../shared/PublishLink/PostLink";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
+import YoutubeContext from "../../contexts/YoutubeContext";
 import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
@@ -12,10 +13,12 @@ import NoPosts from "../shared/NoPosts";
 
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);
+    const {setYoutubeVideos} = useContext(YoutubeContext)
+
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
+        setYoutubeVideos([]);
         if (userData) {
             renderPosts();
         }

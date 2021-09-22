@@ -10,6 +10,7 @@ import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -17,8 +18,11 @@ export default function UserPostsPage() {
     const [posts, setPosts] = useState("");
     const params = useParams();
     const history = useHistory();
+    const {setYoutubeVideos} = useContext(YoutubeContext)
     
     useEffect(() => {
+        setYoutubeVideos([]);
+
         if (userData) {
             renderPosts();
         }

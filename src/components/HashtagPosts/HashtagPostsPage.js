@@ -12,14 +12,19 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
 
 export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
+    const {setYoutubeVideos} = useContext(YoutubeContext)
+
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
  
     useEffect(() => {
+        setYoutubeVideos([])
+
         if (userData) {
             renderPosts();
         }
