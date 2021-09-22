@@ -34,7 +34,7 @@ export default function UserPostsPage() {
             renderPosts();
             getListOfFollowing();
         }
-    },[params.id,userData])
+    },[id,userData])
 
     function renderPosts() {
         getPostsByUserId(id, userData.token)
