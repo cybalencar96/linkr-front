@@ -34,7 +34,11 @@ function getMyLikedPosts(config, page) {
     return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
-function getPostsByUserId (userId, config, page){
+function getPostsByUserId (userId, config){
+    return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
+}
+
+function getPostsByUser (userId, config, page){
     return axios.get(`${BASE_URL}/users/${userId}/posts?limit=10&offset=${page}`, config);
 }
 
@@ -68,6 +72,7 @@ export {
     getHashtags,
     getMyLikedPosts,
     getPostsByUserId,
+    getPostsByUser,
     getPostsByHashtag,
     sendLikeRequest,
     sendDislikeRequest,

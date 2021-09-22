@@ -4,7 +4,7 @@ import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
-import { getPostsByUserId } from "../../services/Linkr";
+import { getPostsByUser, getPostsByUserId } from "../../services/Linkr";
 import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
@@ -31,7 +31,7 @@ export default function MyPostsPage() {
             }
         }
         setIsLoading(true);
-        getPostsByUserId(userData.user.id, config, page)
+        getPostsByUser(userData.user.id, config, page)
             .then(res => {
                 setIsLoading(false);
                 setPosts(posts.concat(res.data.posts));
