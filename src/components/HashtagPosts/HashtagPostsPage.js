@@ -25,20 +25,33 @@ export default function HashtagPostsPage() {
  
     useEffect(() => {
         if (userData) {
-            renderPosts();
+            renderPosts(true);
         }
     }, [hashtag, userData])
 
-    function renderPosts() {
+    function renderPosts(reload) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
+
+        if(reload){
+
+            page = 0;
+        }
+
         getPostsByHashtag(hashtag, config, page)
         .then(response => {
             setTimeout(() => {setIsLoading(false)}, 1000)
-            setPosts(posts.concat(response.data.posts));
+
+            if(!page){
+                setPosts(response.data.posts);
+                setHasNext(true);
+            }
+            else{
+                setPosts(posts.concat(response.data.posts));
+            }
 
             if(response.data.posts.length < 10) {
 

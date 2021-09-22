@@ -20,28 +20,39 @@ export default function MyLikesPage() {
 
     useEffect(() => {
         if (userData) {
-            renderPosts();
+            renderPosts(true);
         }
     },[userData])
 
-    function renderPosts() {
+    function renderPosts(reload) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
         setIsLoading(true);
+
+        if(reload){
+
+            page = 0;
+        }
+
         getMyLikedPosts(config, page)
         .then(res => {
             setIsLoading(false);
-            setPosts(posts.concat(res.data.posts));
-            console.log(res.data);
-            
-            if(res.data.posts.length < 10){
 
+            if(!page){
+                console.log("auqi ->>>", reload);
+                setPosts(res.data.posts);
+                setHasNext(true);
+            }
+            else{
+                setPosts(posts.concat(res.data.posts));
+            }            
+            if(res.data.posts.length < 10){
+                console.log("aqui ->>>", res.data.posts);
                 setHasNext(!hasNext);
             }
-            // page += 11;
         })
         .catch(err => {
             setIsLoading(false);

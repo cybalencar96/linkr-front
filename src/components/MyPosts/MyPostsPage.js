@@ -20,22 +20,34 @@ export default function MyPostsPage() {
 
     useEffect(() => {
         if (userData) {
-            renderPosts();
+            renderPosts(true);
         }
     }, [userData])
 
-    function renderPosts() {
+    function renderPosts(reload) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
         setIsLoading(true);
+        
+        if(reload){
+            page = 0;
+        }
+
         getPostsByUser(userData.user.id, config, page)
             .then(res => {
                 setIsLoading(false);
-                setPosts(posts.concat(res.data.posts));
 
+                if(!page){
+                    setPosts(res.data.posts);
+                    setHasNext(true);
+                }
+                else{
+                    setPosts(posts.concat(res.data.posts));
+                }
+                
                 if(res.data.posts.length < 10) {
 
                     setHasNext(!hasNext);
@@ -50,7 +62,7 @@ export default function MyPostsPage() {
     const fetchMoreData = () => {
         setTimeout(() => {
           page += 11;
-          renderPosts();
+          renderPosts(false);
           console.log(posts)
         }, 2000);
     };

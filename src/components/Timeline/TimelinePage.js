@@ -21,27 +21,28 @@ export default function TimelinePage() {
 
     useEffect(() => {
         if (userData) {
-            renderPosts();
+            renderPosts(true);
         }
     }, [userData])
 
-    function renderPosts(action) {
+    function renderPosts(reload) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
 
-        if(action){
-
+        if(reload){
             page = 0;
         }
+
         getPosts(config, page)
             .then(res => {
                 
-                if(action){
-                    console.log("auqi ->>>", action)
-                    setPosts(res.data.posts)
+                if(!page){
+                    console.log("auqi ->>>", reload);
+                    setPosts(res.data.posts);
+                    setHasNext(true);
                 }
                 else{
                     setPosts(posts.concat(res.data.posts));
