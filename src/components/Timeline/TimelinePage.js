@@ -25,15 +25,27 @@ export default function TimelinePage() {
         }
     }, [userData])
 
-    function renderPosts() {
+    function renderPosts(action) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
+
+        if(action){
+
+            page = 0;
+        }
         getPosts(config, page)
             .then(res => {
-                setPosts(posts.concat(res.data.posts));
+                
+                if(action){
+                    console.log("auqi ->>>", action)
+                    setPosts(res.data.posts)
+                }
+                else{
+                    setPosts(posts.concat(res.data.posts));
+                }
 
                 if(res.data.posts.length < 10){
 

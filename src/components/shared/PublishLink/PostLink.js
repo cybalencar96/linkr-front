@@ -8,7 +8,7 @@ export default function PostLink ({renderPosts}) {
     const [comment, setComment] = useState("");
     const {userData} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-
+    const action = true;
     function publish (event) {
 
         event.preventDefault(); 
@@ -26,7 +26,7 @@ export default function PostLink ({renderPosts}) {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                renderPosts()
+                renderPosts(action);
             })
             .catch(error => {
                 console.log(error);

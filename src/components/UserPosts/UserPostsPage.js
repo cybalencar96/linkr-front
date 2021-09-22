@@ -1,5 +1,4 @@
 import PageStyled from "../shared/PageStyled";
-import Topbar from "../shared/Topbar/Topbar";
 import { UserPostsContainer } from "./UserPostsStyled";
 import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
