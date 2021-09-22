@@ -95,7 +95,7 @@ export {
     sendDeletePostRequest,
     sendEditPostRequest,
     searchUser,
-    getUser
+    getUser,
     sendFollowRequest,
     sendUnfollowRequest,
     getListOfFollowingRequest,
