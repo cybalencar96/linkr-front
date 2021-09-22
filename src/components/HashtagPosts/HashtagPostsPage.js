@@ -5,18 +5,22 @@ import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
-import Loading from "../shared/Loading";
+import Loading, { CardLoadingScreen } from "../shared/Loading";
 import { getPostsByHashtag } from "../../services/Linkr";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+let page = 0;
 
 export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
-    const [posts, setPosts] = useState("");
+    const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [hasNext, setHasNext] = useState(true);
     const {hashtag} = useParams();
  
     useEffect(() => {
@@ -31,16 +35,28 @@ export default function HashtagPostsPage() {
                 Authorization: `Bearer ${userData.token}`
             }
         }
-        getPostsByHashtag(hashtag, config)
+        getPostsByHashtag(hashtag, config, page)
         .then(response => {
             setTimeout(() => {setIsLoading(false)}, 1000)
-            setPosts(response.data.posts);
+            setPosts(posts.concat(response.data.posts));
+
+            if(response.data.posts.length < 10) {
+
+                setHasNext(!hasNext);
+            }
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
         })
     }
 
+    const fetchMoreData = () => {
+        setTimeout(() => {
+          page += 11;
+          renderPosts();
+          console.log(posts)
+        }, 2000);
+    };
 
     if(!posts){
         return(
@@ -57,8 +73,14 @@ export default function HashtagPostsPage() {
                         {isLoading ?
                             <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/> :
                             posts.length !== 0 ?
-                                posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) :
-                                <NoPosts/>}
+                            <InfiniteScroll
+                                dataLength={posts.length}
+                                next={fetchMoreData}
+                                hasMore={hasNext}
+                                loader={CardLoadingScreen()}
+                            > 
+                            {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>)}
+                            </InfiniteScroll> : <NoPosts/>}
                     </Separator>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
