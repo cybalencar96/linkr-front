@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-import getYouTubeID from 'get-youtube-id';
 import YouTube from 'react-youtube';
 import {useInViewport} from 'react-in-viewport';
 import {useRef, useState, useContext} from 'react'
@@ -26,22 +24,30 @@ export default function YouTbFrame({youtubeId}) {
     const opts = {
         width: '90%',
         playerVars: {
-          // https://developers.google.com/youtube/player_parameters
           autoplay: 1,
           fs:0,
         },
-      };
+    };
  
     function onReady(event) {
-        // access to player in all event handlers via event.target
         event.target.pauseVideo();
-        setPlayer({...player, eventTarget: event.target})
+        player.eventTarget = event.target
         setYoutubeVideos([...youtubeVideos,player])
+        setPlayer(player)
     }
 
     function onPlay(e) {
-        console.log(youtubeVideos)
-        setPlayer({...player, playing: true})
+        player.playing = true;
+        const videosStopped = youtubeVideos.filter(video => video !== player).map(video => {
+            if (video.playing) {
+                video.playing = false
+                video.eventTarget.pauseVideo();
+            }
+            return video;
+        })
+
+        setYoutubeVideos([...videosStopped,player])
+        setPlayer(player);
     }
 
     function onPause(e) {
@@ -68,3 +74,4 @@ export default function YouTbFrame({youtubeId}) {
         />
     )
 }
+
