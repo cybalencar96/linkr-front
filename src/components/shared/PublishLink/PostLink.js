@@ -174,6 +174,9 @@ const PublishButton = styled.button`
     &:hover{
         box-shadow: 0px  4px 4px  0px  #00000046;
     }
+    &:disabled{
+        opacity: 0.7;
+    }
 
     @media (max-width: 992px){
         margin-top: 6px;

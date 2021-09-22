@@ -34,8 +34,8 @@ function getMyLikedPosts(config) {
     return axios.get(`${BASE_URL}/posts/liked`, config);
 }
 
-function getPostsByUserId (userId, config){
-    return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
+function getPostsByUserId (userId, token){
+    return axios.get(`${BASE_URL}/users/${userId}/posts`, createConfig(token));
 }
 
 function getPostsByHashtag (hashtag, config) {
@@ -58,6 +58,18 @@ function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
 
+function sendFollowRequest (userId, token){
+    return axios.post(`${BASE_URL}/users/${userId}/follow`, {}, createConfig(token));
+}
+
+function sendUnfollowRequest (userId, token){
+    return axios.post(`${BASE_URL}/users/${userId}/unfollow`, {}, createConfig(token));
+}
+
+function getListOfFollowingRequest (token){
+    return axios.get(`${BASE_URL}/users/follows`, createConfig(token));
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -70,6 +82,9 @@ export {
     sendLikeRequest,
     sendDislikeRequest,
     sendDeletePostRequest,
-    sendEditPostRequest
+    sendEditPostRequest,
+    sendFollowRequest,
+    sendUnfollowRequest,
+    getListOfFollowingRequest
 }
 
