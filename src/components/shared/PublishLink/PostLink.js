@@ -162,11 +162,11 @@ const PublishButton = styled.button`
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     font-weight: 700;
-    background-color: #1877F2;
+    background-color: ${props => props.isWhite ? "#FFF" : "#1877F2"};
     width: 112px;
     height: 31px;
     align-self: flex-end;
-    color: #FFFFFF;
+    color: ${props => props.isWhite ? "#1877F2" : "#FFF"};
     margin-top: 20px;
     border-radius: 5px;
     border: none;
@@ -181,3 +181,6 @@ const PublishButton = styled.button`
         font-size: 13px;
     }
 `
+export {
+    PublishButton
+}
