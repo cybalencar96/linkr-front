@@ -249,9 +249,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         <LinkContent>
                             <a href={link} target="_blank">
                                 <div className="linkContent">
-                                    {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : <p>xXx Title Not Found xXx</p>}
-                                    {linkDescription ? <p className="linkDescription">{linkDescription}</p> : <p>xXx Description Not Found xXx</p>}
-                                    {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
+                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
                                 </div>
                                 <div class="imgContainer">
                                     {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
