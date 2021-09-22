@@ -51,13 +51,15 @@ export default function YouTbFrame({youtubeId}) {
     }
 
     function onPause(e) {
-        setPlayer({...player, playing: false})
+        player.playing = false
+        setPlayer(player)
     }
 
     function onLeaveViewport() {
         if (player.playing === true) {
-            setPlayer({...player,playing:false})
+            player.playing = false
             player.eventTarget.pauseVideo();
+            setPlayer(player)
         }
     }
 
