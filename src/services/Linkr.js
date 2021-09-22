@@ -70,6 +70,10 @@ function getListOfFollowingRequest (token){
     return axios.get(`${BASE_URL}/users/follows`, createConfig(token));
 }
 
+function validadeUrlImage(url) {
+    return axios.get(`${url}`)
+}
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -85,6 +89,7 @@ export {
     sendEditPostRequest,
     sendFollowRequest,
     sendUnfollowRequest,
-    getListOfFollowingRequest
+    getListOfFollowingRequest,
+    validadeUrlImage
 }
 
