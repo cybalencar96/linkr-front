@@ -10,13 +10,16 @@ import { getPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import SearchBar from "../shared/Topbar/SearchBar";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);
-    const {setYoutubeVideos} = useContext(YoutubeContext)
-
+    const {setYoutubeVideos} = useContext(YoutubeContext);
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const {windowWidth} = useWindowDimensions();
+
     useEffect(() => {
         setYoutubeVideos([]);
         if (userData) {
@@ -46,6 +49,8 @@ export default function TimelinePage() {
 
     return (
         <PageStyled centralized>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
+
             <TimelineContainer>
                 <Title>timeline</Title>
                 <div className="content">
