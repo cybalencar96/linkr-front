@@ -21,12 +21,14 @@ const Title = styled.div`
     margin: 50px 0 40px 0;
     overflow: hidden;
     text-overflow: ellipsis;
+
     & h1{
         width: 610px;
         overflow: hidden;
         text-overflow: ellipsis;
         max-height: 45px;
     }
+
     @media (max-width: 992px) {
         margin: 19px auto;
         width: 90vw;

@@ -8,6 +8,7 @@ import { getMyLikedPosts } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 
@@ -15,9 +16,12 @@ export default function MyLikesPage() {
     const {userData} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
+    const {setYoutubeVideos} = useContext(YoutubeContext)
     const {windowWidth} = useWindowDimensions();
 
     useEffect(() => {
+        setYoutubeVideos([])
+
         if (userData) {
             renderPosts();
         }

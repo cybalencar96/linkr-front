@@ -8,16 +8,19 @@ import { getPostsByUserId } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 
 export default function MyPostsPage() {
     const { userData } = useContext(UserContext);
+    const {setYoutubeVideos} = useContext(YoutubeContext)
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const {windowWidth} = useWindowDimensions();
 
     useEffect(() => {
+        setYoutubeVideos([])
         if (userData) {
             renderPosts();
         }

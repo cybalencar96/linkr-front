@@ -13,9 +13,11 @@ import {
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions";
 import SearchBar from "../shared/Topbar/SearchBar";
 import { PublishButton } from "../shared/PublishLink/PostLink";
+
 
 export default function UserPostsPage() {
     const { userData } = useContext(UserContext);
@@ -23,11 +25,13 @@ export default function UserPostsPage() {
     const [posts, setPosts] = useState("");
     const { id } = useParams();
     const history = useHistory();
+    const {setYoutubeVideos} = useContext(YoutubeContext)
     const {windowWidth} = useWindowDimensions();
-    
     const [isFollowing, setIsFollowing] = useState(false)
 
     useEffect(() => {
+        setYoutubeVideos([]);
+
         if (userData) {
             if (id == userData.user.id)
                 history.push("/my-posts")
