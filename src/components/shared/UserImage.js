@@ -5,7 +5,6 @@ export default function UserImage ({src, ...otherProps}) {
     return (
         <Image
             src={src}
-            alt=""
             {...otherProps}
         />
     )

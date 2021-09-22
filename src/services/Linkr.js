@@ -65,6 +65,9 @@ function searchUser (queryStr, token) {
 function getUser (userId,token) {
     return axios.get(`${BASE_URL}/users/${userId}`, createConfig(token))
 }
+function validadeUrlImage(url) {
+    return axios.get(`${url}`)
+}
 
 export {
     sendLoginRequest,
@@ -81,5 +84,6 @@ export {
     sendEditPostRequest,
     searchUser,
     getUser
+    validadeUrlImage
 }
 
