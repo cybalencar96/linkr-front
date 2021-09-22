@@ -22,16 +22,16 @@ function sendPostLinkRequest (body, config){
     return axios.post(`${BASE_URL}/posts`, body, config);
 }
 
-function getPosts(config) {
-    return axios.get(`${BASE_URL}/posts`, config);
+function getPosts(config, page) {
+    return axios.get(`${BASE_URL}/posts?limit=10&offset=${page}`, config);
 }
 
 function getHashtags(config) {
     return axios.get(`${BASE_URL}/hashtags/trending`, config);
 }
 
-function getMyLikedPosts(config) {
-    return axios.get(`${BASE_URL}/posts/liked`, config);
+function getMyLikedPosts(config, page) {
+    return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
 function getPostsByUserId (userId, config){
@@ -57,7 +57,9 @@ function sendDeletePostRequest (postId, token) {
 function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
-
+function apiTeste (config, page){
+    return axios.get(`${BASE_URL}/posts?limit=10&offset=${page}`,config); 
+}
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -70,6 +72,7 @@ export {
     sendLikeRequest,
     sendDislikeRequest,
     sendDeletePostRequest,
-    sendEditPostRequest
+    sendEditPostRequest,
+    apiTeste,
 }
 
