@@ -17,7 +17,7 @@ import UserContext from "../../../contexts/UserContext";
 import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
-
+import YouTbFrame from "../YouTbFrame";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -237,18 +237,24 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    <LinkContent>
-                        <a href={link} target="_blank">
-                            <div className="linkContent">
-                                {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : <p>xXx Title Not Found xXx</p>}
-                                {linkDescription ? <p className="linkDescription">{linkDescription}</p> : <p>xXx Description Not Found xXx</p>}
-                                {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
-                            </div>
-                            <div class="imgContainer">
-                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
-                            </div>
-                        </a>
-                    </LinkContent>
+                    {
+                        true ? 
+                         <YouTbFrame videoUrl={"https://www.youtube.com/watch?v=UahN4VjjAo0"}/>
+                         :
+                        <LinkContent>
+                            <a href={link} target="_blank">
+                                <div className="linkContent">
+                                    {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : <p>xXx Title Not Found xXx</p>}
+                                    {linkDescription ? <p className="linkDescription">{linkDescription}</p> : <p>xXx Description Not Found xXx</p>}
+                                    {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
+                                </div>
+                                <div class="imgContainer">
+                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                                </div>
+                            </a>
+                        </LinkContent>
+                    }
+                    
                 </CardRigth>
             </CardContainer>
         </>
