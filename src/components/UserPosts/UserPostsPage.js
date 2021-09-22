@@ -25,6 +25,8 @@ export default function UserPostsPage() {
 
     useEffect(() => {
         if (userData) {
+            if (id == userData.user.id)
+                history.push("/my-posts")
             renderPosts();
             getListOfFollowing();
         }
