@@ -8,7 +8,7 @@ import {
     IconEdit,
     IconsDiv,
 } from "./CardStyled";
-import { Heart, HeartOutline } from 'react-ionicons'
+import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { NavLink, Link } from 'react-router-dom'
@@ -37,7 +37,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         linkImage,
         linkTitle,
         text,
-        user
+        user,
+        repostCount
     } = post
 
     const [likesState, setLikesState] = useState(likes.map(like => {
@@ -214,26 +215,45 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     <Link to={`/user/${user.id}`}>
                         {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                     </Link>
-                    <div className="likeBox" data-tip={createTooltip()}>
+                    <div className="actionBox" data-tip={createTooltip()}>
                         {isLiked ?
                             <Heart
                                 color={'#AC0000'}
-                                height="30px"
-                                width="30px"
+                                height="25px"
+                                width="25px"
                                 onClick={toggleLike}
                                 style={{ cursor: 'pointer' }}
                             />
                             :
                             <HeartOutline
                                 color={'#00000'}
-                                height="30px"
-                                width="30px"
+                                height="25px"
+                                width="25px"
                                 onClick={toggleLike}
                                 style={{ cursor: 'pointer' }}
                             />
                         }
                         <p>{likesState.length} likes</p>
                     </div>
+                    <div className="actionBox" >
+                        <ChatbubblesOutline
+                            color={'#FFF'}
+                            height="25px"
+                            width="25px"
+                            style={{ cursor: 'pointer' }}
+                        />
+                        <p>{commentCount} comments</p>
+                    </div>
+                    <div className="actionBox" >
+                        <RepeatSharp
+                            color={'#FFF'}
+                            height="25px"
+                            width="25px"
+                            style={{ cursor: 'pointer' }}
+                        />
+                        <p>{repostCount} reposts</p>
+                    </div>
+
                     <ReactTooltip place="bottom" type="light" effect="solid" />
                 </CardLeft>
 

@@ -26,13 +26,15 @@ const CardLeft = styled.section`
     align-items: center;
     
     & a {
-        margin: 0 0 20px 0;
+        margin: 0 0 15px 0;
     }
 
-    & .likeBox {
+    & .actionBox {
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 15px;
+        font-size: 11px;
     }
 
    @media (max-width: 992px) {
