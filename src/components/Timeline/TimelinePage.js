@@ -26,19 +26,13 @@ export default function TimelinePage() {
             renderPosts();
             const interval = setInterval(() => {
                 renderPosts();
-                console.log("ok")
             }, 15000);
             return () => clearInterval(interval);
         }
     }, [userData])
 
     function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
-        getPosts(config)
+        getPosts(userData.token)
             .then(res => {
                 setPosts([...res.data.posts]);
             })

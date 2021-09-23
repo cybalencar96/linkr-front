@@ -33,9 +33,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         text,
         user
     } = post
-    
-    const [ likesState, setLikesState] = useState(likes.map(like => {
 
+    const [ likesState, setLikesState] = useState(likes.map(like => {
         return {
             userId: like.userId,
             username: like["user.username"]
@@ -53,10 +52,17 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-    
     const youtubeId = getYouTubeID(link, {fuzzy: false});
 
- 
+    useEffect(() => {
+        setLikesState(likes.map(like => {
+            return {
+                userId: like.userId,
+                username: like["user.username"]
+            }
+        }))
+    }, [likes])
+
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
