@@ -21,6 +21,7 @@ import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import YoutubeContext from "../../../contexts/YoutubeContext";
+import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -56,7 +57,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isUserImageValid, setIsUserImageValid] = useState(true);
     const [isIframeOpen, setIsIframeOpen] = useState(false);
     const youtubeId = getYouTubeID(link, {fuzzy: false});
-
+    const { windowWidth } = useWindowDimensions();
  
     useEffect(() => {
         if (isEditing) {
@@ -196,7 +197,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     }
 
     function openIframe(e) {
-        (e.target !== e.currentTarget) && setIsIframeOpen(true);
+        if (windowWidth > 992) {
+            (e.target !== e.currentTarget) && setIsIframeOpen(true);
+        } else {
+            window.open(link)
+        }
     }
 
     function closeIframe(e) {
