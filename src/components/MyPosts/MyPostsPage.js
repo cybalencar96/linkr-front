@@ -8,27 +8,20 @@ import { getPostsByUser, getPostsByUserId } from "../../services/Linkr";
 import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
-<<<<<<< HEAD
 import InfiniteScroll from "react-infinite-scroll-component";
-
-let page = 0;
-=======
 import YoutubeContext from "../../contexts/YoutubeContext";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
->>>>>>> feat/newTimeline
+
+let page = 0;
 
 export default function MyPostsPage() {
     const { userData } = useContext(UserContext);
     const {setYoutubeVideos} = useContext(YoutubeContext)
     const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
     const [posts, setPosts] = useState([]);
     const [hasNext, setHasNext] = useState(true);
-=======
-    const [posts, setPosts] = useState("");
     const {windowWidth} = useWindowDimensions();
->>>>>>> feat/newTimeline
 
     useEffect(() => {
         setYoutubeVideos([])
@@ -37,7 +30,6 @@ export default function MyPostsPage() {
         }
     }, [userData])
 
-<<<<<<< HEAD
     function renderPosts(reload) {
         const config = {
             headers: {
@@ -51,11 +43,6 @@ export default function MyPostsPage() {
         }
 
         getPostsByUser(userData.user.id, config, page)
-=======
-    function renderPosts() {
-        setIsLoading(true);
-        getPostsByUserId(userData.user.id, userData.token)
->>>>>>> feat/newTimeline
             .then(res => {
                 setIsLoading(false);
 

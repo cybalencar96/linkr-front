@@ -5,49 +5,50 @@ import Card from "../shared/Card/Card";
 import PostLink from "../shared/PublishLink/PostLink";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
-import { apiTeste, getPosts } from "../../services/Linkr";
+import { apiTeste, getListOfFollowingRequest, getPosts, getPostsByFollowUsers } from "../../services/Linkr";
 import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
 import InfiniteScroll from "react-infinite-scroll-component";
+import YoutubeContext from "../../contexts/YoutubeContext";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions";
 
-let page = 0;
+let type = "";
 
 export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [hasNext, setHasNext] = useState(true);
+    const {setYoutubeVideos} = useContext(YoutubeContext);
+    const {windowWidth} = useWindowDimensions();
+    const [usersFollowing, setUserFollowing] = useState([]);
+    const [noFollowing, setNoFollowing] = useState(false)
 
-    
     useEffect(() => {
+        setYoutubeVideos([]);
         if (userData) {
             renderPosts(true);
+            getListFollowUSers();
         }
-    }, [userData])
+    }, [userData]);
 
     function renderPosts(reload) {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
 
         if(reload){
-            page = 0;
-        }
-
-        getPosts(config, page)
+            type = "";
+        }   
+        
+        getPostsByFollowUsers(userData.token, type)
             .then(res => {
-                
-                if(!page){
-                    setPosts(res.data.posts);
+                if(!type.length){
+                    setPosts(res.data.posts.filter(post => post.user.id !== userData.user.id));
                     setHasNext(true);
                 }
                 else{
-                    setPosts(posts.concat(res.data.posts));
+                    setPosts(posts.concat(res.data.posts.filter(post => post.user.id !== userData.user.id)));
                 }
-
+    
                 if(res.data.posts.length < 10){
 
                     setHasNext(!hasNext);
@@ -58,9 +59,23 @@ export default function TimelinePage() {
             })
     }
 
+    function getListFollowUSers () {
+
+        getListOfFollowingRequest(userData.token)
+            .then(res => {
+                setUserFollowing(res.data.users);
+                if(!res.data.users.length) {
+                    setNoFollowing(true);
+                }
+            })
+            .catch(error => {
+                alert("server error! please reload the page");
+            })
+    }
+
     const fetchMoreData = () => {
         setTimeout(() => {
-          page += 11;
+          type = `?olderThan=${posts[posts.length - 1].id}`;
           renderPosts();
         }, 2000);
     };
@@ -84,7 +99,7 @@ export default function TimelinePage() {
                             loader={CardLoadingScreen()}
                         >
                         {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />)}
-                        </InfiniteScroll> : <NoPosts />}
+                        </InfiniteScroll> : <NoPosts content={noFollowing ? "Você não segue ninguém ainda, procure por perfis na busca" : "Nenhuma publicação encontrada"}/>}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
