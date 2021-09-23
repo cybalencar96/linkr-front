@@ -22,8 +22,8 @@ function sendPostLinkRequest (body, config){
     return axios.post(`${BASE_URL}/posts`, body, config);
 }
 
-function getPosts(config) {
-    return axios.get(`${BASE_URL}/posts`, config);
+function getPosts(token) {
+    return axios.get(`${BASE_URL}/posts`, createConfig(token));
 }
 
 function getHashtags(config) {

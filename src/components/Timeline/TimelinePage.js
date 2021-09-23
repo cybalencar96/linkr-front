@@ -17,25 +17,23 @@ export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const {setYoutubeVideos} = useContext(YoutubeContext);
     const [posts, setPosts] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const {windowWidth} = useWindowDimensions();
 
     useEffect(() => {
         setYoutubeVideos([]);
         if (userData) {
             renderPosts();
+            const interval = setInterval(() => {
+                renderPosts();
+            }, 15000);
+            return () => clearInterval(interval);
         }
     }, [userData])
 
     function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
-        getPosts(config)
+        getPosts(userData.token)
             .then(res => {
-                setPosts(res.data.posts);
+                setPosts([...res.data.posts]);
             })
             .catch(err => {
                 alert("Houve uma falha ao obter os posts, por favor atualize a página");
@@ -58,7 +56,7 @@ export default function TimelinePage() {
                         <PostLink renderPosts={renderPosts} />
                         {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
                     </div>
-                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                    <HashtagsInTranding />
                 </div>
             </TimelineContainer>
         </PageStyled>
