@@ -17,6 +17,7 @@ export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const {setYoutubeVideos} = useContext(YoutubeContext);
     const [posts, setPosts] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const {windowWidth} = useWindowDimensions();
     const [usersFollowing, setUserFollowing] = useState([]);
     const [message, setMessage] = useState({noFollowing : false, noPublications : false})
@@ -72,7 +73,7 @@ export default function TimelinePage() {
                         <PostLink renderPosts={renderPosts} />
                         {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts content={message.noFollowing ? "Você não segue ninguém ainda, procure por perfis na busca" : "Nenhuma publicação encontrada"}/>}
                     </div>
-                    <HashtagsInTranding />
+                    <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
             </TimelineContainer>
         </PageStyled>
