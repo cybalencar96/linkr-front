@@ -63,6 +63,7 @@ export default function TimelinePage() {
 
         getListOfFollowingRequest(userData.token)
             .then(res => {
+
                 setUserFollowing(res.data.users);
                 if(!res.data.users.length) {
                     setNoFollowing(true);
