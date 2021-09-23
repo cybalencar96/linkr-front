@@ -24,13 +24,12 @@ export default function YouTbFrame({youtubeId}) {
     const opts = {
         width: '90%',
         playerVars: {
-          autoplay: 1,
+          autoplay: 0,
           fs:0,
         },
     };
  
     function onReady(event) {
-        event.target.pauseVideo();
         player.eventTarget = event.target
         setYoutubeVideos([...youtubeVideos,player])
         setPlayer(player)
