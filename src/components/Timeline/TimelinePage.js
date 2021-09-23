@@ -22,6 +22,7 @@ export default function TimelinePage() {
     const [usersFollowing, setUserFollowing] = useState([]);
     const [message, setMessage] = useState({noFollowing : false, noPublications : false})
 
+    
     useEffect(() => {
         setYoutubeVideos([]);
         if (userData) {
