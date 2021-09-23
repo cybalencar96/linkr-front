@@ -78,9 +78,12 @@ function getListOfFollowingRequest (token){
 }
 
 function validadeUrlImage(url) {
-    return axios.get(`${url}`)
+    return axios.get(`${url}`);
 }
 
+function getPostsByFollowUsers (token) {
+    return axios.get(`${BASE_URL}/following/posts`, createConfig(token));
+}
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -99,6 +102,8 @@ export {
     sendFollowRequest,
     sendUnfollowRequest,
     getListOfFollowingRequest,
-    validadeUrlImage
+    validadeUrlImage,
+    getPostsByFollowUsers,
+    
 }
 

@@ -5,7 +5,7 @@ import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
 
 
-export default function HashtagsInTranding () {
+export default function HashtagsInTranding (props) {
 
     const [trendingHashtags, setTrendingHashtags] = useState([]);
     const {userData} = useContext(UserContext);
@@ -40,10 +40,10 @@ export default function HashtagsInTranding () {
             <div className="fixed">
                 <h1>trending</h1>
                 <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag, index) => {
                             return (
-                                <Link key={hashtag.name} to={`/hashtag/${hashtag.name}`}>
-                                    <LiHashtags  ># {hashtag.name}</LiHashtags>
+                                <Link to={`/hashtag/${hashtag.name}`} key={index}>
+                                    <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
                                 </Link>
                             )
                         }
