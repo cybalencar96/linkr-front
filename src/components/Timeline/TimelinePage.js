@@ -24,6 +24,11 @@ export default function TimelinePage() {
         setYoutubeVideos([]);
         if (userData) {
             renderPosts();
+            const interval = setInterval(() => {
+                renderPosts();
+                console.log("ok")
+            }, 15000);
+            return () => clearInterval(interval);
         }
     }, [userData])
 
@@ -35,7 +40,7 @@ export default function TimelinePage() {
         }
         getPosts(config)
             .then(res => {
-                setPosts(res.data.posts);
+                setPosts([...res.data.posts]);
             })
             .catch(err => {
                 alert("Houve uma falha ao obter os posts, por favor atualize a página");
