@@ -214,9 +214,26 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     <Link to={`/user/${user.id}`}>
                         {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                     </Link>
-                    {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
-                        <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
-                    <p data-tip={createTooltip()}>{likesState.length} likes</p>
+                    <div className="likeBox" data-tip={createTooltip()}>
+                        {isLiked ?
+                            <Heart
+                                color={'#AC0000'}
+                                height="30px"
+                                width="30px"
+                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                            />
+                            :
+                            <HeartOutline
+                                color={'#00000'}
+                                height="30px"
+                                width="30px"
+                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                            />
+                        }
+                        <p>{likesState.length} likes</p>
+                    </div>
                     <ReactTooltip place="bottom" type="light" effect="solid" />
                 </CardLeft>
 
@@ -228,7 +245,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         >
                             <h3 className="username">{user.username}</h3>
                         </NavLink>
-                        {!isPostFromLocalUser &&
+                        {isPostFromLocalUser &&
                             <div>
                                 <IconEdit onClick={toggleEditBox} />
                                 <IconDelete onClick={() => setConfirmDeleteState(true)} />
@@ -271,7 +288,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             </a>
                         </LinkContent>
                     }
-
                 </CardRigth>
             </CardContainer>
         </>
