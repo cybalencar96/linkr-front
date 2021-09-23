@@ -40,9 +40,9 @@ export default function HashtagsInTranding (props) {
             <div className="fixed">
                 <h1>trending</h1>
                 <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag, index) => {
                             return (
-                                <Link to={`/hashtag/${hashtag.name}`}>
+                                <Link to={`/hashtag/${hashtag.name}`} key={index}>
                                     <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
                                 </Link>
                             )

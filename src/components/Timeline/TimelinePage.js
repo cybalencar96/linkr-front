@@ -6,7 +6,7 @@ import PostLink from "../shared/PublishLink/PostLink";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import YoutubeContext from "../../contexts/YoutubeContext";
-import { getPosts } from "../../services/Linkr";
+import { getListOfFollowingRequest, getPosts, getPostsByFollowUsers } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
@@ -19,29 +19,44 @@ export default function TimelinePage() {
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {windowWidth} = useWindowDimensions();
+    const [usersFollowing, setUserFollowing] = useState([]);
+    const [message, setMessage] = useState({noFollowing : false, noPublications : false})
 
+    
     useEffect(() => {
         setYoutubeVideos([]);
         if (userData) {
             renderPosts();
+            getListFollowUSers();
         }
     }, [userData])
-
+    
     function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
-        getPosts(config)
+
+        getPostsByFollowUsers(userData.token)
             .then(res => {
-                setPosts(res.data.posts);
+                setPosts(res.data.posts.filter(post => post.user.id !== userData.user.id));
             })
             .catch(err => {
                 alert("Houve uma falha ao obter os posts, por favor atualize a página");
             })
     }
 
+    function getListFollowUSers () {
+
+        getListOfFollowingRequest(userData.token)
+            .then(res => {
+
+                setUserFollowing(res.data.users);
+
+                if(!res.data.users.length) {
+                    setMessage({noFollowing : true, noPublications : false})
+                }
+            })
+            .catch(error => {
+                alert("erro no servidor, favor recarregar a página");
+            })
+    }
 
     if (!posts) {
         return <Loading />
@@ -56,7 +71,7 @@ export default function TimelinePage() {
                 <div className="content">
                     <div posts="posts">
                         <PostLink renderPosts={renderPosts} />
-                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts content={message.noFollowing ? "Você não segue ninguém ainda, procure por perfis na busca" : "Nenhuma publicação encontrada"}/>}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>

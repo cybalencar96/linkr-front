@@ -29,6 +29,12 @@ const CardLeft = styled.section`
         margin: 0 0 20px 0;
     }
 
+    & .likeBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
    @media (max-width: 992px) {
         width: 100px;
     } 
