@@ -7,6 +7,7 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IframeContainer,
 } from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
@@ -53,7 +54,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-    
+    const [isIframeOpen, setIsIframeOpen] = useState(false);
     const youtubeId = getYouTubeID(link, {fuzzy: false});
 
  
@@ -194,6 +195,14 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         })
     }
 
+    function openIframe(e) {
+        (e.target !== e.currentTarget) && setIsIframeOpen(true);
+    }
+
+    function closeIframe(e) {
+        (e.target === e.currentTarget) && setIsIframeOpen(false);
+    }
+
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
@@ -246,20 +255,28 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         youtubeId ? 
                          <YouTbFrame youtubeId={youtubeId}/>
                          :
-                        <LinkContent>
-                            <a href={link} target="_blank">
-                                <div className="linkContent">
-                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
-                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
-                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
-                                </div>
-                                <div class="imgContainer">
-                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
-                                </div>
-                            </a>
+                        <LinkContent onClick={openIframe}>
+                            <div className="linkContent">
+                                <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                            </div>
+                            <div class="imgContainer">
+                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                            </div>
                         </LinkContent>
                     }
-                    
+                    { isIframeOpen &&
+                        <IframeContainer onClick={closeIframe}>
+                            <section>
+                                <header>
+                                    <a href={link} target="_blank" onClick={closeIframe}>Open in new tab</a>
+                                    <p onClick={closeIframe}>X</p>
+                                </header>
+                                <iframe className="iframe" src={link}></iframe>
+                            </section>
+                        </IframeContainer>
+                    }
                 </CardRigth>
             </CardContainer>
         </>
