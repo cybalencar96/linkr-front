@@ -19,6 +19,7 @@ export default function TimelinePage() {
     const [isLoading, setIsLoading] = useState(false);
     const [hasNext, setHasNext] = useState(true);
 
+    
     useEffect(() => {
         if (userData) {
             renderPosts(true);
