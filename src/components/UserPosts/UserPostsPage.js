@@ -1,60 +1,116 @@
 import PageStyled from "../shared/PageStyled";
 import { UserPostsContainer } from "./UserPostsStyled";
-import Title from '../shared/PageTitle'
+import { PageTitle } from '../shared/PageTitle';
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
-import { getPostsByUserId } from "../../services/Linkr";
+import { 
+    getListOfFollowingRequest,
+    getPostsByUserId,
+    sendFollowRequest,
+    sendUnfollowRequest } from "../../services/Linkr";
 import Loading from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
+import YoutubeContext from "../../contexts/YoutubeContext";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions";
+import SearchBar from "../shared/Topbar/SearchBar";
+import { PublishButton } from "../shared/PublishLink/PostLink";
+
 
 export default function UserPostsPage() {
-    const {userData} = useContext(UserContext);
+    const { userData } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
-    const params = useParams();
+    const { id } = useParams();
     const history = useHistory();
-    
+    const {setYoutubeVideos} = useContext(YoutubeContext)
+    const {windowWidth} = useWindowDimensions();
+    const [isFollowing, setIsFollowing] = useState(false)
+
     useEffect(() => {
+        setYoutubeVideos([]);
+
         if (userData) {
+            if (id == userData.user.id)
+                history.push("/my-posts")
             renderPosts();
+            getListOfFollowing();
         }
-    },[userData])
+    },[id,userData])
 
     function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
+        getPostsByUserId(id, userData.token)
+            .then(res => {
+                setPosts(res.data.posts)
+            })
+            .catch(err => {
+                alert("Houve uma falha ao obter os posts, por favor atualize a página")
+                history.push("/");
+            })
+    }
+
+    function getListOfFollowing(){
         setIsLoading(true);
-        getPostsByUserId(params.id, config)
-        .then(res => {
-            setIsLoading(false);
-            setPosts(res.data.posts)
-        })
-        .catch(err => {
-            setIsLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
-            history.push("/my-posts");
-        })
+        getListOfFollowingRequest(userData.token)
+            .then((res) => {
+                const serverResponse = res.data.users;
+                setIsFollowing(serverResponse.map((user) => user.id).includes(Number(id)));
+            })
+            .catch(err => {
+                alert(err);
+            })
+            .finally(() => setIsLoading(false))
+
+    }
+
+    function toggleFollow() {
+        setIsLoading(true);
+        if(isFollowing){
+            sendUnfollowRequest(id, userData.token)
+                .then(res => {
+                    setIsFollowing(false);
+                })
+                .catch(err => {
+                    console.log(err.response)
+                })
+                .finally(() => setIsLoading(false))
+        }else{
+            sendFollowRequest(id, userData.token)
+                .then(res => {
+                    setIsFollowing(true);
+                })
+                .catch(err => {})
+                .finally(() => setIsLoading(false))
+        }
+    }
+
+    function createButtonTxt() {
+        if (isLoading === true)
+            return "Loading...";
+        return isFollowing ? "Unfollow" : "Follow";
     }
 
     if (!posts) {
-        return 	<Loading/>
+        return <Loading />
     }
 
     return (
         <PageStyled centralized>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
+
             <UserPostsContainer>
-                <Title>{posts[0].user.username}'s posts</Title>
+                <PageTitle titleTxt={`${posts[0].user.username}'s posts`} >
+                    <PublishButton disabled={isLoading} isWhite={isFollowing} onClick={toggleFollow} >
+                        {createButtonTxt()}
+                    </PublishButton>
+                </PageTitle>
                 <div className="content">
                     <div>
-                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) : <NoPosts />}
+                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
                     </div>
-                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                    <HashtagsInTranding setIsLoading={setIsLoading} />
                 </div>
             </UserPostsContainer>
         </PageStyled>

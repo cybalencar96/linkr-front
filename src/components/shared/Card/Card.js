@@ -17,7 +17,9 @@ import UserContext from "../../../contexts/UserContext";
 import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
-
+import YouTbFrame from "../YouTbFrame";
+import getYouTubeID from 'get-youtube-id';
+import YoutubeContext from "../../../contexts/YoutubeContext";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -42,6 +44,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
+    const { setYoutubeVideos } = useContext(YoutubeContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +53,10 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
+    
+    const youtubeId = getYouTubeID(link, {fuzzy: false});
 
+ 
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
@@ -59,7 +65,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsUserImageValid(isValidUserImage(user.avatar))
         
     }, [isEditing]);
-
 
     function renderDescription() {
         const formatedText = text.split(" ").map(word => {
@@ -236,18 +241,24 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    <LinkContent>
-                        <a href={link} target="_blank">
-                            <div className="linkContent">
-                                {linkTitle ? <h3 className="linkTitle">{linkTitle}</h3> : <p>xXx Title Not Found xXx</p>}
-                                {linkDescription ? <p className="linkDescription">{linkDescription}</p> : <p>xXx Description Not Found xXx</p>}
-                                {link ? <p className="linkUrl">{link.toLowerCase()}</p> : <p>xXx Link Not Found xXx</p>}
-                            </div>
-                            <div class="imgContainer">
-                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
-                            </div>
-                        </a>
-                    </LinkContent>
+                    {
+                        youtubeId ? 
+                         <YouTbFrame youtubeId={youtubeId}/>
+                         :
+                        <LinkContent>
+                            <a href={link} target="_blank">
+                                <div className="linkContent">
+                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                                </div>
+                                <div class="imgContainer">
+                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                                </div>
+                            </a>
+                        </LinkContent>
+                    }
+                    
                 </CardRigth>
             </CardContainer>
         </>

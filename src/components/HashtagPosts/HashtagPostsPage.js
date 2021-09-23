@@ -13,17 +13,21 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
 import InfiniteScroll from "react-infinite-scroll-component";
+import YoutubeContext from "../../contexts/YoutubeContext";
 
 let page = 0;
 
 export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
     const [posts, setPosts] = useState([]);
+    const {setYoutubeVideos} = useContext(YoutubeContext)
     const [isLoading, setIsLoading] = useState(false);
     const [hasNext, setHasNext] = useState(true);
     const {hashtag} = useParams();
  
     useEffect(() => {
+        setYoutubeVideos([])
+
         if (userData) {
             renderPosts(true);
         }

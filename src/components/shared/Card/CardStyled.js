@@ -30,7 +30,7 @@ const CardLeft = styled.section`
     }
 
    @media (max-width: 992px) {
-        width: 18.4%;
+        width: 100px;
     } 
 `
 
@@ -70,7 +70,7 @@ const CardRigth = styled.section`
 
         @media (max-width: 992px) {
             min-height: 212px;
-            width: 81.6%;
+            width: calc(100% - 100px);
             padding: 0 0 10px 0px;
             & .usernameLink {
                 width:calc(85% - 10vw)

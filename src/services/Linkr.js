@@ -34,8 +34,8 @@ function getMyLikedPosts(config, page) {
     return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
-function getPostsByUserId (userId, config){
-    return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
+function getPostsByUserId (userId, token){
+    return axios.get(`${BASE_URL}/users/${userId}/posts`, createConfig(token));
 }
 
 function getPostsByUser (userId, config, page){
@@ -62,10 +62,32 @@ function sendEditPostRequest (postId, text, token){
     return axios.put(`${BASE_URL}/posts/${postId}`, {text: text}, createConfig(token));
 }
 
-function validadeUrlImage(url) {
-    return axios.get(`${url}`)
+function searchUser (queryStr, token) {
+    return axios.get(`${BASE_URL}/users/search?username=${queryStr}`,createConfig(token))
 }
 
+function getUser (userId,token) {
+    return axios.get(`${BASE_URL}/users/${userId}`, createConfig(token))
+}
+function sendFollowRequest (userId, token){
+    return axios.post(`${BASE_URL}/users/${userId}/follow`, {}, createConfig(token));
+}
+
+function sendUnfollowRequest (userId, token){
+    return axios.post(`${BASE_URL}/users/${userId}/unfollow`, {}, createConfig(token));
+}
+
+function getListOfFollowingRequest (token){
+    return axios.get(`${BASE_URL}/users/follows`, createConfig(token));
+}
+
+function validadeUrlImage(url) {
+    return axios.get(`${url}`);
+}
+
+function getPostsByFollowUsers (token) {
+    return axios.get(`${BASE_URL}/following/posts`, createConfig(token));
+}
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -81,5 +103,12 @@ export {
     sendDeletePostRequest,
     sendEditPostRequest,
     validadeUrlImage,
+    searchUser,
+    getUser,
+    sendFollowRequest,
+    sendUnfollowRequest,
+    getListOfFollowingRequest,
+    validadeUrlImage,
+    getPostsByFollowUsers,
 }
 

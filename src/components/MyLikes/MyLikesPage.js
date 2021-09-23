@@ -9,6 +9,9 @@ import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
 import InfiniteScroll from "react-infinite-scroll-component";
+import YoutubeContext from "../../contexts/YoutubeContext";
+import SearchBar from "../shared/Topbar/SearchBar";
+import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 
 let page = 0;
 
@@ -17,8 +20,12 @@ export default function MyLikesPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [hasNext, setHasNext] = useState(true);
+    const {setYoutubeVideos} = useContext(YoutubeContext)
+    const {windowWidth} = useWindowDimensions();
 
     useEffect(() => {
+        setYoutubeVideos([])
+
         if (userData) {
             renderPosts(true);
         }
@@ -71,6 +78,8 @@ export default function MyLikesPage() {
 
     return (
         <PageStyled centralized>
+            <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
+
             <MyLikesContainer>
                 <Title>my likes</Title>
                 <div className="content">
