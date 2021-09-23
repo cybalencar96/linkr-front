@@ -46,15 +46,15 @@ export default function TimelinePage() {
 
         getListOfFollowingRequest(userData.token)
             .then(res => {
+
                 setUserFollowing(res.data.users);
-                console.log(res.data.users);
+
                 if(!res.data.users.length) {
-                    console.log("aquiiii", usersFollowing)
                     setMessage({noFollowing : true, noPublications : false})
                 }
             })
             .catch(error => {
-                console.log(error);
+                alert("erro no servidor, favor recarregar a página");
             })
     }
 
