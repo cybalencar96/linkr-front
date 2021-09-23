@@ -41,9 +41,9 @@ export default function HashtagsInTranding (props) {
                 <h1>trending</h1>
                 <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
                 <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag, index) => {
                             return (
-                                <Link to={`/hashtag/${hashtag.name}`}>
+                                <Link to={`/hashtag/${hashtag.name}`} key={index}>
                                     <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
                                 </Link>
                             )
