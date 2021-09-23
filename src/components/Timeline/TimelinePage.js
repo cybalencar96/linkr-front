@@ -17,7 +17,6 @@ export default function TimelinePage() {
     const { userData } = useContext(UserContext);
     const {setYoutubeVideos} = useContext(YoutubeContext);
     const [posts, setPosts] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const {windowWidth} = useWindowDimensions();
 
     useEffect(() => {
@@ -57,7 +56,7 @@ export default function TimelinePage() {
                         <PostLink renderPosts={renderPosts} />
                         {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
                     </div>
-                    <HashtagsInTranding setIsLoading={setIsLoading}/>
+                    <HashtagsInTranding />
                 </div>
             </TimelineContainer>
         </PageStyled>
