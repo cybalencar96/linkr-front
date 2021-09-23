@@ -5,7 +5,7 @@ import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
 
 
-export default function HashtagsInTranding (props) {
+export default function HashtagsInTranding () {
 
     const [trendingHashtags, setTrendingHashtags] = useState([]);
     const {userData} = useContext(UserContext);
@@ -39,17 +39,25 @@ export default function HashtagsInTranding (props) {
         <ContainerTranding>
             <div className="fixed">
                 <h1>trending</h1>
-                <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
                 <UlHashtags>
                         {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag, index) => {
                             return (
+<<<<<<< HEAD
                                 <Link to={`/hashtag/${hashtag.name}`} key={index}>
                                     <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
+=======
+                                <Link key={hashtag.name} to={`/hashtag/${hashtag.name}`}>
+                                    <LiHashtags  ># {hashtag.name}</LiHashtags>
+>>>>>>> dev
                                 </Link>
                             )
                         }
                     )}
                 </UlHashtags>
+                <div className="inputContainer">
+                    <p>#</p>
+                    <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+                </div>
            </div>
         </ContainerTranding>
     )
@@ -66,7 +74,7 @@ const ContainerTranding = styled.div`
     border-radius: 16px;
 
     h1{
-        margin: 9px 0 0 18px;
+        margin: 12px 0 15px 18px;
     }
 
     & .fixed {
@@ -74,6 +82,25 @@ const ContainerTranding = styled.div`
         width: 301px;
         background-color: #171717;
         border-radius: 16px;
+    }
+
+    & .fixed .inputContainer {
+        height: 30px;
+        background-color: rgba(50, 50, 50, 1);
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        border: none;
+        border-radius: 5px;
+        width: calc(100% - 36px );
+        margin: 0 18px 15px 18px;
+        padding-left: 10px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+    }
+
+    & .fixed .inputContainer p {
+        font-size: 25px
     }
 
     @media(max-width: 992px){
@@ -103,19 +130,17 @@ const LiHashtags = styled.li`
 `;
 
 const InputButtonTrending = styled.input`
-    height: 30px;
     background-color: rgba(50, 50, 50, 1);
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    border: none;
-    border-radius: 5px;
-    margin-top: 8px;
-    width: calc(100% - 36px );
+    display:flex;
+    align-items:center;
+    border:none;
     outline: none;
     font-size: 15px;
-    margin: 9px 18px;
-    color: #ffffff;
-
+    height: 100%;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
 
     &::placeholder, &::placeholder{
         font-weight: 300;
