@@ -1,15 +1,25 @@
-import { CardContainer, LinkContent, CardRigth, CardLeft, EditPostInput } from "./CardStyled";
+import { 
+    CardContainer, 
+    LinkContent, 
+    CardRigth, 
+    CardLeft, 
+    EditPostInput, 
+    IconDelete,
+    IconEdit,
+    IconsDiv,
+} from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { NavLink, Link } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
+import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
-import { FaTrash } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
-import styled from "styled-components";
+import ExcludeCardModal from "../ExcludeCardModal";
+import YouTbFrame from "../YouTbFrame";
+import getYouTubeID from 'get-youtube-id';
+import YoutubeContext from "../../../contexts/YoutubeContext";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -34,6 +44,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
+    const { setYoutubeVideos } = useContext(YoutubeContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -41,12 +52,17 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const editInputRef = useRef();
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
+    const [isUserImageValid, setIsUserImageValid] = useState(true);
+    
+    const youtubeId = getYouTubeID(link, {fuzzy: false});
 
+ 
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
             setEditingText(text);
         }
+        setIsUserImageValid(isValidUserImage(user.avatar))
         
     }, [isEditing]);
 
@@ -166,26 +182,25 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
             .finally(() => setIsEditLoading(false));
     }
+    
+    function isValidUserImage(url) {
+        validadeUrlImage(url)
+        .then ( res => {
+            setIsUserImageValid(true)
+        })
+        .catch ( err => {
+            console.log(err)
+            setIsUserImageValid(false)
+        })
+    }
 
     return (
         <>
-            <Superposition ConfirmDeleteState={ConfirmDeleteState}>
-                <ConfirmDeleteScreen>
-                    <p>Tem certeza que deseja <br /> excluir essa publicação?</p>
-                    <SuperpositionButtons>
-                        <CancelButton disabled={isLoading ? true : false} onClick={() => setConfirmDeleteState(false)}>
-                            Não, voltar
-                        </CancelButton>
-                        <ConfirmButton disabled={isLoading ? true : false} onClick={() => deletePost(id)}>
-                            {isLoading ? "Excluindo..." : "Sim, excluir"}
-                        </ConfirmButton>
-                    </SuperpositionButtons>
-                </ConfirmDeleteScreen>
-            </Superposition>
+            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
             <CardContainer>
                 <CardLeft>
-                    <Link to={`/user/${user.id}`}>
-                        <UserImage src={user.avatar} />
+                    <Link to={`/user/${user.id}`}> 
+                    {isUserImageValid ? <UserImage src={user.avatar} alt="userImage"/> : <UserImage src="/imageNotFound.jpg" alt="NotFound"/>}
                     </Link>
                     {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
                         <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
@@ -227,131 +242,26 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    <a href={link}>
+                    {
+                        youtubeId ? 
+                         <YouTbFrame youtubeId={youtubeId}/>
+                         :
                         <LinkContent>
-                            <div className="linkContent">
-                                <h3 className="linkTitle">{linkTitle}</h3>
-                                <p className="linkDescription">{linkDescription}</p>
-                                <p className="linkUrl">{link}</p>
-                            </div>
-                            <div class="imgContainer">
-                                <img src={linkImage}/>
-                            </div>
+                            <a href={link} target="_blank">
+                                <div className="linkContent">
+                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                                </div>
+                                <div class="imgContainer">
+                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                                </div>
+                            </a>
                         </LinkContent>
-                    </a>
+                    }
+                    
                 </CardRigth>
             </CardContainer>
         </>
     )
 }
-
-const IconDelete = styled(FaTrash)`
-    margin-left: 15px;
-    &:hover{
-        color: red;
-    }
-`;
-
-const IconEdit = styled(RiPencilFill)`
-    &:hover{
-        color: green;
-    }
-`;
-
-const IconsDiv = styled.div`
-    width: 90%;
-    display: flex;
-    justify-content: space-between;
-`;
-
-const Superposition = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 1;
-  display: ${(props) => (props.ConfirmDeleteState ? "inherit" : "none")};
-`;
-
-const ConfirmDeleteScreen = styled.div`
-  position: relative;
-  top: calc((100vh - 262px) / 2);
-  left: calc((100vw - 597px) / 2);
-  width: 597px;
-  height: 262px;
-  border-radius: 50px;
-  background-color: #333333;
-  font-family: "Lato", sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    text-align: center;
-    font-weight: bold;
-    font-size: 34px;
-    color: #ffffff;
-    margin-bottom: 40px;
-  }
-
-  @media (max-width: 994px) {
-    width: 100%;
-    left: 0;
-    border-radius: 0;
-  }
-`;
-
-const SuperpositionButtons = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CancelButton = styled.button`
-  background-color: #ffffff;
-  color: #1877f2;
-  line-height: 22px;
-  width: 134px;
-  height: 37px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 27px;
-
-  &:hover {
-    cursor: pointer;
-    border: 5px solid #1877f2;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const ConfirmButton = styled.button`
-  background-color: #1877f2;
-  color: #ffffff;
-  line-height: 22px;
-  width: 134px;
-  height: 37px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    cursor: pointer;
-    border: 5px solid crimson;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;

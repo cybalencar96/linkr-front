@@ -2,6 +2,7 @@ import "./assets/reset.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import LoginPage from "./components/Login/LoginPage";
 import UserContext from "./contexts/UserContext";
+import YoutubeContext from "./contexts/YoutubeContext";
 import { useEffect, useState } from "react";
 import SignupPage from "./components/Signup/SignupPage";
 import Topbar from "./components/shared/Topbar/Topbar"
@@ -12,6 +13,7 @@ import MyPostsPage from "./components/MyPosts/MyPostsPage";
 import HashtagPostPage from "./components/HashtagPosts/HashtagPostsPage";
 export default function App() {
     const [userData, setUserData] = useState(null);
+    const [youtubeVideos, setYoutubeVideos] = useState([])
 
     useEffect(() => {
         const localUserData = localStorage.getItem("userData");
@@ -22,6 +24,7 @@ export default function App() {
 
     return (
         <UserContext.Provider value={{ userData, setUserData }} >
+        <YoutubeContext.Provider value={{youtubeVideos,setYoutubeVideos}} >
             <BrowserRouter>
                 {userData ? <Topbar /> : ""}
                 <Switch>
@@ -54,6 +57,7 @@ export default function App() {
                     </Route>
                 </Switch>
             </BrowserRouter>
+        </YoutubeContext.Provider>
         </UserContext.Provider>
     )
 }

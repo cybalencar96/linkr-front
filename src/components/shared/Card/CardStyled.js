@@ -1,14 +1,15 @@
 import styled from "styled-components";
+import { FaTrash } from "react-icons/fa";
+import { RiPencilFill } from "react-icons/ri";
 
 const CardContainer = styled.article`
     width: 610px;
-    min-height: 280px;
     background-color: #171717;
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
     margin-bottom: 30px;
-    padding: 10px 0;
+    padding: 20px 0;
 
     @media (max-width: 992px) {
         width: 100vw;
@@ -26,25 +27,23 @@ const CardLeft = styled.section`
     
     & a {
         margin: 0 0 20px 0;
-        
     }
 
    @media (max-width: 992px) {
-        width: 18.4%;
+        width: 100px;
     } 
 `
 
 
 const CardRigth = styled.section`
         width: 85%;
-        min-height: 260px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        padding: 0 0 10px 0;
+        gap: 10px;
 
         & .usernameLink {
-            width: 85%;
+            max-width: 85%;
         }
 
         & .username {
@@ -58,12 +57,10 @@ const CardRigth = styled.section`
 
         & .description {
             width: 90%;
-            min-height: 53px;
             font-size: 17px;
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 15px;
         }
 
         & .description span{
@@ -73,7 +70,7 @@ const CardRigth = styled.section`
 
         @media (max-width: 992px) {
             min-height: 212px;
-            width: 81.6%;
+            width: calc(100% - 100px);
             padding: 0 0 10px 0px;
             & .usernameLink {
                 width:calc(85% - 10vw)
@@ -86,16 +83,21 @@ const LinkContent = styled.div`
     background-color: rgba(23,23,23,0);
     width: 90%;
     height: 155px;
-
-
     border: 1px solid #4D4D4D;
-    display: flex;
-    justify-content: space-between;
     overflow: hidden;
+
+    & > a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
 
     & .linkContent {
         padding: 20px;
         display: flex;
+        height: 100%;
         flex-direction: column;
         justify-content: space-around;
         gap:3px;
@@ -123,7 +125,7 @@ const LinkContent = styled.div`
 
     }
 
-    & img {
+    & a img {
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
@@ -171,10 +173,34 @@ const EditPostInput = styled.textarea`
     font-size: 15px;
 `;
 
+const IconDelete = styled(FaTrash)`
+    margin-left: 15px;
+    cursor: pointer;
+    &:hover{
+        color: red;
+    }
+`;
+
+const IconEdit = styled(RiPencilFill)`
+    cursor: pointer;
+    &:hover{
+        color: green;
+    }
+`;
+
+const IconsDiv = styled.div`
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+`;
+
 export {
     CardContainer,
     LinkContent,
     CardRigth,
     CardLeft,
-    EditPostInput
+    EditPostInput,
+    IconDelete,
+    IconEdit,
+    IconsDiv,
 }

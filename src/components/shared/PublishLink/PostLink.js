@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { sendPostLinkRequest } from "../../../services/Linkr";
@@ -41,7 +42,7 @@ export default function PostLink ({renderPosts}) {
     
     return (
         <PostDiv>
-            <Image src={userData.user.avatar}/>
+            <Link to="/my-posts"><Image src={userData.user.avatar}/></Link>
             <ContainerPost>
                 <ContainerSubmit onSubmit={publish}>
                     <h1>O que você tem pra favoritar hoje?</h1>
@@ -100,6 +101,12 @@ const PostDiv = styled.div`
         padding-left: 10px;
     }
 
+    & a:first-child {
+        width: 50px;
+        height: 50px;
+        margin: 15px 0px 0px 15px;
+    }
+
     @media (max-width: 992px){
         max-width: 100vw;
         width: 100vw;
@@ -137,8 +144,8 @@ const Image = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
-    margin: 15px 0px 0px 15px;
     object-fit: cover;
+    cursor: pointer;
 
     @media (max-width: 992px){
         display: none;
@@ -162,17 +169,20 @@ const PublishButton = styled.button`
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     font-weight: 700;
-    background-color: #1877F2;
+    background-color: ${props => props.isWhite ? "#FFF" : "#1877F2"};
     width: 112px;
     height: 31px;
     align-self: flex-end;
-    color: #FFFFFF;
+    color: ${props => props.isWhite ? "#1877F2" : "#FFF"};
     margin-top: 20px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
     &:hover{
         box-shadow: 0px  4px 4px  0px  #00000046;
+    }
+    &:disabled{
+        opacity: 0.7;
     }
 
     @media (max-width: 992px){
@@ -181,3 +191,6 @@ const PublishButton = styled.button`
         font-size: 13px;
     }
 `
+export {
+    PublishButton
+}
