@@ -83,7 +83,7 @@ export default function TimelinePage() {
     if (!posts) {
         return <Loading />
     }
-
+    
     return (
         <PageStyled centralized>
             <TimelineContainer>

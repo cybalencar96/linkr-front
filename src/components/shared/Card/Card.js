@@ -1,9 +1,9 @@
-import { 
-    CardContainer, 
-    LinkContent, 
-    CardRigth, 
-    CardLeft, 
-    EditPostInput, 
+import {
+    CardContainer,
+    LinkContent,
+    CardRigth,
+    CardLeft,
+    EditPostInput,
     IconDelete,
     IconEdit,
     IconsDiv,
@@ -14,7 +14,13 @@ import HashtagSpan from "../HashtagSpan";
 import { NavLink, Link } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
+import {
+    validadeUrlImage,
+    sendDislikeRequest,
+    sendLikeRequest,
+    sendDeletePostRequest,
+    sendEditPostRequest
+} from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
@@ -33,9 +39,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         text,
         user
     } = post
-    
-    const [ likesState, setLikesState] = useState(likes.map(like => {
 
+    const [likesState, setLikesState] = useState(likes.map(like => {
         return {
             userId: like.userId,
             username: like["user.username"]
@@ -53,17 +58,24 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-    
-    const youtubeId = getYouTubeID(link, {fuzzy: false});
+    const youtubeId = getYouTubeID(link, { fuzzy: false });
 
- 
+    useEffect(() => {
+        setLikesState(likes.map(like => {
+            return {
+                userId: like.userId,
+                username: like["user.username"]
+            }
+        }))
+    }, [likes])
+
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
             setEditingText(text);
         }
         setIsUserImageValid(isValidUserImage(user.avatar))
-        
+
     }, [isEditing]);
 
     function renderDescription() {
@@ -90,11 +102,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         renderPosts(true)
                 })
                 .catch(err => {
-                    if(err.response.status === 404){
+                    if (err.response.status === 404) {
                         alert("Post has been deleted!");
                         return;
                     }
-                        
+
                     alert(err)
                 })
                 .finally(() => setIsLoading(false))
@@ -106,11 +118,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         renderPosts(true)
                 })
                 .catch(err => {
-                    if(err.response.status === 404){
+                    if (err.response.status === 404) {
                         alert("Post has been deleted!");
                         return;
                     }
-                    
+
                     alert(err)
                 })
                 .finally(() => setIsLoading(false))
@@ -164,7 +176,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     }
 
     function toggleEditBox() {
-        if (!isPostFromLocalUser){
+        if (!isPostFromLocalUser) {
             return;
         }
         setIsEditing(!isEditing);
@@ -182,7 +194,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
             .finally(() => setIsEditLoading(false));
     }
-    
+
     function isValidUserImage(url) {
         validadeUrlImage(url)
         .then ( res => {
@@ -195,43 +207,61 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     return (
         <>
-            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
+            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
             <CardContainer>
                 <CardLeft>
-                    <Link to={`/user/${user.id}`}> 
-                    {isUserImageValid ? <UserImage src={user.avatar} alt="userImage"/> : <UserImage src="/imageNotFound.jpg" alt="NotFound"/>}
+                    <Link to={`/user/${user.id}`}>
+                        {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                     </Link>
-                    {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
-                        <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
-                    <p data-tip={createTooltip()}>{likesState.length} likes</p>
+                    <div className="likeBox" data-tip={createTooltip()}>
+                        {isLiked ?
+                            <Heart
+                                color={'#AC0000'}
+                                height="30px"
+                                width="30px"
+                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                            />
+                            :
+                            <HeartOutline
+                                color={'#00000'}
+                                height="30px"
+                                width="30px"
+                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                            />
+                        }
+                        <p>{likesState.length} likes</p>
+                    </div>
                     <ReactTooltip place="bottom" type="light" effect="solid" />
                 </CardLeft>
 
                 <CardRigth>
-                    {!isPostFromLocalUser ? <IconsDiv><NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
-                        <h3 className="username">{user.username}</h3>
-                    </NavLink></IconsDiv> :
-                        <IconsDiv>
-                            <NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
-                                <h3 className="username">{user.username}</h3>
-                            </NavLink>
+                    <IconsDiv>
+                        <NavLink
+                            className="usernameLink"
+                            to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                        >
+                            <h3 className="username">{user.username}</h3>
+                        </NavLink>
+                        {isPostFromLocalUser &&
                             <div>
                                 <IconEdit onClick={toggleEditBox} />
                                 <IconDelete onClick={() => setConfirmDeleteState(true)} />
                             </div>
-                        </IconsDiv>
-                    }
+                        }
+                    </IconsDiv>
 
                     {isEditing ?
                         <EditPostInput
                             ref={editInputRef}
                             value={editingText}
                             onKeyDown={e => {
-                                if(e.key === 'Enter'){
+                                if (e.key === 'Enter') {
                                     e.preventDefault();
                                     editPost();
                                 }
-                                if(e.key === 'Escape'){
+                                if (e.key === 'Escape') {
                                     e.preventDefault();
                                     toggleEditBox()
                                 }
@@ -241,10 +271,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    {
-                        youtubeId ? 
-                         <YouTbFrame youtubeId={youtubeId}/>
-                         :
+                    {youtubeId ?
+                        <YouTbFrame youtubeId={youtubeId} />
+                        :
                         <LinkContent>
                             <a href={link} target="_blank">
                                 <div className="linkContent">
@@ -253,12 +282,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                     <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
                                 </div>
                                 <div class="imgContainer">
-                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                                    {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
                                 </div>
                             </a>
                         </LinkContent>
                     }
-                    
                 </CardRigth>
             </CardContainer>
         </>
