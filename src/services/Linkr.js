@@ -34,8 +34,8 @@ function getMyLikedPosts(config, page) {
     return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
-function getPostsByUserId (userId, token){
-    return axios.get(`${BASE_URL}/users/${userId}/posts`, createConfig(token));
+function getPostsByUserId (userId, token, page){
+    return axios.get(`${BASE_URL}/users/${userId}/posts?limit=10&offset=${page}`, createConfig(token));
 }
 
 function getPostsByUser (userId, config, page){
