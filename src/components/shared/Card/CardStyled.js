@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import UserImage from "../UserImage";
 
 const CardContainer = styled.article`
     width: 610px;
@@ -8,7 +9,7 @@ const CardContainer = styled.article`
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     padding: 20px 0;
 
     @media (max-width: 992px) {
@@ -202,6 +203,72 @@ const IconsDiv = styled.div`
     justify-content: space-between;
 `;
 
+const CommentBox = styled.div`
+    border-radius: 16px;
+
+    background-color: #1E1E1E;
+    margin: 0px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+`;
+
+const CommentCardBox = styled.div`
+    display: flex;
+    padding: 15px 15px 15px 25px;
+    font-size: 14px;
+    color: #ACACAC;
+
+    & .container {
+        padding: 5px 18px;
+    }
+    & p {
+        margin-top: 5px;
+    }
+    & .send {
+        width: 39px;
+        height: 39px;
+        background-color: #252525;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0 8px 8px 0;
+    }
+    @media (max-width: 992px){
+        .container{
+            width: 80%;
+        }
+        
+    }
+`;
+
+const CommentInput = styled.input`
+    width: 80%;
+    height: 39px;
+    background: #252525; 
+    border-radius: 8px 0 0 8px;
+    border: none;
+    margin-left: 20px;
+    padding: 0 15px;
+    color:#F3F3F3;
+    position: relative;
+    
+    &:focus {
+        outline: none;    
+    }
+    &::placeholder{
+        color: #575757;
+    }
+
+    @media (max-width: 992px){
+        width: 85%;
+    }
+`;
+
+const ImgComment = styled(UserImage)`
+    width: 39px;
+    height: 39px;
+`;
+
 export {
     CardContainer,
     LinkContent,
@@ -211,4 +278,8 @@ export {
     IconDelete,
     IconEdit,
     IconsDiv,
+    CommentBox,
+    CommentCardBox,
+    CommentInput,
+    ImgComment
 }

@@ -78,7 +78,15 @@ function getListOfFollowingRequest (token){
 }
 
 function validadeUrlImage(url) {
-    return axios.get(`${url}`)
+    return axios.get(`${url}`);
+}
+
+function getComments(postId, token) {
+    return axios.get(`${BASE_URL}/posts/${postId}/comments`, createConfig(token));
+}
+
+function sendComment(postId, text, token){
+    return axios.post(`${BASE_URL}/posts/${postId}/comment`, {text}, createConfig(token));
 }
 
 export {
@@ -99,6 +107,8 @@ export {
     sendFollowRequest,
     sendUnfollowRequest,
     getListOfFollowingRequest,
-    validadeUrlImage
+    validadeUrlImage,
+    getComments,
+    sendComment
 }
 

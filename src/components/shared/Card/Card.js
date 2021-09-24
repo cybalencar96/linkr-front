@@ -7,8 +7,12 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
+    CommentBox,
+    CommentCardBox,
+    CommentInput,
+    ImgComment
 } from "./CardStyled";
-import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp } from 'react-ionicons'
+import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp, PaperPlaneOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
 import { NavLink, Link } from 'react-router-dom'
@@ -19,13 +23,15 @@ import {
     sendDislikeRequest,
     sendLikeRequest,
     sendDeletePostRequest,
-    sendEditPostRequest
+    sendEditPostRequest,
+    getComments,
+    sendComment
 } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
-import YoutubeContext from "../../../contexts/YoutubeContext";
+import CommentCard from "./CommentCard";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -50,7 +56,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
-    const { setYoutubeVideos } = useContext(YoutubeContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -60,6 +65,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
     const youtubeId = getYouTubeID(link, { fuzzy: false });
+    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [commentText, setCommentText] = useState("");
 
     useEffect(() => {
         setLikesState(likes.map(like => {
@@ -79,8 +87,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     }, [isEditing]);
 
-    function renderDescription() {
-        const formatedText = text.split(" ").map(word => {
+    function renderDescription(unFormatedText) {
+        const formatedText = unFormatedText.split(" ").map(word => {
             if (word[0] === "#") {
                 return <Link to={`/hashtag/${word.substring(1)}`}><HashtagSpan> #{word.substring(1)}</HashtagSpan></Link>
             } else {
@@ -202,114 +210,154 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsUserImageValid(true)
             })
             .catch(err => {
-                console.log(err)
                 setIsUserImageValid(false)
             })
+    }
+
+    function toggleComments() {
+        if (!isCommentsOpen) {
+            getComments(id, userData.token)
+                .then(res => setComments(res.data.comments))
+                .catch(err => { })
+        }
+        setIsCommentsOpen(!isCommentsOpen);
+    }
+
+    function comment() {
+        sendComment(id, commentText, userData.token)
+            .then(res => console.log(res.data))
     }
 
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
-            <CardContainer>
-                <CardLeft>
-                    <Link to={`/user/${user.id}`}>
-                        {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
-                    </Link>
-                    <div className="actionBox" data-tip={createTooltip()}>
-                        {isLiked ?
-                            <Heart
-                                color={'#AC0000'}
+            <CommentBox>
+                <CardContainer>
+                    <CardLeft>
+                        <Link to={`/user/${user.id}`}>
+                            {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
+                        </Link>
+                        <div className="actionBox" data-tip={createTooltip()}>
+                            {isLiked ?
+                                <Heart
+                                    color={'#AC0000'}
+                                    height="25px"
+                                    width="25px"
+                                    onClick={toggleLike}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                                :
+                                <HeartOutline
+                                    color={'#00000'}
+                                    height="25px"
+                                    width="25px"
+                                    onClick={toggleLike}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                            }
+                            <p>{likesState.length} likes</p>
+                        </div>
+                        <div className="actionBox" >
+                            <ChatbubblesOutline
+                                color={'#FFF'}
                                 height="25px"
                                 width="25px"
-                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                                onClick={toggleComments}
+                            />
+                            <p>{commentCount} comments</p>
+                        </div>
+                        <div className="actionBox" >
+                            <RepeatSharp
+                                color={'#FFF'}
+                                height="25px"
+                                width="25px"
                                 style={{ cursor: 'pointer' }}
                             />
+                            <p>{repostCount} reposts</p>
+                        </div>
+
+                        <ReactTooltip place="bottom" type="light" effect="solid" />
+                    </CardLeft>
+
+                    <CardRigth>
+                        <IconsDiv>
+                            <NavLink
+                                className="usernameLink"
+                                to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                            >
+                                <h3 className="username">{user.username}</h3>
+                            </NavLink>
+                            {isPostFromLocalUser &&
+                                <div>
+                                    <IconEdit onClick={toggleEditBox} />
+                                    <IconDelete onClick={() => setConfirmDeleteState(true)} />
+                                </div>
+                            }
+                        </IconsDiv>
+
+                        {isEditing ?
+                            <EditPostInput
+                                ref={editInputRef}
+                                value={editingText}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        editPost();
+                                    }
+                                    if (e.key === 'Escape') {
+                                        e.preventDefault();
+                                        toggleEditBox()
+                                    }
+                                }}
+                                onChange={(e) => setEditingText(e.target.value)}
+                                disabled={isEditLoading}
+                            /> :
+                            <p className="description" onClick={toggleEditBox}>{renderDescription(text)}</p>
+                        }
+                        {youtubeId ?
+                            <YouTbFrame youtubeId={youtubeId} />
                             :
-                            <HeartOutline
-                                color={'#00000'}
-                                height="25px"
-                                width="25px"
-                                onClick={toggleLike}
-                                style={{ cursor: 'pointer' }}
+                            <LinkContent>
+                                <a href={link} target="_blank">
+                                    <div className="linkContent">
+                                        <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                        <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                        <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                                    </div>
+                                    <div class="imgContainer">
+                                        {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
+                                    </div>
+                                </a>
+                            </LinkContent>
+                        }
+                    </CardRigth>
+                </CardContainer>
+                {isCommentsOpen &&
+                    <>
+                        {comments.map((comment) => <CommentCard user={comment.user} text={comment.text} userId={user.id} />)}
+
+                        <CommentCardBox>
+                            <Link to={`/user/${user.id}`}><ImgComment src={userData.user.avatar} alt="userImage" /></Link>
+                            <CommentInput
+                                value={commentText}
+                                placeholder="write a comment..."
+                                onChange={e => setCommentText(e.target.value)}
                             />
-                        }
-                        <p>{likesState.length} likes</p>
-                    </div>
-                    <div className="actionBox" >
-                        <ChatbubblesOutline
-                            color={'#FFF'}
-                            height="25px"
-                            width="25px"
-                            style={{ cursor: 'pointer' }}
-                        />
-                        <p>{commentCount} comments</p>
-                    </div>
-                    <div className="actionBox" >
-                        <RepeatSharp
-                            color={'#FFF'}
-                            height="25px"
-                            width="25px"
-                            style={{ cursor: 'pointer' }}
-                        />
-                        <p>{repostCount} reposts</p>
-                    </div>
-
-                    <ReactTooltip place="bottom" type="light" effect="solid" />
-                </CardLeft>
-
-                <CardRigth>
-                    <IconsDiv>
-                        <NavLink
-                            className="usernameLink"
-                            to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
-                        >
-                            <h3 className="username">{user.username}</h3>
-                        </NavLink>
-                        {isPostFromLocalUser &&
-                            <div>
-                                <IconEdit onClick={toggleEditBox} />
-                                <IconDelete onClick={() => setConfirmDeleteState(true)} />
+                            <div className="send">
+                                <PaperPlaneOutline
+                                    color={'#F3F3F3'}
+                                    height="15px"
+                                    width="15px"
+                                    style={{
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={comment} />
                             </div>
-                        }
-                    </IconsDiv>
-
-                    {isEditing ?
-                        <EditPostInput
-                            ref={editInputRef}
-                            value={editingText}
-                            onKeyDown={e => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    editPost();
-                                }
-                                if (e.key === 'Escape') {
-                                    e.preventDefault();
-                                    toggleEditBox()
-                                }
-                            }}
-                            onChange={(e) => setEditingText(e.target.value)}
-                            disabled={isEditLoading}
-                        /> :
-                        <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
-                    }
-                    {youtubeId ?
-                        <YouTbFrame youtubeId={youtubeId} />
-                        :
-                        <LinkContent>
-                            <a href={link} target="_blank">
-                                <div className="linkContent">
-                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
-                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
-                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
-                                </div>
-                                <div class="imgContainer">
-                                    {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
-                                </div>
-                            </a>
-                        </LinkContent>
-                    }
-                </CardRigth>
-            </CardContainer>
+                        </CommentCardBox>
+                    </>
+                }
+            </CommentBox>
         </>
     )
 }
