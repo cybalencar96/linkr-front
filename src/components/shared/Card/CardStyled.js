@@ -343,7 +343,7 @@ export {
     CommentBox,
     CommentCardBox,
     CommentInput,
-    ImgComment
+    ImgComment,
     IframeContainer,
 
 }
