@@ -30,16 +30,20 @@ function getHashtags(config) {
     return axios.get(`${BASE_URL}/hashtags/trending`, config);
 }
 
-function getMyLikedPosts(config) {
-    return axios.get(`${BASE_URL}/posts/liked`, config);
+function getMyLikedPosts(config, page) {
+    return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
-function getPostsByUserId (userId, token){
-    return axios.get(`${BASE_URL}/users/${userId}/posts`, createConfig(token));
+function getPostsByUserId (userId, token, page){
+    return axios.get(`${BASE_URL}/users/${userId}/posts?limit=10&offset=${page}`, createConfig(token));
 }
 
-function getPostsByHashtag (hashtag, config) {
-    return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, config);
+function getPostsByUser (userId, config, page){
+    return axios.get(`${BASE_URL}/users/${userId}/posts?limit=10&offset=${page}`, config);
+}
+
+function getPostsByHashtag (hashtag, config, page) {
+    return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts?limit=10&offset=${page}`, config);
 }
 
 function sendLikeRequest (postId, token) {
@@ -81,8 +85,8 @@ function validadeUrlImage(url) {
     return axios.get(`${url}`);
 }
 
-function getPostsByFollowUsers (token) {
-    return axios.get(`${BASE_URL}/following/posts`, createConfig(token));
+function getPostsByFollowUsers (token, type) {
+    return axios.get(`${BASE_URL}/following/posts` + type, createConfig(token));
 }
 export {
     sendLoginRequest,
@@ -104,6 +108,6 @@ export {
     getListOfFollowingRequest,
     validadeUrlImage,
     getPostsByFollowUsers,
-    
+    getPostsByUser,
 }
 

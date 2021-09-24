@@ -79,7 +79,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             editInputRef.current.focus();
             setEditingText(text);
         }
-        setIsUserImageValid(isValidUserImage(user.avatar))
+        setIsUserImageValid(isValidUserImage(user.avatar));
 
     }, [isEditing]);
 
@@ -104,7 +104,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 .then(res => {
                     setLikesState(res.data.post.likes)
                     if (isMyLikesPage)
-                        renderPosts()
+                        renderPosts(true)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -120,7 +120,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 .then(res => {
                     setLikesState(res.data.post.likes)
                     if (isMyLikesPage)
-                        renderPosts()
+                        renderPosts(true)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -167,7 +167,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             .then(() => {
                 setIsLoading(false);
                 setConfirmDeleteState(false);
-                renderPosts();
+                renderPosts(true);
             })
             .catch(() => {
                 setIsLoading(false);
@@ -191,7 +191,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
-                renderPosts();
+                renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {

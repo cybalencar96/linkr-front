@@ -13,7 +13,6 @@ export default function HashtagsInTranding (props) {
     const history = useHistory();
 
     useEffect(() => {
-        
         const config = {
             headers: {
                 Authorization : `Bearer ${userData.token}`
@@ -40,11 +39,9 @@ export default function HashtagsInTranding (props) {
             <div className="fixed">
                 <h1>trending</h1>
                 <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag, index) => {
+                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
                             return (
-                                <Link to={`/hashtag/${hashtag.name}`} key={index}>
-                                    <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
-                                </Link>
+                                    <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
                             )
                         }
                     )}
