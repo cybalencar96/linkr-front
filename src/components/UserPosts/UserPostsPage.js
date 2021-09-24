@@ -10,7 +10,7 @@ import {
     getPostsByUserId,
     sendFollowRequest,
     sendUnfollowRequest } from "../../services/Linkr";
-import Loading from "../shared/Loading";
+import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
 import YoutubeContext from "../../contexts/YoutubeContext";
@@ -18,7 +18,10 @@ import useWindowDimensions from "../../services/hooks/useWindowDimensions";
 import SearchBar from "../shared/Topbar/SearchBar";
 import { PublishButton } from "../shared/PublishLink/PostLink";
 import FollowingContext from "../../contexts/FollowingContext";
+import InfiniteScroll from "react-infinite-scroll-component";
 
+
+let page = 0;
 
 export default function UserPostsPage() {
     const { userData } = useContext(UserContext);
@@ -31,27 +34,50 @@ export default function UserPostsPage() {
     const {windowWidth} = useWindowDimensions();
     const [isFollowing, setIsFollowing] = useState(false)
 
+    const [hasNext, setHasNext] = useState(true);
+
     useEffect(() => {
         setYoutubeVideos([]);
 
         if (userData) {
-            if (id == userData.user.id)
+            if (id === userData.user.id)
                 history.push("/my-posts")
-            renderPosts();
+
             setIsFollowing(listOfFollowing.includes(Number(id)))
-            
+            renderPosts(true);
+            getListOfFollowing();
+
         }
     },[id,userData])
+    
+    function renderPosts(reload) {
+        
+        setIsLoading(true);
 
-    function renderPosts() {
-        getPostsByUserId(id, userData.token)
-            .then(res => {
-                setPosts(res.data.posts)
-            })
-            .catch(err => {
-                alert("Houve uma falha ao obter os posts, por favor atualize a página")
-                history.push("/");
-            })
+        if(reload){
+
+            page = 0;
+        }
+
+        getPostsByUserId(id, userData.token, page)
+        .then(res => {
+            setIsLoading(false);
+
+            if(!page){
+                setPosts(res.data.posts);
+                setHasNext(true);
+            }
+            else{
+                setPosts(posts.concat(res.data.posts));
+            }            
+            if(res.data.posts.length < 10){
+                setHasNext(!hasNext);
+            }
+        })
+        .catch(err => {
+            setIsLoading(false);
+            alert("Houve uma falha ao obter os posts, por favor atualize a página")
+        })
     }
 
     function toggleFollow() {
@@ -88,6 +114,13 @@ export default function UserPostsPage() {
         return <Loading />
     }
 
+    const fetchMoreData = () => {
+        setTimeout(() => {
+          page += 11;
+          renderPosts();
+        }, 2000);
+    };
+
     return (
         <PageStyled centralized>
             <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
@@ -100,7 +133,15 @@ export default function UserPostsPage() {
                 </PageTitle>
                 <div className="content">
                     <div>
-                        {posts.length !== 0 ? posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />) : <NoPosts />}
+                        {posts.length !== 0 ? 
+                        <InfiniteScroll
+                        dataLength={posts.length}
+                        next={fetchMoreData}
+                        hasMore={hasNext}
+                        loader={CardLoadingScreen()}
+                        > 
+                        {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />)}
+                        </InfiniteScroll> : <NoPosts />}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading} />
                 </div>
