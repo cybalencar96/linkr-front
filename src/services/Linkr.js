@@ -89,6 +89,9 @@ function sendComment(postId, text, token){
     return axios.post(`${BASE_URL}/posts/${postId}/comment`, {text}, createConfig(token));
 }
 
+function getPostsByFollowUsers (token) {
+    return axios.get(`${BASE_URL}/following/posts`, createConfig(token));
+}
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -109,6 +112,7 @@ export {
     getListOfFollowingRequest,
     validadeUrlImage,
     getComments,
-    sendComment
+    sendComment,
+    getPostsByFollowUsers,
 }
 
