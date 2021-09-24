@@ -81,8 +81,8 @@ function validadeUrlImage(url) {
     return axios.get(`${url}`);
 }
 
-function getPostsByFollowUsers (token) {
-    return axios.get(`${BASE_URL}/following/posts`, createConfig(token));
+function getPostsByFollowUsers (token, type) {
+    return axios.get(`${BASE_URL}/following/posts` + type, createConfig(token));
 }
 export {
     sendLoginRequest,
