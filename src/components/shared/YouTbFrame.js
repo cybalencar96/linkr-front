@@ -11,7 +11,6 @@ export default function YouTbFrame({youtubeId}) {
         eventTarget: null,
         playing: false,
         playerId: youtubeId,
-        origin: 'http://localhost:3000/'
     });
 
     //hook to observe if video is in viewport
@@ -27,6 +26,8 @@ export default function YouTbFrame({youtubeId}) {
         playerVars: {
           autoplay: 0,
           fs:0,
+          enablejsapi:1,
+          origin: 'http://localhost:3000'
         },
     };
  

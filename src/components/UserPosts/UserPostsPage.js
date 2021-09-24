@@ -37,12 +37,12 @@ export default function UserPostsPage(props) {
     const [hasNext, setHasNext] = useState(true);
     const location = useLocation();
     const username = location.state ? location.state.username : null;
+    
     useEffect(() => {
         setYoutubeVideos([]);
 
         if (userData) {
-            if (id === userData.user.id)
-                history.push("/my-posts")
+            if (id === userData.user.id) {history.push("/my-posts")}
             renderPosts(true);
             getListOfFollowing();
             getUserOwnerOfPage();
@@ -70,15 +70,16 @@ export default function UserPostsPage(props) {
         setIsLoading(true);
 
         if(reload){
-
             page = 0;
         }
 
         getPostsByUserId(id, userData.token, page)
         .then(res => {
             setIsLoading(false);
+            console.log(res.data.posts)
 
             if(!page){
+                setPosts([]);
                 setPosts(res.data.posts);
                 setHasNext(true);
             }
@@ -91,7 +92,11 @@ export default function UserPostsPage(props) {
         })
         .catch(err => {
             setIsLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Houve uma falha ao obter os posts, por favor atualize a página!',
+              })
         })
     }
 
