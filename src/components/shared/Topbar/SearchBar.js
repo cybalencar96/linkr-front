@@ -6,6 +6,8 @@ import UserContext from "../../../contexts/UserContext";
 import { SearchBarContainer,SuggestionsContainer,SuggestedList,UserSuggestedContainer } from './TopbarStyled'
 import UserImage from "../UserImage";
 import { Link, useHistory } from "react-router-dom";
+import Swal from 'sweetalert2';
+
 
 export default function SearchBar({display}) {
     const {userData} = useContext(UserContext)
@@ -23,7 +25,11 @@ export default function SearchBar({display}) {
                 history.push(`/user/${userToBeFound[0].id}`)
             } else {
                 setUserSuggestions([]);
-                alert('usuario não encontrado')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'User not found!',
+                  })
             }
         })
     }

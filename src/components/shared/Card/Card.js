@@ -228,7 +228,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
             <CardContainer>
                 <CardLeft>
-                    <Link to={`/user/${user.id}`}>
+                    <Link to={{ pathname:`/user/${user.id}`, state:{ username:user.username } }}>
                         {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                     </Link>
                     <div className="likeBox" data-tip={createTooltip()}>
@@ -258,7 +258,12 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     <IconsDiv>
                         <NavLink
                             className="usernameLink"
-                            to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                            to={{
+                                pathname:`/user/${user.id}`,
+                                state:{
+                                      username:user.username
+                                     }
+                                }}     
                         >
                             <h3 className="username">{user.username}</h3>
                         </NavLink>
