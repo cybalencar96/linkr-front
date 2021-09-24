@@ -17,10 +17,12 @@ import YoutubeContext from "../../contexts/YoutubeContext";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions";
 import SearchBar from "../shared/Topbar/SearchBar";
 import { PublishButton } from "../shared/PublishLink/PostLink";
+import FollowingContext from "../../contexts/FollowingContext";
 
 
 export default function UserPostsPage() {
     const { userData } = useContext(UserContext);
+    const { listOfFollowing, setListOfFollowing } = useContext(FollowingContext)
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const { id } = useParams();
@@ -36,7 +38,8 @@ export default function UserPostsPage() {
             if (id == userData.user.id)
                 history.push("/my-posts")
             renderPosts();
-            getListOfFollowing();
+            setIsFollowing(listOfFollowing.includes(Number(id)))
+            
         }
     },[id,userData])
 
@@ -51,26 +54,13 @@ export default function UserPostsPage() {
             })
     }
 
-    function getListOfFollowing(){
-        setIsLoading(true);
-        getListOfFollowingRequest(userData.token)
-            .then((res) => {
-                const serverResponse = res.data.users;
-                setIsFollowing(serverResponse.map((user) => user.id).includes(Number(id)));
-            })
-            .catch(err => {
-                alert(err);
-            })
-            .finally(() => setIsLoading(false))
-
-    }
-
     function toggleFollow() {
         setIsLoading(true);
         if(isFollowing){
             sendUnfollowRequest(id, userData.token)
                 .then(res => {
                     setIsFollowing(false);
+                    setListOfFollowing(() => listOfFollowing.filter((listId) => listId != id))
                 })
                 .catch(err => {
                     console.log(err.response)
@@ -80,6 +70,8 @@ export default function UserPostsPage() {
             sendFollowRequest(id, userData.token)
                 .then(res => {
                     setIsFollowing(true);
+                    
+                    setListOfFollowing([...listOfFollowing, Number(id)])
                 })
                 .catch(err => {})
                 .finally(() => setIsLoading(false))

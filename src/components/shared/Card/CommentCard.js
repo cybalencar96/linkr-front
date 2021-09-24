@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react/cjs/react.development";
 import styled from "styled-components";
+import FollowingContext from "../../../contexts/FollowingContext";
 import { CommentCardBox, ImgComment } from "./CardStyled";
 
 export default function CommentCard({ user, text, userId }) {
+    const {listOfFollowing} = useContext(FollowingContext);
     return (
         <>
             <CommentCardBox>
@@ -12,6 +15,7 @@ export default function CommentCard({ user, text, userId }) {
                 <div className="container">
                     <Link to={`/user/${user.id}`}><Username>{user.username}</Username></Link>
                     {user.id === userId && <Tag> • post’s author</Tag>}
+                    {listOfFollowing.includes(user.id) && <Tag> • following</Tag> }
                     <p>{text}</p>
                 </div>
             </CommentCardBox>
