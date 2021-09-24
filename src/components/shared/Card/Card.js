@@ -225,7 +225,13 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     function comment() {
         sendComment(id, commentText, userData.token)
-            .then(res => console.log(res.data))
+            .then(res => {
+                setCommentText("");
+                getComments(id, userData.token)
+                    .then(res => setComments(res.data.comments))
+                    .catch(err => { })
+            })
+            .catch(err => alert("Could comment the post! Please repeat the procedure."))
     }
 
     return (
@@ -343,6 +349,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 value={commentText}
                                 placeholder="write a comment..."
                                 onChange={e => setCommentText(e.target.value)}
+                                onKeyUp={e => {if(e.key === "Enter") comment()}}
                             />
                             <div className="send">
                                 <PaperPlaneOutline

@@ -70,6 +70,7 @@ const CardRigth = styled.section`
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
+            word-wrap: break-word;
         }
 
         & .description span{
@@ -205,7 +206,7 @@ const IconsDiv = styled.div`
 
 const CommentBox = styled.div`
     border-radius: 16px;
-
+    width: 610px;
     background-color: #1E1E1E;
     margin: 0px 0 30px 0;
     display: flex;
@@ -217,12 +218,18 @@ const CommentCardBox = styled.div`
     padding: 15px 15px 15px 25px;
     font-size: 14px;
     color: #ACACAC;
+    width: 610px;
 
     & .container {
         padding: 5px 18px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
     }
     & p {
         margin-top: 5px;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     & .send {
         width: 39px;
