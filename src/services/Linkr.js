@@ -30,8 +30,8 @@ function getHashtags(config) {
     return axios.get(`${BASE_URL}/hashtags/trending`, config);
 }
 
-function getMyLikedPosts(config) {
-    return axios.get(`${BASE_URL}/posts/liked`, config);
+function getMyLikedPosts(config, page) {
+    return axios.get(`${BASE_URL}/posts/liked?limit=10&offset=${page}`, config);
 }
 
 function getPostsByUserId (userId, token){
