@@ -13,7 +13,6 @@ export default function HashtagsInTranding (props) {
     const history = useHistory();
 
     useEffect(() => {
-        
         const config = {
             headers: {
                 Authorization : `Bearer ${userData.token}`
