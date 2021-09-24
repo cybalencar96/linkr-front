@@ -45,8 +45,6 @@ export default function UserPostsPage() {
 
             setIsFollowing(listOfFollowing.includes(Number(id)))
             renderPosts(true);
-            getListOfFollowing();
-
         }
     },[id,userData])
     
