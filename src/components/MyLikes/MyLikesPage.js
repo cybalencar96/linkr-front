@@ -31,24 +31,7 @@ export default function MyLikesPage() {
             renderPosts(true);
         }
     },[userData])
-    /*padron
-    function renderPosts() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
-        setIsLoading(true);
-        getMyLikedPosts(config)
-        .then(res => {
-            setIsLoading(false);
-            setPosts(res.data.posts)
-        })
-        .catch(err => {
-            setIsLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
-        })
-    }*/
+    
     function renderPosts(reload) {
         const config = {
             headers: {

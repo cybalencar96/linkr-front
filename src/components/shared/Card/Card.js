@@ -74,7 +74,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             editInputRef.current.focus();
             setEditingText(text);
         }
-        setIsUserImageValid(isValidUserImage(user.avatar))
+        setIsUserImageValid(isValidUserImage(user.avatar));
 
     }, [isEditing]);
 
@@ -186,7 +186,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
-                renderPosts();
+                renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {

@@ -38,6 +38,10 @@ function getPostsByUserId (userId, token){
     return axios.get(`${BASE_URL}/users/${userId}/posts`, createConfig(token));
 }
 
+function getPostsByUser (userId, config, page){
+    return axios.get(`${BASE_URL}/users/${userId}/posts?limit=10&offset=${page}`, config);
+}
+
 function getPostsByHashtag (hashtag, config, page) {
     return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts?limit=10&offset=${page}`, config);
 }
@@ -104,6 +108,6 @@ export {
     getListOfFollowingRequest,
     validadeUrlImage,
     getPostsByFollowUsers,
-    
+    getPostsByUser,
 }
 
