@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react/cjs/react.development";
+import { useContext } from "react";
 import styled from "styled-components";
 import FollowingContext from "../../../contexts/FollowingContext";
 import { CommentCardBox, ImgComment } from "./CardStyled";
