@@ -7,6 +7,7 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IframeContainer,
 } from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
@@ -26,6 +27,7 @@ import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import YoutubeContext from "../../../contexts/YoutubeContext";
+import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -58,7 +60,10 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-    const youtubeId = getYouTubeID(link, { fuzzy: false });
+
+    const [isIframeOpen, setIsIframeOpen] = useState(false);
+    const youtubeId = getYouTubeID(link, {fuzzy: false});
+    const { windowWidth } = useWindowDimensions();
 
     useEffect(() => {
         setLikesState(likes.map(like => {
@@ -206,6 +211,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
     }
 
+    function openIframe(e) {
+        if (windowWidth > 992) {
+            (e.target !== e.currentTarget) && setIsIframeOpen(true);
+        } else {
+            window.open(link)
+        }
+    }
+
+    function closeIframe(e) {
+        (e.target === e.currentTarget) && setIsIframeOpen(false);
+    }
+
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
@@ -272,22 +289,35 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         /> :
                         <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
                     }
-                    {youtubeId ?
-                        <YouTbFrame youtubeId={youtubeId} />
-                        :
-                        <LinkContent>
-                            <a href={link} target="_blank">
-                                <div className="linkContent">
-                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
-                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
-                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
-                                </div>
-                                <div class="imgContainer">
-                                    {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
-                                </div>
-                            </a>
+
+                    {
+                        youtubeId ? 
+                         <YouTbFrame youtubeId={youtubeId}/>
+                         :
+                        <LinkContent onClick={openIframe}>
+                            <div className="linkContent">
+                                <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                            </div>
+                            <div class="imgContainer">
+                                {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
+                            </div>
                         </LinkContent>
                     }
+                    
+                    { isIframeOpen &&
+                        <IframeContainer onClick={closeIframe}>
+                            <section>
+                                <header>
+                                    <a href={link} target="_blank" onClick={closeIframe}>Open in new tab</a>
+                                    <p onClick={closeIframe}>X</p>
+                                </header>
+                                <iframe className="iframe" src={link}></iframe>
+                            </section>
+                        </IframeContainer>
+                    }
+
                 </CardRigth>
             </CardContainer>
         </>

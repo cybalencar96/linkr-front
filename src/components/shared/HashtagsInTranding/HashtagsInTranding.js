@@ -51,7 +51,7 @@ export default function HashtagsInTranding (props) {
                 </UlHashtags>
                 <div className="inputContainer">
                     <p>#</p>
-                    <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+                    <InputButtonTrending type='text' placeholder='type a hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
                 </div>
            </div>
         </ContainerTranding>
@@ -81,7 +81,7 @@ const ContainerTranding = styled.div`
 
     & .fixed .inputContainer {
         height: 30px;
-        background-color: rgba(50, 50, 50, 1);
+        background-color: #252525;
         font-family: 'Lato', sans-serif;
         font-weight: 700;
         border: none;
@@ -95,7 +95,7 @@ const ContainerTranding = styled.div`
     }
 
     & .fixed .inputContainer p {
-        font-size: 25px
+        font-size: 19px
     }
 
     @media(max-width: 992px){
@@ -125,7 +125,7 @@ const LiHashtags = styled.li`
 `;
 
 const InputButtonTrending = styled.input`
-    background-color: rgba(50, 50, 50, 1);
+    background-color: #252525;
     font-family: 'Lato', sans-serif;
     display:flex;
     align-items:center;
@@ -138,8 +138,9 @@ const InputButtonTrending = styled.input`
     font-weight: 700;
 
     &::placeholder, &::placeholder{
-        font-weight: 300;
-        color: #949494;
+        font-weight: 500;
+        font-style: italic;
+        color: #575757;
     }
     &:not(:focus), &:focus{
         padding-left: 10px;
