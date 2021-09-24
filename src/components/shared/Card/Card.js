@@ -341,7 +341,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 </CardContainer>
                 {isCommentsOpen &&
                     <>
-                        {comments.map((comment) => <CommentCard user={comment.user} text={comment.text} userId={user.id} />)}
+                        {comments.map((comment) => <CommentCard user={comment.user} text={renderDescription(comment.text)} userId={user.id} />)}
 
                         <CommentCardBox>
                             <Link to={`/user/${user.id}`}><ImgComment src={userData.user.avatar} alt="userImage" /></Link>
