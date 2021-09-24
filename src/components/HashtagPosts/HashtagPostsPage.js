@@ -5,7 +5,7 @@ import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
-import Loading from "../shared/Loading";
+import Loading, { CardLoadingScreen } from "../shared/Loading";
 import { getPostsByHashtag } from "../../services/Linkr";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -13,6 +13,9 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import NoPosts from "../shared/NoPosts";
 import YoutubeContext from "../../contexts/YoutubeContext";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+let page = 0;
 
 export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
@@ -21,25 +24,45 @@ export default function HashtagPostsPage() {
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
+
+    const [hasNext, setHasNext] = useState(true);
  
     useEffect(() => {
         setYoutubeVideos([])
 
         if (userData) {
-            renderPosts();
+            renderPosts(true);
         }
     }, [hashtag, userData])
-
-    function renderPosts() {
+    
+    function renderPosts(reload) {
         const config = {
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         }
-        getPostsByHashtag(hashtag, config)
+
+        if(reload){
+
+            page = 0;
+        }
+
+        getPostsByHashtag(hashtag, config, page)
         .then(response => {
             setTimeout(() => {setIsLoading(false)}, 1000)
-            setPosts(response.data.posts);
+
+            if(!page){
+                setPosts(response.data.posts);
+                setHasNext(true);
+            }
+            else{
+                setPosts(posts.concat(response.data.posts));
+            }
+
+            if(response.data.posts.length < 10) {
+
+                setHasNext(!hasNext);
+            }
         })
         .catch(error => {
             alert("Failed to get posts from this hashtag, please refresh page")
@@ -47,11 +70,19 @@ export default function HashtagPostsPage() {
     }
 
 
+
     if(!posts){
         return(
             <Loading />
         )
     }
+
+    const fetchMoreData = () => {
+        setTimeout(() => {
+          page += 11;
+          renderPosts();
+        }, 2000);
+    };
   
     return (
         <PageStyled centralized>
@@ -62,8 +93,14 @@ export default function HashtagPostsPage() {
                         {isLoading ?
                             <NoPosts centralized content={<Loader type="Hearts" color="#00BFFF" height={80} width={80} />}/> :
                             posts.length !== 0 ?
-                                posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>) :
-                                <NoPosts/>}
+                            <InfiniteScroll
+                                dataLength={posts.length}
+                                next={fetchMoreData}
+                                hasMore={hasNext}
+                                loader={CardLoadingScreen()}
+                            > 
+                            {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts}/>)} 
+                            </InfiniteScroll> : <NoPosts/>}
                     </Separator>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>
                 </div>
