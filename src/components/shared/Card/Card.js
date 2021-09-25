@@ -7,6 +7,7 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
     CommentBox,
     CommentCardBox,
     CommentInput,
@@ -16,7 +17,7 @@ import {
 import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp, PaperPlaneOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link,useHistory } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import {
@@ -34,6 +35,9 @@ import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import CommentCard from "./CommentCard";
 import YoutubeContext from "../../../contexts/YoutubeContext";
+import MapView from "../GeolocationCardModal";
+import { IoCloseOutline } from "react-icons/io5"
+import { IoLocationSharp } from "react-icons/io5"
 import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
 
 
@@ -47,8 +51,9 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         linkImage,
         linkTitle,
         text,
+        geolocation,
         user,
-        repostCount
+        repostCount,
     } = post
 
     const [likesState, setLikesState] = useState(likes.map(like => {
@@ -68,8 +73,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-
     const youtubeId = getYouTubeID(link, { fuzzy: false });
+    const [showMap, setShowMap] = useState(false);
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState("");
@@ -257,6 +262,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
+
+            {showMap ? <MapView  username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap}/> : ""}
             <CommentBox>
                 <CardContainer>
                     <CardLeft>
@@ -302,18 +309,21 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             />
                             <p>{repostCount} reposts</p>
                         </div>
-
                         <ReactTooltip place="bottom" type="light" effect="solid" />
                     </CardLeft>
 
                     <CardRigth>
                         <IconsDiv>
-                            <NavLink
-                                className="usernameLink"
-                                to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
-                            >
-                                <h3 className="username">{user.username}</h3>
-                            </NavLink>
+                            <div className="usernameContainer">
+                                <NavLink
+                                    className="usernameLink"
+                                    to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                                >
+                                    <h3 className="username">{user.username}</h3>
+                                </NavLink>
+                                {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
+                            </div>
+                            
                             {isPostFromLocalUser &&
                                 <div>
                                     <IconEdit onClick={toggleEditBox} />

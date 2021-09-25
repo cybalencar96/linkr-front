@@ -3,12 +3,30 @@ import { Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { sendPostLinkRequest } from "../../../services/Linkr";
+import { IoLocationOutline } from "react-icons/io5"
 export default function PostLink ({renderPosts}) {
 
     const [url, setUrl] = useState("");
     const [comment, setComment] = useState("");
     const {userData} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
+    const [locationState, setLocationState] = useState(false);
+    const [coordinates, setCoordinates] = useState("")
+    function activeLocation () {
+        if ("geolocation" in navigator) {
+          
+          setLocationState(!locationState)
+          navigator.geolocation.getCurrentPosition(function(position) {
+            setCoordinates(!locationState ? position.coords : "");
+          }, function(error){
+              alert("Erro ao adquirir coordenadas")
+          })      
+        }
+        else {
+          alert("Não foi possível encontrar a localização")
+          setLocationState(false)
+        }
+    }
 
     function publish (event) {
 
@@ -18,8 +36,12 @@ export default function PostLink ({renderPosts}) {
 
         const body = {
             "text": comment,
-            "link": url
-        }
+            "link": url,
+            geolocation: {
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude
+            }
+        };
         const config ={
             headers: {
                 "Authorization": `Bearer ${userData.token}`
@@ -27,10 +49,10 @@ export default function PostLink ({renderPosts}) {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                renderPosts()
+                renderPosts();
+                if (locationState) setLocationState(false);
             })
             .catch(error => {
-                console.log(error);
                 alert("oops! Houve um erro ao publicar seu link");
             })
             .finally(() => {
@@ -61,7 +83,13 @@ export default function PostLink ({renderPosts}) {
                         onChange={(e) => setComment(e.target.value)}
                         disabled={isLoading}
                     />
-                    <PublishButton type="submit" disabled={isLoading}>{isLoading? "Publishing..." : "Publish"}</PublishButton>
+                    <FooterPublishLink>
+                        <LocationButton locationState={locationState}  onClick={activeLocation}>
+                        <LocationICon />
+                            {locationState ? "Localização ativada" : "Localização desativada"}
+                        </LocationButton>
+                        <PublishButton type="submit" disabled={isLoading}>{isLoading? "Publishing..." : "Publish"}</PublishButton>
+                    </FooterPublishLink>
                 </ContainerSubmit>
             </ContainerPost>
         </PostDiv>
@@ -120,6 +148,16 @@ const PostDiv = styled.div`
         }
         input, textarea {
             width: 90vw;
+            font-size: 13px;
+        }
+        & a:first-child {
+            display: none;
+        }   
+    }
+
+    @media (max-width: 280px){
+        input, textarea {
+            width: 97vw;
             font-size: 13px;
         }
     }
@@ -190,6 +228,28 @@ const PublishButton = styled.button`
         height: 22px;
         font-size: 13px;
     }
+`
+const LocationButton = styled.div`
+  background-color: #ffffff;
+  color: ${({locationState}) => locationState ? "#238700" : "#949494"};
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  width: 160px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+  } 
+`;
+
+const LocationICon = styled(IoLocationOutline)`
+  width: 18px;
+  height: 18px;
+`;
+
+const FooterPublishLink = styled.div`
+    display: flex;
+    justify-content: space-between;
 `
 export {
     PublishButton
