@@ -319,6 +319,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
                             >
                                 <h3 className="username">{user.username}</h3>
+                                {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
                             </NavLink>
                             {isPostFromLocalUser &&
                                 <div>

@@ -54,6 +54,8 @@ const CardRigth = styled.section`
 
         & .usernameLink {
             max-width: 85%;
+            display: flex;
+            gap: 5px;
         }
 
         & .username {
