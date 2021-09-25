@@ -97,10 +97,11 @@ const LinkContent = styled.div`
     overflow: hidden;
     cursor: pointer;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+    & .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
     & .linkContent {
         padding: 20px;
@@ -157,8 +158,6 @@ const LinkContent = styled.div`
         }
         & .linkContent{
             padding: 5px 10px;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         & .linkContent .linkTitle{
             font-size: 11px;
@@ -173,6 +172,10 @@ const LinkContent = styled.div`
             line-height: 9px;
             font-size: 9px;
             height: 33px;
+        }
+        & .overflowHidden {
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 `;

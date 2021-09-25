@@ -346,11 +346,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             <YouTbFrame youtubeId={youtubeId} />
                             :
                             <LinkContent>
-                                <a href={link} target="_blank">
+                                <a href={link} target="_blank" className="wrapper">
                                     <div className="linkContent">
-                                        <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
-                                        <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
-                                        <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                                        <h3 className="linkTitle overflowHidden">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                        <p className="linkDescription overflowHidden">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                        <p className="linkUrl overflowHidden">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
                                     </div>
                                     <div class="imgContainer">
                                         {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
