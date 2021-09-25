@@ -74,7 +74,6 @@ export default function MyPostsPage() {
         setTimeout(() => {
           page += 11;
           renderPosts();
-          console.log(posts)
         }, 2000);
     };
 

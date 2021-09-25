@@ -47,7 +47,7 @@ export default function SearchBar({display}) {
 
                 setUserSuggestions(suggestions)
             })
-            .catch(err => console.log(err.response))
+            .catch(err => alert("ops! ocorreu um erro"))
         }
     }
 

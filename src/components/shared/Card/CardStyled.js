@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { IoLocationSharp } from "react-icons/io5";
 import UserImage from "../UserImage";
 
 const CardContainer = styled.article`
@@ -51,10 +52,12 @@ const CardRigth = styled.section`
         justify-content: space-around;
         gap: 10px;
 
-        & .usernameLink {
+        & .usernameContainer {
             max-width: 85%;
+            display: flex;
+            gap: 5px;
         }
-
+        
         & .username {
             width:100%;
             overflow: hidden;
@@ -62,6 +65,7 @@ const CardRigth = styled.section`
             font-size: 19px;
             padding: 0 0 10px 0;
             cursor: pointer;
+            word-break: break-word;
         }
 
         & .description {
@@ -206,6 +210,16 @@ const IconDelete = styled(FaTrash)`
     }
 `;
 
+const IconLocation = styled(IoLocationSharp)`
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+    &:hover{
+        color: red;
+    }
+    /* align-self: flex-start; */
+    /* margin-right: 90px; */
+`
 const IconEdit = styled(RiPencilFill)`
     cursor: pointer;
     &:hover{
@@ -361,10 +375,10 @@ export {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
     CommentBox,
     CommentCardBox,
     CommentInput,
     ImgComment,
     IframeContainer,
-
 }
