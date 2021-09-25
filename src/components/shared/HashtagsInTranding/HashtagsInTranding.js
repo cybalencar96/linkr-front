@@ -40,21 +40,19 @@ export default function HashtagsInTranding (props) {
     }
     return (
         <ContainerTranding>
-            <div className="fixed">
-                <h1>trending</h1>
-                <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
-                            return (
-                                    <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
-                            )
-                        }
-                    )}
-                </UlHashtags>
-                <div className="inputContainer">
-                    <p>#</p>
-                    <InputButtonTrending type='text' placeholder='type a hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
-                </div>
-           </div>
+            <h1>trending</h1>
+            <UlHashtags>
+                    {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
+                        return (
+                                <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
+                        )
+                    }
+                )}
+            </UlHashtags>
+            <div className="inputContainer">
+                <p>#</p>
+                <InputButtonTrending type='text' placeholder='type a hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+            </div>
         </ContainerTranding>
     )
 }
@@ -68,19 +66,17 @@ const ContainerTranding = styled.div`
     min-width: 301px;
     max-height: 435px;
     border-radius: 16px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 90px;
+    background-color: #171717;
+    border-radius: 16px;
 
     h1{
         margin: 12px 0 15px 18px;
     }
 
-    & .fixed {
-        position: fixed;
-        width: 301px;
-        background-color: #171717;
-        border-radius: 16px;
-    }
-
-    & .fixed .inputContainer {
+    & .inputContainer {
         height: 30px;
         background-color: #252525;
         font-family: 'Lato', sans-serif;
@@ -95,7 +91,7 @@ const ContainerTranding = styled.div`
         align-items: center;
     }
 
-    & .fixed .inputContainer p {
+    & .inputContainer p {
         font-size: 19px
     }
 
