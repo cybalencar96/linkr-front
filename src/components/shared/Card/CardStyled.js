@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { IoLocationSharp } from "react-icons/io5";
 
 const CardContainer = styled.article`
     width: 610px;
@@ -59,6 +60,7 @@ const CardRigth = styled.section`
             font-size: 19px;
             padding: 0 0 10px 0;
             cursor: pointer;
+            word-break: break-word;
         }
 
         & .description {
@@ -187,6 +189,16 @@ const IconDelete = styled(FaTrash)`
     }
 `;
 
+const IconLocation = styled(IoLocationSharp)`
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+    &:hover{
+        color: red;
+    }
+    /* align-self: flex-start; */
+    /* margin-right: 90px; */
+`
 const IconEdit = styled(RiPencilFill)`
     cursor: pointer;
     &:hover{
@@ -209,4 +221,5 @@ export {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
 }

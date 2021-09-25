@@ -7,11 +7,12 @@ import {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
 } from "./CardStyled";
 import { Heart, HeartOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link,useHistory } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import {
@@ -26,7 +27,9 @@ import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import YoutubeContext from "../../../contexts/YoutubeContext";
-
+import MapView from "../GeolocationCardModal";
+import { IoCloseOutline } from "react-icons/io5"
+import { IoLocationSharp } from "react-icons/io5"
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
         commentCount,
@@ -37,8 +40,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         linkImage,
         linkTitle,
         text,
+        geolocation,
         user
     } = post
+    console.log(post)
+    console.log("GEOLOZAITON ->>", geolocation)
 
     const [likesState, setLikesState] = useState(likes.map(like => {
         return {
@@ -59,7 +65,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
     const youtubeId = getYouTubeID(link, { fuzzy: false });
-
+    const [showMap, setShowMap] = useState(false);
+    const history = useHistory()
     useEffect(() => {
         setLikesState(likes.map(like => {
             return {
@@ -209,6 +216,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
+            {showMap ? <MapView  username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap}/> : ""}
             <CardContainer>
                 <CardLeft>
                     <Link to={`/user/${user.id}`}>
@@ -238,17 +246,15 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 </CardLeft>
 
                 <CardRigth>
+                    
                     <IconsDiv>
-                        <NavLink
-                            className="usernameLink"
-                            to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
-                        >
-                            <h3 className="username">{user.username}</h3>
-                        </NavLink>
+                        <h3 className="usernameLink" >
+                            <NavLink className="username" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}>{user.username}</NavLink> {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
+                        </h3>
                         {isPostFromLocalUser &&
                             <div>
                                 <IconEdit onClick={toggleEditBox} />
-                                <IconDelete onClick={() => setConfirmDeleteState(true)} />
+                                <IconDelete onClick={() => setConfirmDeleteState(true)} /> 
                             </div>
                         }
                     </IconsDiv>

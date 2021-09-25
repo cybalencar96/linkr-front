@@ -13,7 +13,6 @@ import NoPosts from "../shared/NoPosts";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { render } from "react-dom";
 
 let type = ""
 
@@ -68,7 +67,7 @@ export default function TimelinePage() {
     if (!posts) {
         return <Loading />
     }
-
+    
     function getListFollowUSers () {
 
         getListOfFollowingRequest(userData.token)
