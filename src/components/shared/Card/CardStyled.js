@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import UserImage from "../UserImage";
 
 const CardContainer = styled.article`
     width: 610px;
@@ -8,7 +9,7 @@ const CardContainer = styled.article`
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     padding: 20px 0;
 
     @media (max-width: 992px) {
@@ -26,13 +27,15 @@ const CardLeft = styled.section`
     align-items: center;
     
     & a {
-        margin: 0 0 20px 0;
+        margin: 0 0 15px 0;
     }
 
-    & .likeBox {
+    & .actionBox {
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 15px;
+        font-size: 11px;
     }
 
    @media (max-width: 992px) {
@@ -67,6 +70,7 @@ const CardRigth = styled.section`
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
+            word-wrap: break-word;
         }
 
         & .description span{
@@ -133,12 +137,20 @@ const LinkContent = styled.div`
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     & .imgContainer {
         display: flex;
         justify-content:center;
         align-items:center;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     @media (max-width: 992px) {
@@ -152,14 +164,23 @@ const LinkContent = styled.div`
         }
         & .linkContent .linkTitle{
             font-size: 11px;
+            height: 33px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkDescription{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkUrl{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 `;
@@ -196,6 +217,83 @@ const IconsDiv = styled.div`
     width: 90%;
     display: flex;
     justify-content: space-between;
+`;
+
+
+const CommentBox = styled.div`
+    border-radius: 16px;
+    width: 610px;
+    background-color: #1E1E1E;
+    margin: 0px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 992px){
+        width: 100vw;
+    }
+
+`;
+
+const CommentCardBox = styled.div`
+    display: flex;
+    padding: 15px 15px 15px 25px;
+    font-size: 14px;
+    color: #ACACAC;
+    width: 610px;
+
+    & .container {
+        padding: 5px 18px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+    & p {
+        margin-top: 5px;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    & .send {
+        width: 39px;
+        height: 39px;
+        background-color: #252525;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0 8px 8px 0;
+    }
+    @media (max-width: 992px){
+        width: 100vw;
+        .container{
+            width: 80%;
+        }
+    }
+`;
+
+const CommentInput = styled.input`
+    width: 80%;
+    height: 39px;
+    background: #252525; 
+    border-radius: 8px 0 0 8px;
+    border: none;
+    margin-left: 20px;
+    padding: 0 15px;
+    color:#F3F3F3;
+    position: relative;
+    
+    &:focus {
+        outline: none;    
+    }
+    &::placeholder{
+        color: #575757;
+    }
+
+    @media (max-width: 992px){
+        width: 85%;
+    }
+`;
+
+const ImgComment = styled(UserImage)`
+    width: 39px;
+    height: 39px;
 `;
 
 const IframeContainer = styled.div`
@@ -251,9 +349,8 @@ const IframeContainer = styled.div`
         width: 100%;
         height: calc(100% - 60px);
     }
+`;
 
-
-`
 
 export {
     CardContainer,
@@ -264,5 +361,10 @@ export {
     IconDelete,
     IconEdit,
     IconsDiv,
+    CommentBox,
+    CommentCardBox,
+    CommentInput,
+    ImgComment,
     IframeContainer,
+
 }
