@@ -10,7 +10,8 @@ import {
     CommentBox,
     CommentCardBox,
     CommentInput,
-    ImgComment
+    ImgComment,
+    IframeContainer,
 } from "./CardStyled";
 import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp, PaperPlaneOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
@@ -32,6 +33,9 @@ import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import CommentCard from "./CommentCard";
+import YoutubeContext from "../../../contexts/YoutubeContext";
+import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
+
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -64,10 +68,14 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
+
     const youtubeId = getYouTubeID(link, { fuzzy: false });
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState("");
+    const [isIframeOpen, setIsIframeOpen] = useState(false);
+    const { windowWidth } = useWindowDimensions();
+
 
     useEffect(() => {
         setLikesState(likes.map(like => {
@@ -83,7 +91,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             editInputRef.current.focus();
             setEditingText(text);
         }
-        setIsUserImageValid(isValidUserImage(user.avatar))
+        setIsUserImageValid(isValidUserImage(user.avatar));
 
     }, [isEditing]);
 
@@ -108,7 +116,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 .then(res => {
                     setLikesState(res.data.post.likes)
                     if (isMyLikesPage)
-                        renderPosts()
+                        renderPosts(true)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -124,7 +132,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 .then(res => {
                     setLikesState(res.data.post.likes)
                     if (isMyLikesPage)
-                        renderPosts()
+                        renderPosts(true)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -171,7 +179,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             .then(() => {
                 setIsLoading(false);
                 setConfirmDeleteState(false);
-                renderPosts();
+                renderPosts(true);
             })
             .catch(() => {
                 setIsLoading(false);
@@ -195,7 +203,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
-                renderPosts();
+                renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {
@@ -213,6 +221,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsUserImageValid(false)
             })
     }
+
 
     function toggleComments() {
         if (!isCommentsOpen) {
@@ -232,6 +241,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                     .catch(err => { })
             })
             .catch(err => alert("Could comment the post! Please repeat the procedure."))
+    }
+
+    function openIframe(e) {
+        if (windowWidth > 992) {
+            (e.target !== e.currentTarget) && setIsIframeOpen(true);
+        } else {
+            window.open(link)
+        }
+    }
+
+    function closeIframe(e) {
+        (e.target === e.currentTarget) && setIsIframeOpen(false);
     }
 
     return (
@@ -336,6 +357,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                     </div>
                                 </a>
                             </LinkContent>
+                        }
+                        
+                        { isIframeOpen &&
+                        <IframeContainer onClick={closeIframe}>
+                            <section>
+                                <header>
+                                    <a href={link} target="_blank" onClick={closeIframe}>Open in new tab</a>
+                                    <p onClick={closeIframe}>X</p>
+                                </header>
+                                <iframe className="iframe" src={link}></iframe>
+                            </section>
+                        </IframeContainer>
                         }
                     </CardRigth>
                 </CardContainer>
