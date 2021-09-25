@@ -43,8 +43,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         geolocation,
         user
     } = post
-    console.log(post)
-    console.log("GEOLOZAITON ->>", geolocation)
 
     const [likesState, setLikesState] = useState(likes.map(like => {
         return {
@@ -66,7 +64,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isUserImageValid, setIsUserImageValid] = useState(true);
     const youtubeId = getYouTubeID(link, { fuzzy: false });
     const [showMap, setShowMap] = useState(false);
-    const history = useHistory()
+
     useEffect(() => {
         setLikesState(likes.map(like => {
             return {
@@ -208,7 +206,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsUserImageValid(true)
             })
             .catch(err => {
-                console.log(err)
                 setIsUserImageValid(false)
             })
     }

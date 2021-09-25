@@ -17,11 +17,9 @@ export default function PostLink ({renderPosts}) {
           
           setLocationState(!locationState)
           navigator.geolocation.getCurrentPosition(function(position) {
-              console.log("position ->>",   position)
             setCoordinates(!locationState ? position.coords : "");
-            console.log(coordinates)
           }, function(error){
-            console.log(error)
+              alert("Erro ao adquirir coordenadas")
           })      
         }
         else {
@@ -55,7 +53,6 @@ export default function PostLink ({renderPosts}) {
                 setLocationState(!locationState);
             })
             .catch(error => {
-                console.log(error);
                 alert("oops! Houve um erro ao publicar seu link");
             })
             .finally(() => {

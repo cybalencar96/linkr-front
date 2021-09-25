@@ -5,13 +5,6 @@ import { IoCloseOutline } from "react-icons/io5";
 
 export default function MapView({username, geolocation, showMap, setShowMap}) {
 
-  function nameSolve (username) {
-
-    return "";
-  }
-
-  console.log(username.split(' '))
-
   return (
     <BackgroundMapScreen>
         <MapFrame>
