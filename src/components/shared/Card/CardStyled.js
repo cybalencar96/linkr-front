@@ -86,7 +86,7 @@ const CardRigth = styled.section`
             min-height: 212px;
             width: calc(100% - 100px);
             padding: 0 0 10px 0px;
-            & .usernameLink {
+            & .usernameContainer {
                 width:calc(85% - 10vw)
             }
         } 
