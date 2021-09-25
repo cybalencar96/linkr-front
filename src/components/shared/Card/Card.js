@@ -28,6 +28,7 @@ import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import YoutubeContext from "../../../contexts/YoutubeContext";
 import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
+import Swal from 'sweetalert2';
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -108,11 +109,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        alert("Post has been deleted!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         } else {
@@ -124,11 +132,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        alert("Post has been deleted!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         }
@@ -165,6 +180,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         sendDeletePostRequest(postId, userData.token)
 
             .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bye bye!!',
+                    text: 'Link has been deleted!',
+                })
                 setIsLoading(false);
                 setConfirmDeleteState(false);
                 renderPosts(true);
@@ -173,8 +193,13 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsLoading(false);
                 setTimeout(() => {
                     alert(
-                        "Could not delete your post! Please repeat the procedure."
+                        
                     );
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '"Could not delete your Link! Please repeat the procedure."',
+                    })
                 }, 900);
                 setConfirmDeleteState(false);
             });
@@ -191,11 +216,20 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Much better!',
+                    text: 'Your Link description has been edited successfully!',
+                })
                 renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {
-                alert("Could not edit your post! Please repeat the procedure.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Could not edit your Link! Please repeat the procedure.',
+                })
             })
             .finally(() => setIsEditLoading(false));
     }

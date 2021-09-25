@@ -28,7 +28,7 @@ export default function SearchBar({display}) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'User not found!',
+                    text: 'Usuário não encontrado!',
                   })
             }
         })

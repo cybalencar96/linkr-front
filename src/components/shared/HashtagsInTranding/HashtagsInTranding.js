@@ -3,7 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
-
+import Swal from 'sweetalert2';
 
 export default function HashtagsInTranding (props) {
 
@@ -23,7 +23,11 @@ export default function HashtagsInTranding (props) {
             setTrendingHashtags(response.data);
         })
         .catch((error) => {
-            alert("Ops!! Houve um erro ao carregar trending");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong by loading trending',
+            })
         })
         
     }, [userData.token])

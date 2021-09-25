@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { sendSignupRequest } from "../../services/Linkr";
 import UserContext from "../../contexts/UserContext";
+import Swal from 'sweetalert2';
 
 export default function SignupPage() {
     const [email, setEmail] = useState("");
@@ -37,19 +38,37 @@ export default function SignupPage() {
         sendSignupRequest(body)
             .then((res) => {
                 setIsLoading(false)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Yaaay!!',
+                    text: 'Welcome to the Linkr family. Please sign up!',
+                  })
                 history.push("/");
             })
             .catch((err) => {
                 setIsLoading(false)
                 if (err.response.status === 400) {
-                    alert("Invalid data, please fill in the fields correctly!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Invalid data, please fill in the fields correctly!',
+                      })
                     return;
                 }
                 if (err.response.status === 403) {
-                    alert("Email already used, try another one!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email already used, try another one!',
+                      })
                     return;
                 }
-                alert(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+                console.log(err)
             })
     }
 

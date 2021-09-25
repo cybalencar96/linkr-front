@@ -58,7 +58,7 @@ export default function UserPostsPage(props) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: 'Algo de errado ocorreu ao buscar esta pagina de usuário!! \n Redirecionando para timeline...',
                   })
                   console.log(err)
                   history.push('/')
@@ -97,6 +97,7 @@ export default function UserPostsPage(props) {
                 title: 'Oops...',
                 text: 'Houve uma falha ao obter os posts, por favor atualize a página!',
               })
+            history.push('/')
         })
     }
 
@@ -108,7 +109,12 @@ export default function UserPostsPage(props) {
                 setIsFollowing(serverResponse.map((user) => user.id).includes(Number(id)));
             })
             .catch(err => {
-                alert(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo de errado ocorreu... Tente atualizar a página.',
+                  })
+                console.log(err);
             })
             .finally(() => setIsLoading(false))
 
