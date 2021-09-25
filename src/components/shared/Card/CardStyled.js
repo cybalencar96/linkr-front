@@ -57,11 +57,7 @@ const CardRigth = styled.section`
             display: flex;
             gap: 5px;
         }
-
-        & .usernameLink {
-            
-        }
-
+        
         & .username {
             width:100%;
             overflow: hidden;

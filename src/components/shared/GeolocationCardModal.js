@@ -4,9 +4,13 @@ import styled from "styled-components";
 import { IoCloseOutline } from "react-icons/io5";
 
 export default function MapView({username, geolocation, showMap, setShowMap}) {
+  
+  function closeMapScreen(e) {
+      (e.target === e.currentTarget) && setShowMap(false);
+  }
 
   return (
-    <BackgroundMapScreen>
+    <BackgroundMapScreen onClick={closeMapScreen}>
         <MapFrame>
             <HeaderMap>
                 <h3>{username.split(' ')[0].length > 10 ? username.substring(0, 9, 10) : username.split(' ')[0]}</h3>
@@ -97,6 +101,7 @@ const CloseIcon = styled(IoCloseOutline)`
   left: calc(100% - 70px);
   height: 40px;
   width: 40px;
+  cursor: pointer;
   @media (max-width: 996px) {
     width: 25px;
     height: 25px;
