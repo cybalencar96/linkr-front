@@ -261,6 +261,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     }
 
 
+    
     function toggleComments() {
         if (!isCommentsOpen) {
             getComments(id, userData.token)
