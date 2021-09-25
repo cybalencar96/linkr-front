@@ -75,8 +75,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isUserImageValid, setIsUserImageValid] = useState(true);
     const youtubeId = getYouTubeID(link, { fuzzy: false });
     const [showMap, setShowMap] = useState(false);
-
-    const youtubeId = getYouTubeID(link, { fuzzy: false });
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState("");
