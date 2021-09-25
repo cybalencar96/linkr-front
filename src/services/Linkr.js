@@ -85,9 +85,19 @@ function validadeUrlImage(url) {
     return axios.get(`${url}`);
 }
 
+
+function getComments(postId, token) {
+    return axios.get(`${BASE_URL}/posts/${postId}/comments`, createConfig(token));
+}
+
+function sendComment(postId, text, token){
+    return axios.post(`${BASE_URL}/posts/${postId}/comment`, {text}, createConfig(token));
+}
+
 function getPostsByFollowUsers (token, type) {
     return axios.get(`${BASE_URL}/following/posts` + type, createConfig(token));
 }
+
 export {
     sendLoginRequest,
     sendSignupRequest,
@@ -107,6 +117,8 @@ export {
     sendUnfollowRequest,
     getListOfFollowingRequest,
     validadeUrlImage,
+    getComments,
+    sendComment,
     getPostsByFollowUsers,
     getPostsByUser,
 }
