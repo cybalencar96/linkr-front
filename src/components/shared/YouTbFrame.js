@@ -20,12 +20,14 @@ export default function YouTbFrame({youtubeId}) {
       {disconnectOnLeave: false},
       {onEnterViewport,onLeaveViewport}
     );
- 
+
     const opts = {
         width: '90%',
         playerVars: {
           autoplay: 0,
           fs:0,
+          origin: `${window.location}`,
+          enablejsapi: 1
         },
     };
  
@@ -67,7 +69,8 @@ export default function YouTbFrame({youtubeId}) {
     return (
         <YouTube 
             ref={refPlayerElement} 
-            videoId={youtubeId} 
+            videoId={youtubeId}
+            id={youtubeId}
             opts={opts} 
             onReady={onReady} 
             onPlay={onPlay}
