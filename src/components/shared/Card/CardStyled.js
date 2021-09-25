@@ -93,14 +93,12 @@ const LinkContent = styled.div`
     height: 155px;
     border: 1px solid #4D4D4D;
     overflow: hidden;
+    cursor: pointer;
 
-    & > a {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 
     & .linkContent {
         padding: 20px;
@@ -133,7 +131,7 @@ const LinkContent = styled.div`
 
     }
 
-    & a img {
+    & img {
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
@@ -212,6 +210,63 @@ const IconsDiv = styled.div`
     justify-content: space-between;
 `;
 
+const IframeContainer = styled.div`
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index:10;
+    background-color: rgba(255,255,255,0.7);
+
+    display:flex;
+    align-items:center;
+    justify-content: center;
+
+    & section {
+        background-color: #333;
+        border-radius: 20px;
+        padding: 0 20px 20px 20px;
+        width: 932px;
+        height: 80vh;
+    }
+
+    & section header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 60px;
+    }
+
+    & section header a {
+        width: 120px;
+        height: 31px;
+        background: #1877F2;
+        border-radius: 5px;
+
+        font-size: 14px;
+        color: #FFFFFF;
+        font-weight: 700;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    & section header p {
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    & section iframe {
+        width: 100%;
+        height: calc(100% - 60px);
+    }
+
+
+`
+
 export {
     CardContainer,
     LinkContent,
@@ -222,4 +277,5 @@ export {
     IconEdit,
     IconsDiv,
     IconLocation,
+    IframeContainer,
 }
