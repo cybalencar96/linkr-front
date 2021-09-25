@@ -137,12 +137,20 @@ const LinkContent = styled.div`
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     & .imgContainer {
         display: flex;
         justify-content:center;
         align-items:center;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     @media (max-width: 992px) {
@@ -156,14 +164,23 @@ const LinkContent = styled.div`
         }
         & .linkContent .linkTitle{
             font-size: 11px;
+            height: 33px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkDescription{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkUrl{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 `;
@@ -210,6 +227,10 @@ const CommentBox = styled.div`
     margin: 0px 0 30px 0;
     display: flex;
     flex-direction: column;
+    @media (max-width: 992px){
+        width: 100vw;
+    }
+
 `;
 
 const CommentCardBox = styled.div`
@@ -240,10 +261,10 @@ const CommentCardBox = styled.div`
         border-radius: 0 8px 8px 0;
     }
     @media (max-width: 992px){
+        width: 100vw;
         .container{
             width: 80%;
         }
-        
     }
 `;
 
