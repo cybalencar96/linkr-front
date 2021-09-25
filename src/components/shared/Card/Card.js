@@ -314,13 +314,16 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
                     <CardRigth>
                         <IconsDiv>
-                            <NavLink
-                                className="usernameLink"
-                                to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
-                            >
-                                <h3 className="username">{user.username}</h3>
+                            <div className="usernameContainer">
+                                <NavLink
+                                    className="usernameLink"
+                                    to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                                >
+                                    <h3 className="username">{user.username}</h3>
+                                </NavLink>
                                 {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
-                            </NavLink>
+                            </div>
+                            
                             {isPostFromLocalUser &&
                                 <div>
                                     <IconEdit onClick={toggleEditBox} />

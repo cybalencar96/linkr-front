@@ -52,10 +52,14 @@ const CardRigth = styled.section`
         justify-content: space-around;
         gap: 10px;
 
-        & .usernameLink {
+        & .usernameContainer {
             max-width: 85%;
             display: flex;
             gap: 5px;
+        }
+
+        & .usernameLink {
+            
         }
 
         & .username {
