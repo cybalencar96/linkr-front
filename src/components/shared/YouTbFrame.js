@@ -10,7 +10,7 @@ export default function YouTbFrame({youtubeId}) {
     const [player, setPlayer] = useState({
         eventTarget: null,
         playing: false,
-        playerId: youtubeId
+        playerId: youtubeId,
     });
 
     //hook to observe if video is in viewport

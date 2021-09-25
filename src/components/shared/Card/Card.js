@@ -39,6 +39,7 @@ import MapView from "../GeolocationCardModal";
 import { IoCloseOutline } from "react-icons/io5"
 import { IoLocationSharp } from "react-icons/io5"
 import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
+import Swal from 'sweetalert2';
 
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
@@ -124,11 +125,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        alert("Post has been deleted!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         } else {
@@ -140,11 +148,18 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        alert("Post has been deleted!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         }
@@ -181,6 +196,11 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         sendDeletePostRequest(postId, userData.token)
 
             .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bye bye!!',
+                    text: 'Link has been deleted!',
+                })
                 setIsLoading(false);
                 setConfirmDeleteState(false);
                 renderPosts(true);
@@ -189,8 +209,13 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsLoading(false);
                 setTimeout(() => {
                     alert(
-                        "Could not delete your post! Please repeat the procedure."
+                        
                     );
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '"Could not delete your Link! Please repeat the procedure."',
+                    })
                 }, 900);
                 setConfirmDeleteState(false);
             });
@@ -207,11 +232,20 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Much better!',
+                    text: 'Your Link description has been edited successfully!',
+                })
                 renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {
-                alert("Could not edit your post! Please repeat the procedure.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Could not edit your Link! Please repeat the procedure.',
+                })
             })
             .finally(() => setIsEditLoading(false));
     }
@@ -262,12 +296,12 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     return (
         <>
             <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
-
             {showMap ? <MapView  username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap}/> : ""}
+
             <CommentBox>
                 <CardContainer>
                     <CardLeft>
-                        <Link to={`/user/${user.id}`}>
+                        <Link to={{ pathname:`/user/${user.id}`, state:{ username:user.username } }}>
                             {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                         </Link>
                         <div className="actionBox" data-tip={createTooltip()}>
@@ -314,10 +348,16 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
                     <CardRigth>
                         <IconsDiv>
+
                             <div className="usernameContainer">
                                 <NavLink
                                     className="usernameLink"
-                                    to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts`}
+                                    to={{
+                                        pathname:`/user/${user.id}`,
+                                        state:{
+                                              username:user.username
+                                        }
+                                    }}
                                 >
                                     <h3 className="username">{user.username}</h3>
                                 </NavLink>

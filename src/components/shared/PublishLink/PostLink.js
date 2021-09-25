@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { sendPostLinkRequest } from "../../../services/Linkr";
+import Swal from 'sweetalert2';
 import { IoLocationOutline } from "react-icons/io5"
+
 export default function PostLink ({renderPosts}) {
 
     const [url, setUrl] = useState("");
@@ -49,11 +51,21 @@ export default function PostLink ({renderPosts}) {
         }
         sendPostLinkRequest(body, config)
             .then((response) => {
-                renderPosts();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Wow! Very interesting link indeed...',
+                    text: 'Your Link has been published successfully',
+                })
+                renderPosts()
                 if (locationState) setLocationState(false);
             })
             .catch(error => {
-                alert("oops! Houve um erro ao publicar seu link");
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong by publishing your Link',
+                })
             })
             .finally(() => {
                 setIsLoading(false);

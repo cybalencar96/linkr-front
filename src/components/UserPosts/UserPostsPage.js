@@ -3,13 +3,15 @@ import { UserPostsContainer } from "./UserPostsStyled";
 import { PageTitle } from '../shared/PageTitle';
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import { 
     getListOfFollowingRequest,
     getPostsByUserId,
     sendFollowRequest,
-    sendUnfollowRequest } from "../../services/Linkr";
+    sendUnfollowRequest,
+    getUser 
+} from "../../services/Linkr";
 import Loading, { CardLoadingScreen } from "../shared/Loading";
 import HashtagsInTranding from "../shared/HashtagsInTranding/HashtagsInTranding";
 import NoPosts from "../shared/NoPosts";
@@ -19,10 +21,12 @@ import SearchBar from "../shared/Topbar/SearchBar";
 import { PublishButton } from "../shared/PublishLink/PostLink";
 import FollowingContext from "../../contexts/FollowingContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Swal from 'sweetalert2';
 
 let page = 0;
+let infinityScrollSetTimeout = null;
 
-export default function UserPostsPage() {
+export default function UserPostsPage(props) {
     const { userData } = useContext(UserContext);
     const { listOfFollowing, setListOfFollowing } = useContext(FollowingContext)
     const [isLoading, setIsLoading] = useState(false);
@@ -32,28 +36,46 @@ export default function UserPostsPage() {
     const {setYoutubeVideos} = useContext(YoutubeContext)
     const {windowWidth} = useWindowDimensions();
     const [isFollowing, setIsFollowing] = useState(false)
-
+    const [user, setUser] = useState(null)
     const [hasNext, setHasNext] = useState(true);
-
+    const location = useLocation();
+    const username = location.state ? location.state.username : null;
     useEffect(() => {
         setYoutubeVideos([]);
 
         if (userData) {
-            if (id === userData.user.id)
-                history.push("/my-posts")
-
+            if (id === userData.user.id) {
+              history.push("/my-posts")
+            }
+          
+            clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             setIsFollowing(listOfFollowing.includes(Number(id)))
             renderPosts(true);
-
+            getUserOwnerOfPage();
         }
     },[id,userData])
+
+    function getUserOwnerOfPage() {
+        if (!username) {
+            getUser(id,userData.token)
+            .then(res => setUser(res.data.user))
+            .catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo de errado ocorreu ao buscar esta pagina de usuário!! \n Redirecionando para timeline...',
+                  })
+                  console.log(err)
+                  history.push('/')
+            })
+        }
+    }
     
     function renderPosts(reload) {
         
         setIsLoading(true);
 
         if(reload){
-
             page = 0;
         }
 
@@ -62,6 +84,7 @@ export default function UserPostsPage() {
             setIsLoading(false);
 
             if(!page){
+                setPosts([]);
                 setPosts(res.data.posts);
                 setHasNext(true);
             }
@@ -74,7 +97,12 @@ export default function UserPostsPage() {
         })
         .catch(err => {
             setIsLoading(false);
-            alert("Houve uma falha ao obter os posts, por favor atualize a página")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Houve uma falha ao obter os posts, por favor atualize a página!',
+              })
+            history.push('/')
         })
     }
 
@@ -113,7 +141,7 @@ export default function UserPostsPage() {
     }
 
     const fetchMoreData = () => {
-        setTimeout(() => {
+        infinityScrollSetTimeout = setTimeout(() => {
           page += 11;
           renderPosts();
         }, 2000);
@@ -124,7 +152,7 @@ export default function UserPostsPage() {
             <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
 
             <UserPostsContainer>
-                <PageTitle titleTxt={`${posts[0].user.username}'s posts`} >
+                <PageTitle titleTxt={`${username ? username : (user && user.username) }'s posts`} >
                     <PublishButton disabled={isLoading} isWhite={isFollowing} onClick={toggleFollow} >
                         {createButtonTxt()}
                     </PublishButton>

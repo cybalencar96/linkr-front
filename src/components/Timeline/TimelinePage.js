@@ -13,6 +13,7 @@ import NoPosts from "../shared/NoPosts";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Swal from 'sweetalert2';
 
 let type = ""
 
@@ -55,12 +56,15 @@ export default function TimelinePage() {
                 }
     
                 if(res.data.posts.length < 10){
-
                     setHasNext(!hasNext);
                 }
             })
             .catch(err => {
-                alert("Houve uma falha ao obter os posts, por favor atualize a página");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Houve uma falha ao obter os posts, por favor atualize a página",
+                  })
             })
     }
 
@@ -80,7 +84,11 @@ export default function TimelinePage() {
                 }
             })
             .catch(error => {
-                alert("erro no servidor, favor recarregar a página");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "erro no servidor, favor recarregar a página",
+                  })
             })
     }
 
