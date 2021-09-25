@@ -16,6 +16,7 @@ import YoutubeContext from "../../contexts/YoutubeContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 let page = 0;
+let infinityScrollSetTimeout = null;
 
 export default function HashtagPostsPage() {
     const {userData} = useContext(UserContext);
@@ -31,6 +32,7 @@ export default function HashtagPostsPage() {
         setYoutubeVideos([])
 
         if (userData) {
+            clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             renderPosts(true);
         }
     }, [hashtag, userData])
@@ -78,7 +80,7 @@ export default function HashtagPostsPage() {
     }
 
     const fetchMoreData = () => {
-        setTimeout(() => {
+        infinityScrollSetTimeout = setTimeout(() => {
           page += 11;
           renderPosts();
         }, 2000);

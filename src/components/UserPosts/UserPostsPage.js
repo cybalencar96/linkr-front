@@ -23,6 +23,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Swal from 'sweetalert2';
 
 let page = 0;
+let infinityScrollSetTimeout = null;
 
 export default function UserPostsPage(props) {
     const { userData } = useContext(UserContext);
@@ -37,12 +38,12 @@ export default function UserPostsPage(props) {
     const [hasNext, setHasNext] = useState(true);
     const location = useLocation();
     const username = location.state ? location.state.username : null;
-    
     useEffect(() => {
         setYoutubeVideos([]);
 
         if (userData) {
             if (id === userData.user.id) {history.push("/my-posts")}
+            clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             renderPosts(true);
             getListOfFollowing();
             getUserOwnerOfPage();
@@ -76,7 +77,6 @@ export default function UserPostsPage(props) {
         getPostsByUserId(id, userData.token, page)
         .then(res => {
             setIsLoading(false);
-            console.log(res.data.posts)
 
             if(!page){
                 setPosts([]);
@@ -146,7 +146,7 @@ export default function UserPostsPage(props) {
     }
 
     const fetchMoreData = () => {
-        setTimeout(() => {
+        infinityScrollSetTimeout = setTimeout(() => {
           page += 11;
           renderPosts();
         }, 2000);
@@ -157,7 +157,7 @@ export default function UserPostsPage(props) {
             <SearchBar display={windowWidth >= 992 ? "none" : "initial"}/>
 
             <UserPostsContainer>
-                <PageTitle titleTxt={`${username ? username : user.username}'s posts`} >
+                <PageTitle titleTxt={`${username ? username : (user && user.username) }'s posts`} >
                     <PublishButton disabled={isLoading} isWhite={isFollowing} onClick={toggleFollow} >
                         {createButtonTxt()}
                     </PublishButton>
