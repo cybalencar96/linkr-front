@@ -139,6 +139,10 @@ const LinkContent = styled.div`
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
+        @media (max-width: 992px){
+            width: 95px;
+            height: 115px;
+        }
     }
 
     & .imgContainer {
@@ -155,17 +159,22 @@ const LinkContent = styled.div`
         }
         & .linkContent{
             padding: 5px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkTitle{
             font-size: 11px;
+            height: 33px;     
         }
         & .linkContent .linkDescription{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
         }
         & .linkContent .linkUrl{
             line-height: 9px;
             font-size: 9px;
+            height: 33px;
         }
     }
 `;
@@ -211,6 +220,9 @@ const CommentBox = styled.div`
     margin: 0px 0 30px 0;
     display: flex;
     flex-direction: column;
+    @media (max-width: 992px){
+        width: 100vw;
+    }
 `;
 
 const CommentCardBox = styled.div`
@@ -241,6 +253,7 @@ const CommentCardBox = styled.div`
         border-radius: 0 8px 8px 0;
     }
     @media (max-width: 992px){
+        width: 100vw;
         .container{
             width: 80%;
         }
