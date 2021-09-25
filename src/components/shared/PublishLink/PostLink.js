@@ -50,7 +50,7 @@ export default function PostLink ({renderPosts}) {
         sendPostLinkRequest(body, config)
             .then((response) => {
                 renderPosts();
-                setLocationState(!locationState);
+                if (locationState) setLocationState(false);
             })
             .catch(error => {
                 alert("oops! Houve um erro ao publicar seu link");
