@@ -306,7 +306,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             height="25px"
                             width="25px"
                         />
-                        <p>Re-posted by {repostedBy.id === userData.user.id ? "you" :
+                        <p>Re-posted by {repostedBy.id === userData.user.id ? <span className="username">you</span> :
                             <NavLink
                                 className="usernameLink"
                                 to={{
@@ -320,7 +320,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             </NavLink>
                             }
                         </p>
-
                     </RepostedBox>
                 }
                 <CardContainer>
