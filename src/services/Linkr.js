@@ -84,6 +84,9 @@ function validadeUrlImage(url) {
     return axios.get(`${url}`);
 }
 
+function sendRepostRequest(postId, token){
+    return axios.post(`${BASE_URL}/posts/${postId}/share`, {}, createConfig(token))
+}
 
 function getComments(postId, token) {
     return axios.get(`${BASE_URL}/posts/${postId}/comments`, createConfig(token));
@@ -120,5 +123,6 @@ export {
     sendComment,
     getPostsByFollowUsers,
     getPostsByUser,
+    sendRepostRequest
 }
 

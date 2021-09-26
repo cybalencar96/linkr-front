@@ -28,7 +28,8 @@ import {
     sendDeletePostRequest,
     sendEditPostRequest,
     getComments,
-    sendComment
+    sendComment,
+    sendRepostRequest
 } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import CardModal from "../CardModal";
@@ -66,7 +67,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
-    const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
+    const [confirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editingText, setEditingText] = useState(text);
     const editInputRef = useRef();
@@ -80,6 +81,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [commentText, setCommentText] = useState("");
     const [isIframeOpen, setIsIframeOpen] = useState(false);
     const { windowWidth } = useWindowDimensions();
+    const [confirmRepostState, setConfirmRepostState] = useState(false);
 
     useEffect(() => {
         setLikesState(likes.map(like => {
@@ -259,7 +261,31 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
     }
 
-
+    function repost(postId) {
+        setIsLoading(true);
+        sendRepostRequest(postId, userData.token)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Yes! I like that Link too!',
+                    text: 'Link has been shared!',
+                })
+                setIsLoading(false);
+                setConfirmRepostState(false);
+                renderPosts(true);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '"Could not share your Link! Please repeat the procedure."',
+                    })
+                }, 900);
+                setConfirmRepostState(false);
+            });
+    }
 
     function toggleComments() {
         if (!isCommentsOpen) {
@@ -295,7 +321,8 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     return (
         <>
-            {ConfirmDeleteState && <CardModal type="deletePost" isLoading={isLoading} handler={deletePost} postId={id} setModalState={setConfirmDeleteState} />}
+            {confirmDeleteState && <CardModal type="deletePost" isLoading={isLoading} handler={deletePost} postId={id} setModalState={setConfirmDeleteState} />}
+            {confirmRepostState && <CardModal type="repost" isLoading={isLoading} handler={repost} postId={id} setModalState={setConfirmRepostState} />}
             {showMap && <MapView username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap} />}
 
             <CommentBox>
@@ -318,7 +345,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             >
                                 <span className="username">{repostedBy.username}</span>
                             </NavLink>
-                            }
+                        }
                         </p>
                     </RepostedBox>
                 }
@@ -363,6 +390,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 height="25px"
                                 width="25px"
                                 style={{ cursor: 'pointer' }}
+                                onClick={() => setConfirmRepostState(true)}
                             />
                             <p>{repostCount} reposts</p>
                         </div>
