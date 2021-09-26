@@ -365,6 +365,17 @@ const IframeContainer = styled.div`
     }
 `;
 
+const RepostedBox = styled.div`
+    padding: 5px 13px 0 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #CECECE;
+    & .username{
+        color: #ffffff;
+        font-weight: 700;
+    }
+`;
 
 export {
     CardContainer,
@@ -381,4 +392,5 @@ export {
     CommentInput,
     ImgComment,
     IframeContainer,
+    RepostedBox
 }
