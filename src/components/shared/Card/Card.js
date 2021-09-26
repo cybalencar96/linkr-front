@@ -31,7 +31,7 @@ import {
     sendComment
 } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
-import ExcludeCardModal from "../ExcludeCardModal";
+import CardModal from "../CardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import CommentCard from "./CommentCard";
@@ -295,7 +295,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     return (
         <>
-            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
+            {ConfirmDeleteState && <CardModal type="deletePost" isLoading={isLoading} handler={deletePost} postId={id} setModalState={setConfirmDeleteState} />}
             {showMap && <MapView username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap} />}
 
             <CommentBox>
