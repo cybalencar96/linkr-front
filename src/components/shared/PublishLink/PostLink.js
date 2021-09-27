@@ -21,6 +21,8 @@ export default function PostLink ({renderPosts}) {
             setLocationState(!locationState)
             setCoordinates(!locationState ? position.coords : "");
           }, function(error){
+            setLocationState(false)
+            setCoordinates("");
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
