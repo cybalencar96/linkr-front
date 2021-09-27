@@ -12,6 +12,7 @@ import YoutubeContext from "../../contexts/YoutubeContext";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useHistory } from "react-router";
 
 let page = 0;
 
@@ -21,13 +22,15 @@ export default function MyPostsPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState("");
     const {windowWidth} = useWindowDimensions();
-
+    let history = useHistory();
     const [hasNext, setHasNext] = useState(true);
 
     useEffect(() => {
         setYoutubeVideos([])
         if (userData) {
             renderPosts(true);
+        }else if (userData === ""){
+            history.push("/")
         }
     }, [userData])
 

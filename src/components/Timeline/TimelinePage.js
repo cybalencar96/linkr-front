@@ -14,6 +14,7 @@ import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Swal from 'sweetalert2';
+import { useHistory } from "react-router";
 
 let type = ""
 
@@ -25,7 +26,7 @@ export default function TimelinePage() {
     const {windowWidth} = useWindowDimensions();
     const [usersFollowing, setUserFollowing] = useState([]);
     const [message, setMessage] = useState({noFollowing : false, noPublications : false})
-
+    let history = useHistory()
     const [hasNext, setHasNext] = useState(true);
 
     
@@ -36,6 +37,8 @@ export default function TimelinePage() {
             getListFollowUSers();
             setHasNext(true);
             type="";
+        }else if (userData === ""){
+            history.push("/")
         }
     }, [userData])
     
