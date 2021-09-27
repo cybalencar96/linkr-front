@@ -11,6 +11,7 @@ export default function HashtagsInTranding (props) {
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
+    const [lastHashtag, setLastHashtag] = useState(null);
 
     useEffect(() => {
         const config = {
@@ -38,13 +39,21 @@ export default function HashtagsInTranding (props) {
             history.push(`/hashtag/${searchInput}`)
         }
     }
+
+    function changeHashtagPage(hashtag) {
+        if (hashtag !== lastHashtag) {
+            setLastHashtag(hashtag)
+            props.setIsLoading(true); 
+            history.push(`/hashtag/${hashtag}`)
+        }
+    }
     return (
         <ContainerTranding>
             <h1>trending</h1>
             <UlHashtags>
                     {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
                         return (
-                                <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
+                                <LiHashtags onClick={() => changeHashtagPage(hashtag.name)} key={hashtag.name}># {hashtag.name}</LiHashtags>
                         )
                     }
                 )}

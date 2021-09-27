@@ -25,12 +25,11 @@ export default function HashtagPostsPage() {
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
-
     const [hasNext, setHasNext] = useState(true);
  
     useEffect(() => {
         setYoutubeVideos([])
-
+        
         if (userData) {
             clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             renderPosts(true);
