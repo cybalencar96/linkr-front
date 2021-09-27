@@ -371,6 +371,12 @@ const RepostedBox = styled.div`
     align-items: center;
     gap: 6px;
     color: #CECECE;
+    & .textBox {
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     & .username{
         color: #ffffff;
         font-weight: 700;
