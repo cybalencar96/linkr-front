@@ -44,8 +44,8 @@ export default function UserPostsPage(props) {
         setYoutubeVideos([]);
 
         if (userData) {
-            if (id === userData.user.id) {
-              history.push("/my-posts")
+            if (Number(id) === userData.user.id) {
+                history.push("/my-posts")
             }
           
             clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas

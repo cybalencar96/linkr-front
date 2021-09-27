@@ -31,7 +31,7 @@ export default function HashtagPostsPage() {
  
     useEffect(() => {
         setYoutubeVideos([])
-
+        
         if (userData) {
             clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             renderPosts(true);
