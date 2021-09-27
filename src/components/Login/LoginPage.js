@@ -62,6 +62,8 @@ export default function LoginPage() {
                     onChange={e => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,10}$"
+                    title="example@example.com"
                 />
                 <FrontPageInput
                     placeholder="password"
