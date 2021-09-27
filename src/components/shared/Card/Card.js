@@ -1,25 +1,46 @@
-import { 
-    CardContainer, 
-    LinkContent, 
-    CardRigth, 
-    CardLeft, 
-    EditPostInput, 
+import {
+    CardContainer,
+    LinkContent,
+    CardRigth,
+    CardLeft,
+    EditPostInput,
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
+    CommentBox,
+    CommentCardBox,
+    CommentInput,
+    ImgComment,
+    IframeContainer,
 } from "./CardStyled";
-import { Heart, HeartOutline } from 'react-ionicons'
+import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp, PaperPlaneOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link,useHistory } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { validadeUrlImage,sendDislikeRequest, sendLikeRequest, sendDeletePostRequest, sendEditPostRequest } from "../../../services/Linkr";
+import {
+    validadeUrlImage,
+    sendDislikeRequest,
+    sendLikeRequest,
+    sendDeletePostRequest,
+    sendEditPostRequest,
+    getComments,
+    sendComment
+} from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
 import ExcludeCardModal from "../ExcludeCardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
+import CommentCard from "./CommentCard";
 import YoutubeContext from "../../../contexts/YoutubeContext";
+import MapView from "../GeolocationCardModal";
+import { IoCloseOutline } from "react-icons/io5"
+import { IoLocationSharp } from "react-icons/io5"
+import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
+import Swal from 'sweetalert2';
+
 
 export default function Card({ post, renderPosts, isMyLikesPage }) {
     const {
@@ -31,11 +52,12 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         linkImage,
         linkTitle,
         text,
-        user
+        geolocation,
+        user,
+        repostCount,
     } = post
-    
-    const [ likesState, setLikesState] = useState(likes.map(like => {
 
+    const [likesState, setLikesState] = useState(likes.map(like => {
         return {
             userId: like.userId,
             username: like["user.username"]
@@ -44,7 +66,6 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
-    const { setYoutubeVideos } = useContext(YoutubeContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
     const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -53,21 +74,34 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isEditLoading, setIsEditLoading] = useState(false);
     const isPostFromLocalUser = (userData.user.id === user.id);
     const [isUserImageValid, setIsUserImageValid] = useState(true);
-    
-    const youtubeId = getYouTubeID(link, {fuzzy: false});
+    const youtubeId = getYouTubeID(link, { fuzzy: false });
+    const [showMap, setShowMap] = useState(false);
+    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [commentText, setCommentText] = useState("");
+    const [isIframeOpen, setIsIframeOpen] = useState(false);
+    const { windowWidth } = useWindowDimensions();
 
- 
+    useEffect(() => {
+        setLikesState(likes.map(like => {
+            return {
+                userId: like.userId,
+                username: like["user.username"]
+            }
+        }))
+    }, [likes])
+
     useEffect(() => {
         if (isEditing) {
             editInputRef.current.focus();
             setEditingText(text);
         }
-        setIsUserImageValid(isValidUserImage(user.avatar))
-        
+        setIsUserImageValid(isValidUserImage(user.avatar));
+
     }, [isEditing]);
 
-    function renderDescription() {
-        const formatedText = text.split(" ").map(word => {
+    function renderDescription(unFormatedText) {
+        const formatedText = unFormatedText.split(" ").map(word => {
             if (word[0] === "#") {
                 return <Link to={`/hashtag/${word.substring(1)}`}><HashtagSpan> #{word.substring(1)}</HashtagSpan></Link>
             } else {
@@ -86,32 +120,46 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             sendDislikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
-                    if(isMyLikesPage)
-                        renderPosts()
+                    if (isMyLikesPage)
+                        renderPosts(true)
                 })
                 .catch(err => {
-                    if(err.response.status === 404){
-                        alert("Post has been deleted!");
+                    if (err.response.status === 404) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-                        
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         } else {
             sendLikeRequest(id, userData.token)
                 .then(res => {
                     setLikesState(res.data.post.likes)
-                    if(isMyLikesPage)
-                        renderPosts()
+                    if (isMyLikesPage)
+                        renderPosts(true)
                 })
                 .catch(err => {
-                    if(err.response.status === 404){
-                        alert("Post has been deleted!");
+                    if (err.response.status === 404) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Link has been deleted',
+                        })
                         return;
                     }
-                    
-                    alert(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Plesa refresh the page...',
+                    })
                 })
                 .finally(() => setIsLoading(false))
         }
@@ -148,23 +196,33 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         sendDeletePostRequest(postId, userData.token)
 
             .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bye bye!!',
+                    text: 'Link has been deleted!',
+                })
                 setIsLoading(false);
                 setConfirmDeleteState(false);
-                renderPosts();
+                renderPosts(true);
             })
             .catch(() => {
                 setIsLoading(false);
                 setTimeout(() => {
                     alert(
-                        "Could not delete your post! Please repeat the procedure."
+                        
                     );
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '"Could not delete your Link! Please repeat the procedure."',
+                    })
                 }, 900);
                 setConfirmDeleteState(false);
             });
     }
 
     function toggleEditBox() {
-        if (!isPostFromLocalUser){
+        if (!isPostFromLocalUser) {
             return;
         }
         setIsEditing(!isEditing);
@@ -174,80 +232,171 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         setIsEditLoading(true);
         sendEditPostRequest(id, editingText, userData.token)
             .then(res => {
-                renderPosts();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Much better!',
+                    text: 'Your Link description has been edited successfully!',
+                })
+                renderPosts(true);
                 toggleEditBox();
             })
             .catch(err => {
-                alert("Could not edit your post! Please repeat the procedure.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Could not edit your Link! Please repeat the procedure.',
+                })
             })
             .finally(() => setIsEditLoading(false));
     }
-    
+
     function isValidUserImage(url) {
         validadeUrlImage(url)
-        .then ( res => {
-            setIsUserImageValid(true)
-        })
-        .catch ( err => {
-            console.log(err)
-            setIsUserImageValid(false)
-        })
+            .then(res => {
+                setIsUserImageValid(true)
+            })
+            .catch(err => {
+                setIsUserImageValid(false)
+            })
+    }
+
+
+    
+    function toggleComments() {
+        if (!isCommentsOpen) {
+            getComments(id, userData.token)
+                .then(res => setComments(res.data.comments))
+                .catch(err => { })
+        }
+        setIsCommentsOpen(!isCommentsOpen);
+    }
+
+    function comment() {
+        sendComment(id, commentText, userData.token)
+            .then(res => {
+                setCommentText("");
+                getComments(id, userData.token)
+                    .then(res => setComments(res.data.comments))
+                    .catch(err => { })
+            })
+            .catch(err => alert("Could comment the post! Please repeat the procedure."))
+    }
+    
+    function openIframe(e) {
+        if (windowWidth > 992) {
+            (e.target !== e.currentTarget) && setIsIframeOpen(true);
+        } else {
+            window.open(link)
+        }
+    }
+
+    function closeIframe(e) {
+        (e.target === e.currentTarget) && setIsIframeOpen(false);
     }
 
     return (
         <>
-            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState}/>
-            <CardContainer>
-                <CardLeft>
-                    <Link to={`/user/${user.id}`}> 
-                    {isUserImageValid ? <UserImage src={user.avatar} alt="userImage"/> : <UserImage src="/imageNotFound.jpg" alt="NotFound"/>}
-                    </Link>
-                    {isLiked ? <Heart color={'#AC0000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} /> :
-                        <HeartOutline color={'#00000'} height="30px" width="30px" onClick={toggleLike} style={{ cursor: 'pointer' }} />}
-                    <p data-tip={createTooltip()}>{likesState.length} likes</p>
-                    <ReactTooltip place="bottom" type="light" effect="solid" />
-                </CardLeft>
+            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
+            {showMap ? <MapView  username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap}/> : ""}
 
-                <CardRigth>
-                    {!isPostFromLocalUser ? <IconsDiv><NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
-                        <h3 className="username">{user.username}</h3>
-                    </NavLink></IconsDiv> :
+            <CommentBox>
+                <CardContainer>
+                    <CardLeft>
+                        <Link to={{ pathname:`/user/${user.id}`, state:{ username:user.username } }}>
+                            {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
+                        </Link>
+                        <div className="actionBox" data-tip={createTooltip()}>
+                            {isLiked ?
+                                <Heart
+                                    color={'#AC0000'}
+                                    height="25px"
+                                    width="25px"
+                                    onClick={toggleLike}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                                :
+                                <HeartOutline
+                                    color={'#00000'}
+                                    height="25px"
+                                    width="25px"
+                                    onClick={toggleLike}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                            }
+                            <p>{likesState.length} likes</p>
+                        </div>
+                        <div className="actionBox" >
+                            <ChatbubblesOutline
+                                color={'#FFF'}
+                                height="25px"
+                                width="25px"
+                                style={{ cursor: 'pointer' }}
+                                onClick={toggleComments}
+                            />
+                            <p>{commentCount} comments</p>
+                        </div>
+                        <div className="actionBox" >
+                            <RepeatSharp
+                                color={'#FFF'}
+                                height="25px"
+                                width="25px"
+                                style={{ cursor: 'pointer' }}
+                            />
+                            <p>{repostCount} reposts</p>
+                        </div>
+                        <ReactTooltip place="bottom" type="light" effect="solid" />
+                    </CardLeft>
+
+                    <CardRigth>
                         <IconsDiv>
-                            <NavLink className="usernameLink" to={!isPostFromLocalUser ? `/user/${user.id}` : `/my-posts/`}>
-                                <h3 className="username">{user.username}</h3>
-                            </NavLink>
-                            <div>
-                                <IconEdit onClick={toggleEditBox} />
-                                <IconDelete onClick={() => setConfirmDeleteState(true)} />
-                            </div>
-                        </IconsDiv>
-                    }
 
-                    {isEditing ?
-                        <EditPostInput
-                            ref={editInputRef}
-                            value={editingText}
-                            onKeyDown={e => {
-                                if(e.key === 'Enter'){
-                                    e.preventDefault();
-                                    editPost();
-                                }
-                                if(e.key === 'Escape'){
-                                    e.preventDefault();
-                                    toggleEditBox()
-                                }
-                            }}
-                            onChange={(e) => setEditingText(e.target.value)}
-                            disabled={isEditLoading}
-                        /> :
-                        <p className="description" onClick={toggleEditBox}>{renderDescription()}</p>
-                    }
-                    {
+                            <div className="usernameContainer">
+                                <NavLink
+                                    className="usernameLink"
+                                    to={{
+                                        pathname:`/user/${user.id}`,
+                                        state:{
+                                              username:user.username
+                                        }
+                                    }}
+                                >
+                                    <h3 className="username">{user.username}</h3>
+                                </NavLink>
+                                {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
+                            </div>
+                            
+                            {isPostFromLocalUser &&
+                                <div>
+                                    <IconEdit onClick={toggleEditBox} />
+                                    <IconDelete onClick={() => setConfirmDeleteState(true)} />
+                                </div>
+                            }
+                        </IconsDiv>
+
+                        {isEditing ?
+                            <EditPostInput
+                                ref={editInputRef}
+                                value={editingText}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        editPost();
+                                    }
+                                    if (e.key === 'Escape') {
+                                        e.preventDefault();
+                                        toggleEditBox()
+                                    }
+                                }}
+                                onChange={(e) => setEditingText(e.target.value)}
+                                disabled={isEditLoading}
+                            /> :
+                            <p className="description" onClick={toggleEditBox}>{renderDescription(text)}</p>
+                        }
+                        {
                         youtubeId ? 
-                         <YouTbFrame youtubeId={youtubeId}/>
-                         :
-                        <LinkContent>
-                            <a href={link} target="_blank">
+                             <YouTbFrame youtubeId={youtubeId}/>
+                             :
+                            <LinkContent onClick={openIframe}>
                                 <div className="linkContent">
                                     <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
                                     <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
@@ -256,12 +405,48 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 <div class="imgContainer">
                                     {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
                                 </div>
-                            </a>
-                        </LinkContent>
-                    }
-                    
-                </CardRigth>
-            </CardContainer>
+                            </LinkContent>
+                        }
+                        { isIframeOpen &&
+                            <IframeContainer onClick={closeIframe}>
+                                <section>
+                                    <header>
+                                        <a href={link} target="_blank" onClick={closeIframe}>Open in new tab</a>
+                                        <p onClick={closeIframe}>X</p>
+                                    </header>
+                                    <iframe className="iframe" src={link}></iframe>
+                                </section>
+                            </IframeContainer>
+                        }
+                    </CardRigth>
+                </CardContainer>
+                
+                {isCommentsOpen &&
+                    <>
+                        {comments.map((comment) => <CommentCard user={comment.user} text={renderDescription(comment.text)} userId={user.id} />)}
+
+                        <CommentCardBox>
+                            <Link to={`/user/${user.id}`}><ImgComment src={userData.user.avatar} alt="userImage" /></Link>
+                            <CommentInput
+                                value={commentText}
+                                placeholder="write a comment..."
+                                onChange={e => setCommentText(e.target.value)}
+                                onKeyUp={e => {if(e.key === "Enter") comment()}}
+                            />
+                            <div className="send">
+                                <PaperPlaneOutline
+                                    color={'#F3F3F3'}
+                                    height="15px"
+                                    width="15px"
+                                    style={{
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={comment} />
+                            </div>
+                        </CommentCardBox>
+                    </>
+                }
+            </CommentBox>
         </>
     )
 }

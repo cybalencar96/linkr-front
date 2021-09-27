@@ -3,7 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
-
+import Swal from 'sweetalert2';
 
 export default function HashtagsInTranding (props) {
 
@@ -13,7 +13,6 @@ export default function HashtagsInTranding (props) {
     const history = useHistory();
 
     useEffect(() => {
-        
         const config = {
             headers: {
                 Authorization : `Bearer ${userData.token}`
@@ -24,7 +23,11 @@ export default function HashtagsInTranding (props) {
             setTrendingHashtags(response.data);
         })
         .catch((error) => {
-            alert("Ops!! Houve um erro ao carregar trending");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong by loading trending',
+            })
         })
         
     }, [userData.token])
@@ -37,23 +40,19 @@ export default function HashtagsInTranding (props) {
     }
     return (
         <ContainerTranding>
-            <div className="fixed">
-                <h1>trending</h1>
-                <UlHashtags>
-                        {trendingHashtags.hashtags && trendingHashtags.hashtags.map( hashtag => {
-                            return (
-                                <Link to={`/hashtag/${hashtag.name}`}>
-                                    <LiHashtags onClick={() => {props.setIsLoading(true)}}># {hashtag.name}</LiHashtags>
-                                </Link>
-                            )
-                        }
-                    )}
-                </UlHashtags>
-                <div className="inputContainer">
-                    <p>#</p>
-                    <InputButtonTrending type='text' placeholder='search a Hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
-                </div>
-           </div>
+            <h1>trending</h1>
+            <UlHashtags>
+                    {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
+                        return (
+                                <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
+                        )
+                    }
+                )}
+            </UlHashtags>
+            <div className="inputContainer">
+                <p>#</p>
+                <InputButtonTrending type='text' placeholder='type a hashtag' value={searchInput} onKeyDown={handleKeyDown} onChange={(e) => setSearchInput(e.target.value)} required/>
+            </div>
         </ContainerTranding>
     )
 }
@@ -67,21 +66,19 @@ const ContainerTranding = styled.div`
     min-width: 301px;
     max-height: 435px;
     border-radius: 16px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 90px;
+    background-color: #171717;
+    border-radius: 16px;
 
     h1{
         margin: 12px 0 15px 18px;
     }
 
-    & .fixed {
-        position: fixed;
-        width: 301px;
-        background-color: #171717;
-        border-radius: 16px;
-    }
-
-    & .fixed .inputContainer {
+    & .inputContainer {
         height: 30px;
-        background-color: rgba(50, 50, 50, 1);
+        background-color: #252525;
         font-family: 'Lato', sans-serif;
         font-weight: 700;
         border: none;
@@ -94,8 +91,8 @@ const ContainerTranding = styled.div`
         align-items: center;
     }
 
-    & .fixed .inputContainer p {
-        font-size: 25px
+    & .inputContainer p {
+        font-size: 19px
     }
 
     @media(max-width: 992px){
@@ -125,7 +122,7 @@ const LiHashtags = styled.li`
 `;
 
 const InputButtonTrending = styled.input`
-    background-color: rgba(50, 50, 50, 1);
+    background-color: #252525;
     font-family: 'Lato', sans-serif;
     display:flex;
     align-items:center;
@@ -138,8 +135,9 @@ const InputButtonTrending = styled.input`
     font-weight: 700;
 
     &::placeholder, &::placeholder{
-        font-weight: 300;
-        color: #949494;
+        font-weight: 500;
+        font-style: italic;
+        color: #575757;
     }
     &:not(:focus), &:focus{
         padding-left: 10px;

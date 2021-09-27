@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { IoLocationSharp } from "react-icons/io5";
+import UserImage from "../UserImage";
 
 const CardContainer = styled.article`
     width: 610px;
@@ -8,7 +10,7 @@ const CardContainer = styled.article`
     border-radius: 16px;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     padding: 20px 0;
 
     @media (max-width: 992px) {
@@ -26,7 +28,15 @@ const CardLeft = styled.section`
     align-items: center;
     
     & a {
-        margin: 0 0 20px 0;
+        margin: 0 0 15px 0;
+    }
+
+    & .actionBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 11px;
     }
 
    @media (max-width: 992px) {
@@ -42,10 +52,12 @@ const CardRigth = styled.section`
         justify-content: space-around;
         gap: 10px;
 
-        & .usernameLink {
+        & .usernameContainer {
             max-width: 85%;
+            display: flex;
+            gap: 5px;
         }
-
+        
         & .username {
             width:100%;
             overflow: hidden;
@@ -53,6 +65,7 @@ const CardRigth = styled.section`
             font-size: 19px;
             padding: 0 0 10px 0;
             cursor: pointer;
+            word-break: break-word;
         }
 
         & .description {
@@ -61,6 +74,7 @@ const CardRigth = styled.section`
             color: #B7B7B7;
             overflow: hidden;
             text-overflow: ellipsis;
+            word-wrap: break-word;
         }
 
         & .description span{
@@ -72,7 +86,7 @@ const CardRigth = styled.section`
             min-height: 212px;
             width: calc(100% - 100px);
             padding: 0 0 10px 0px;
-            & .usernameLink {
+            & .usernameContainer {
                 width:calc(85% - 10vw)
             }
         } 
@@ -85,14 +99,12 @@ const LinkContent = styled.div`
     height: 155px;
     border: 1px solid #4D4D4D;
     overflow: hidden;
+    cursor: pointer;
 
-    & > a {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 
     & .linkContent {
         padding: 20px;
@@ -125,16 +137,24 @@ const LinkContent = styled.div`
 
     }
 
-    & a img {
+    & img {
         width:154px;
         height:154px;
         border-radius: 0px 12px 13px 0px;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     & .imgContainer {
         display: flex;
         justify-content:center;
         align-items:center;
+        @media (max-width: 992px) {
+            width: 95px;
+            height: 115px;
+        }
     }
 
     @media (max-width: 992px) {
@@ -148,14 +168,23 @@ const LinkContent = styled.div`
         }
         & .linkContent .linkTitle{
             font-size: 11px;
+            height: 33px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkDescription{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         & .linkContent .linkUrl{
             line-height: 9px;
             font-size: 9px;
+            height: 27px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 `;
@@ -181,6 +210,16 @@ const IconDelete = styled(FaTrash)`
     }
 `;
 
+const IconLocation = styled(IoLocationSharp)`
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+    &:hover{
+        color: red;
+    }
+    /* align-self: flex-start; */
+    /* margin-right: 90px; */
+`
 const IconEdit = styled(RiPencilFill)`
     cursor: pointer;
     &:hover{
@@ -194,6 +233,139 @@ const IconsDiv = styled.div`
     justify-content: space-between;
 `;
 
+
+const CommentBox = styled.div`
+    border-radius: 16px;
+    width: 610px;
+    background-color: #1E1E1E;
+    margin: 0px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 992px){
+        width: 100vw;
+    }
+
+`;
+
+const CommentCardBox = styled.div`
+    display: flex;
+    padding: 15px 15px 15px 25px;
+    font-size: 14px;
+    color: #ACACAC;
+    width: 610px;
+
+    & .container {
+        padding: 5px 18px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+    & p {
+        margin-top: 5px;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    & .send {
+        width: 39px;
+        height: 39px;
+        background-color: #252525;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0 8px 8px 0;
+    }
+    @media (max-width: 992px){
+        width: 100vw;
+        .container{
+            width: 80%;
+        }
+    }
+`;
+
+const CommentInput = styled.input`
+    width: 80%;
+    height: 39px;
+    background: #252525; 
+    border-radius: 8px 0 0 8px;
+    border: none;
+    margin-left: 20px;
+    padding: 0 15px;
+    color:#F3F3F3;
+    position: relative;
+    
+    &:focus {
+        outline: none;    
+    }
+    &::placeholder{
+        color: #575757;
+    }
+
+    @media (max-width: 992px){
+        width: 85%;
+    }
+`;
+
+const ImgComment = styled(UserImage)`
+    width: 39px;
+    height: 39px;
+`;
+
+const IframeContainer = styled.div`
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index:10;
+    background-color: rgba(255,255,255,0.7);
+
+    display:flex;
+    align-items:center;
+    justify-content: center;
+
+    & section {
+        background-color: #333;
+        border-radius: 20px;
+        padding: 0 20px 20px 20px;
+        width: 932px;
+        height: 80vh;
+    }
+
+    & section header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 60px;
+    }
+
+    & section header a {
+        width: 120px;
+        height: 31px;
+        background: #1877F2;
+        border-radius: 5px;
+
+        font-size: 14px;
+        color: #FFFFFF;
+        font-weight: 700;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    & section header p {
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    & section iframe {
+        width: 100%;
+        height: calc(100% - 60px);
+    }
+`;
+
+
 export {
     CardContainer,
     LinkContent,
@@ -203,4 +375,10 @@ export {
     IconDelete,
     IconEdit,
     IconsDiv,
+    IconLocation,
+    CommentBox,
+    CommentCardBox,
+    CommentInput,
+    ImgComment,
+    IframeContainer,
 }
