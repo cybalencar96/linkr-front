@@ -4,6 +4,7 @@ import Title from '../shared/PageTitle'
 import Card from "../shared/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router"; 
 import UserContext from "../../contexts/UserContext";
 import Loading, { CardLoadingScreen } from "../shared/Loading";
 import { getPostsByHashtag } from "../../services/Linkr";
@@ -25,7 +26,7 @@ export default function HashtagPostsPage() {
     const [posts, setPosts] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const {hashtag} = useParams();
-
+    let history = useHistory();
     const [hasNext, setHasNext] = useState(true);
  
     useEffect(() => {
@@ -34,6 +35,8 @@ export default function HashtagPostsPage() {
         if (userData) {
             clearTimeout(infinityScrollSetTimeout) //previne renderizar posts de outras paginas
             renderPosts(true);
+        }else if (userData === ""){
+            history.push("/")
         }
     }, [hashtag, userData])
     
