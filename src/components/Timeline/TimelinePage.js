@@ -48,11 +48,11 @@ export default function TimelinePage() {
         getPostsByFollowUsers(userData.token, type)
             .then(res => {
                 if(!type.length){
-                    setPosts(res.data.posts.filter(post => post.user.id !== userData.user.id));
+                    setPosts(res.data.posts);
                     setHasNext(true);
                 }
                 else{
-                    setPosts(posts.concat(res.data.posts.filter(post => post.user.id !== userData.user.id)));
+                    setPosts(posts.concat(res.data.posts));
                 }
     
                 if(res.data.posts.length < 10){
