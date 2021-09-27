@@ -52,6 +52,8 @@ export default function UserPostsPage(props) {
             setIsFollowing(listOfFollowing.includes(Number(id)))
             renderPosts(true);
             getUserOwnerOfPage();
+        }else if (userData === ""){
+            history.push("/")
         }
     },[id,userData])
 

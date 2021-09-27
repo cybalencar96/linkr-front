@@ -12,6 +12,7 @@ import YoutubeContext from "../../contexts/YoutubeContext";
 import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useHistory } from "react-router";
 
 let page  = 0;
 
@@ -21,7 +22,7 @@ export default function MyLikesPage() {
     const [posts, setPosts] = useState("");
     const {setYoutubeVideos} = useContext(YoutubeContext)
     const {windowWidth} = useWindowDimensions();
-
+    let history = useHistory();
     const [hasNext, setHasNext] = useState(true);
 
     useEffect(() => {
@@ -29,6 +30,8 @@ export default function MyLikesPage() {
 
         if (userData) {
             renderPosts(true);
+        }else if (userData === ""){
+            history.push("/")
         }
     },[userData])
     
