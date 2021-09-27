@@ -17,11 +17,15 @@ export default function PostLink ({renderPosts}) {
     function activeLocation () {
         if ("geolocation" in navigator) {
           
-          setLocationState(!locationState)
           navigator.geolocation.getCurrentPosition(function(position) {
+            setLocationState(!locationState)
             setCoordinates(!locationState ? position.coords : "");
           }, function(error){
-              alert("Erro ao adquirir coordenadas")
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "Your browser permissions is setted to block localization sharing. Please review it and try again.",
+            })
           })      
         }
         else {
