@@ -9,6 +9,7 @@ import UserContext from "../../contexts/UserContext";
 import { useHistory } from "react-router";
 import FrontPageTextLink from "../shared/FrontPages/FrontPageTextLink";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -40,14 +41,26 @@ export default function LoginPage() {
             .catch(err => {
                 setIsLoading(false)
                 if (err.response.status === 401 || err.response.status === 403) {
-                    alert("Incorrect email or password!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Incorrect email or password  , please fill in the fields correctly!',
+                      })
                     return;
                 }
                 if (err.response.status === 400) {
-                    alert("Invalid email!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Invalid data, please fill in the fields correctly!',
+                      })
                     return;
                 }
-                alert(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                  })
             })
     }
 
