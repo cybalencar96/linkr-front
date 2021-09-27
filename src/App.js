@@ -24,6 +24,8 @@ export default function App() {
         if (localUserData) {
             setUserData(JSON.parse(localUserData));
             getListOfFollowing(JSON.parse(localUserData).token)
+        }else{
+            setUserData("");
         }
     }, [])
 
