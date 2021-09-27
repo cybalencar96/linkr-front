@@ -115,7 +115,7 @@ export default function TimelinePage() {
                         hasMore={hasNext}
                         loader={CardLoadingScreen()}
                         >
-                        {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />)}
+                        {posts.map((post, i) => <Card post={post} key={post.id, i} renderPosts={renderPosts} />)}
                         </InfiniteScroll> : <NoPosts content={message.noFollowing ? "Você não segue ninguém ainda, procure por perfis na busca" : "Nenhuma publicação encontrada"}/>}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>

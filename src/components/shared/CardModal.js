@@ -1,22 +1,39 @@
 import styled from "styled-components"
 
 
-export default function ExcludeCardModal({isLoading, deletePost, postId,ConfirmDeleteState,setConfirmDeleteState}) {
-    return (
-        <Superposition ConfirmDeleteState={ConfirmDeleteState}>
-                <ConfirmDeleteScreen>
-                    <p>Tem certeza que deseja <br /> excluir essa publicação?</p>
-                    <SuperpositionButtons>
-                        <CancelButton disabled={isLoading ? true : false} onClick={() => setConfirmDeleteState(false)}>
-                            Não, voltar
-                        </CancelButton>
-                        <ConfirmButton disabled={isLoading ? true : false} onClick={() => deletePost(postId)}>
-                            {isLoading ? "Excluindo..." : "Sim, excluir"}
-                        </ConfirmButton>
-                    </SuperpositionButtons>
-                </ConfirmDeleteScreen>
-        </Superposition>
-    )
+export default function CardModal({ type, isLoading, handler, postId, setModalState }) {
+  return (
+    <Superposition>
+      <ConfirmScreen>
+        {type === "deletePost" &&
+          <>
+            <p>Tem certeza que deseja <br /> excluir essa publicação?</p>
+            <SuperpositionButtons>
+              <CancelButton disabled={isLoading ? true : false} onClick={() => setModalState(false)}>
+                Não, voltar
+              </CancelButton>
+              <ConfirmButton disabled={isLoading ? true : false} onClick={() => handler(postId)}>
+                {isLoading ? "Excluindo..." : "Sim, excluir"}
+              </ConfirmButton>
+            </SuperpositionButtons>
+          </>
+        }
+        {type === "repost" &&
+          <>
+            <p>Do you want to re-post <br /> this link?</p>
+            <SuperpositionButtons>
+              <CancelButton disabled={isLoading ? true : false} onClick={() => setModalState(false)}>
+                No, cancel
+              </CancelButton>
+              <ConfirmButton disabled={isLoading ? true : false} onClick={() => handler(postId)}>
+                {isLoading ? "sharing..." : "Yes, share!"}
+              </ConfirmButton>
+            </SuperpositionButtons>
+          </>
+        }
+      </ConfirmScreen>
+    </Superposition>
+  )
 }
 
 const Superposition = styled.div`
@@ -26,11 +43,10 @@ const Superposition = styled.div`
   top: 0;
   left: 0;
   background-color: rgba(255, 255, 255, 0.8);
-  z-index: 1;
-  display: ${(props) => (props.ConfirmDeleteState ? "inherit" : "none")};
+  z-index: 10;
 `;
 
-const ConfirmDeleteScreen = styled.div`
+const ConfirmScreen = styled.div`
   position: relative;
   top: calc((100vh - 262px) / 2);
   left: calc((100vw - 597px) / 2);
@@ -104,7 +120,7 @@ const ConfirmButton = styled.button`
 
   &:hover {
     cursor: pointer;
-    border: 5px solid crimson;
+    border: 5px solid #ffffff;
   }
 
   &:disabled {
