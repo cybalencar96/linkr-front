@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
@@ -11,8 +11,8 @@ export default function HashtagsInTranding (props) {
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
-    const [lastHashtag, setLastHashtag] = useState(null);
-
+    const {hashtag} = useParams();
+    const [lastHashtag, setLastHashtag] = useState(hashtag);
     useEffect(() => {
         const config = {
             headers: {
