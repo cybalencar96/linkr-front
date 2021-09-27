@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../../contexts/UserContext";
 import { getHashtags } from "../../../services/Linkr";
@@ -11,7 +11,8 @@ export default function HashtagsInTranding (props) {
     const {userData} = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const history = useHistory();
-
+    const {hashtag} = useParams();
+    const [lastHashtag, setLastHashtag] = useState(hashtag);
     useEffect(() => {
         const config = {
             headers: {
@@ -38,13 +39,21 @@ export default function HashtagsInTranding (props) {
             history.push(`/hashtag/${searchInput}`)
         }
     }
+
+    function changeHashtagPage(hashtag) {
+        if (hashtag !== lastHashtag) {
+            setLastHashtag(hashtag)
+            props.setIsLoading(true); 
+            history.push(`/hashtag/${hashtag}`)
+        }
+    }
     return (
         <ContainerTranding>
             <h1>trending</h1>
             <UlHashtags>
                     {trendingHashtags.hashtags && trendingHashtags.hashtags.map( (hashtag) => {
                         return (
-                                <LiHashtags onClick={() => {props.setIsLoading(true); history.push(`/hashtag/${hashtag.name}`)}} key={hashtag.name}># {hashtag.name}</LiHashtags>
+                                <LiHashtags onClick={() => changeHashtagPage(hashtag.name)} key={hashtag.name}># {hashtag.name}</LiHashtags>
                         )
                     }
                 )}

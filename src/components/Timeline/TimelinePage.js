@@ -14,6 +14,7 @@ import SearchBar from "../shared/Topbar/SearchBar";
 import useWindowDimensions from "../../services/hooks/useWindowDimensions.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Swal from 'sweetalert2';
+import { useHistory } from "react-router";
 
 let type = ""
 
@@ -25,7 +26,7 @@ export default function TimelinePage() {
     const {windowWidth} = useWindowDimensions();
     const [usersFollowing, setUserFollowing] = useState([]);
     const [message, setMessage] = useState({noFollowing : false, noPublications : false})
-
+    let history = useHistory()
     const [hasNext, setHasNext] = useState(true);
 
     
@@ -36,6 +37,8 @@ export default function TimelinePage() {
             getListFollowUSers();
             setHasNext(true);
             type="";
+        }else if (userData === ""){
+            history.push("/")
         }
     }, [userData])
     
@@ -48,11 +51,11 @@ export default function TimelinePage() {
         getPostsByFollowUsers(userData.token, type)
             .then(res => {
                 if(!type.length){
-                    setPosts(res.data.posts.filter(post => post.user.id !== userData.user.id));
+                    setPosts(res.data.posts);
                     setHasNext(true);
                 }
                 else{
-                    setPosts(posts.concat(res.data.posts.filter(post => post.user.id !== userData.user.id)));
+                    setPosts(posts.concat(res.data.posts));
                 }
     
                 if(res.data.posts.length < 10){
@@ -115,7 +118,7 @@ export default function TimelinePage() {
                         hasMore={hasNext}
                         loader={CardLoadingScreen()}
                         >
-                        {posts.map(post => <Card post={post} key={post.id} renderPosts={renderPosts} />)}
+                        {posts.map((post, i) => <Card post={post} key={post.id, i} renderPosts={renderPosts} />)}
                         </InfiniteScroll> : <NoPosts content={message.noFollowing ? "Você não segue ninguém ainda, procure por perfis na busca" : "Nenhuma publicação encontrada"}/>}
                     </div>
                     <HashtagsInTranding setIsLoading={setIsLoading}/>

@@ -1,5 +1,5 @@
 import "./assets/reset.css";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import LoginPage from "./components/Login/LoginPage";
 import UserContext from "./contexts/UserContext";
 import YoutubeContext from "./contexts/YoutubeContext";
@@ -24,6 +24,8 @@ export default function App() {
         if (localUserData) {
             setUserData(JSON.parse(localUserData));
             getListOfFollowing(JSON.parse(localUserData).token)
+        }else{
+            setUserData("");
         }
     }, [])
 
@@ -71,6 +73,10 @@ export default function App() {
 
                             <Route path="/user/:id" exact>
                                 <UserPostsPage />
+                            </Route>
+
+                            <Route path="*">
+                                <Redirect to="/" />
                             </Route>
                         </Switch>
                     </BrowserRouter>

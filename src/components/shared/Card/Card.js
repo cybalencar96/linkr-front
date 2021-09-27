@@ -13,11 +13,12 @@ import {
     CommentInput,
     ImgComment,
     IframeContainer,
+    RepostedBox,
 } from "./CardStyled";
 import { Heart, HeartOutline, ChatbubblesOutline, RepeatSharp, PaperPlaneOutline } from 'react-ionicons'
 import UserImage from "../UserImage";
 import HashtagSpan from "../HashtagSpan";
-import { NavLink, Link,useHistory } from 'react-router-dom'
+import { NavLink, Link, useHistory } from 'react-router-dom'
 import { useContext, useRef, useState, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import {
@@ -27,17 +28,15 @@ import {
     sendDeletePostRequest,
     sendEditPostRequest,
     getComments,
-    sendComment
+    sendComment,
+    sendRepostRequest
 } from "../../../services/Linkr";
 import ReactTooltip from "react-tooltip";
-import ExcludeCardModal from "../ExcludeCardModal";
+import CardModal from "../CardModal";
 import YouTbFrame from "../YouTbFrame";
 import getYouTubeID from 'get-youtube-id';
 import CommentCard from "./CommentCard";
-import YoutubeContext from "../../../contexts/YoutubeContext";
 import MapView from "../GeolocationCardModal";
-import { IoCloseOutline } from "react-icons/io5"
-import { IoLocationSharp } from "react-icons/io5"
 import useWindowDimensions from "../../../services/hooks/useWindowDimensions";
 import Swal from 'sweetalert2';
 
@@ -55,6 +54,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
         geolocation,
         user,
         repostCount,
+        repostedBy
     } = post
 
     const [likesState, setLikesState] = useState(likes.map(like => {
@@ -67,7 +67,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [isLoading, setIsLoading] = useState(false)
     const { userData } = useContext(UserContext);
     const isLiked = (isLoading !== likesState.map(like => like.userId).includes(userData.user.id));
-    const [ConfirmDeleteState, setConfirmDeleteState] = useState(false);
+    const [confirmDeleteState, setConfirmDeleteState] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editingText, setEditingText] = useState(text);
     const editInputRef = useRef();
@@ -81,6 +81,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
     const [commentText, setCommentText] = useState("");
     const [isIframeOpen, setIsIframeOpen] = useState(false);
     const { windowWidth } = useWindowDimensions();
+    const [confirmRepostState, setConfirmRepostState] = useState(false);
 
     useEffect(() => {
         setLikesState(likes.map(like => {
@@ -209,7 +210,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                 setIsLoading(false);
                 setTimeout(() => {
                     alert(
-                        
+
                     );
                     Swal.fire({
                         icon: 'error',
@@ -260,8 +261,32 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
     }
 
+    function repost(postId) {
+        setIsLoading(true);
+        sendRepostRequest(postId, userData.token)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Yes! I like that Link too!',
+                    text: 'Link has been shared!',
+                })
+                setIsLoading(false);
+                setConfirmRepostState(false);
+                renderPosts(true);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '"Could not share your Link! Please repeat the procedure."',
+                    })
+                }, 900);
+                setConfirmRepostState(false);
+            });
+    }
 
-    
     function toggleComments() {
         if (!isCommentsOpen) {
             getComments(id, userData.token)
@@ -281,7 +306,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
             })
             .catch(err => alert("Could comment the post! Please repeat the procedure."))
     }
-    
+
     function openIframe(e) {
         if (windowWidth > 992) {
             (e.target !== e.currentTarget) && setIsIframeOpen(true);
@@ -296,13 +321,37 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
 
     return (
         <>
-            <ExcludeCardModal isLoading={isLoading} deletePost={deletePost} postId={id} ConfirmDeleteState={ConfirmDeleteState} setConfirmDeleteState={setConfirmDeleteState} />
-            {showMap ? <MapView  username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap}/> : ""}
+            {confirmDeleteState && <CardModal type="deletePost" isLoading={isLoading} handler={deletePost} postId={id} setModalState={setConfirmDeleteState} />}
+            {confirmRepostState && <CardModal type="repost" isLoading={isLoading} handler={repost} postId={id} setModalState={setConfirmRepostState} />}
+            {showMap && <MapView username={user.username} geolocation={geolocation} showMap={showMap} setShowMap={setShowMap} />}
 
             <CommentBox>
+                {repostedBy &&
+                    <RepostedBox>
+                        <RepeatSharp
+                            color={'#FFF'}
+                            height="25px"
+                            width="25px"
+                        />
+                        <div className="textBox">Re-posted by {repostedBy.id === userData.user.id ? <span className="username">you</span> :
+                            <NavLink
+                                className="usernameLink"
+                                to={{
+                                    pathname: `/user/${repostedBy.id}`,
+                                    state: {
+                                        username: repostedBy.username
+                                    }
+                                }}
+                            >
+                                <span className="username">{repostedBy.username}</span>
+                            </NavLink>
+                        }
+                        </div>
+                    </RepostedBox>
+                }
                 <CardContainer>
                     <CardLeft>
-                        <Link to={{ pathname:`/user/${user.id}`, state:{ username:user.username } }}>
+                        <Link to={{ pathname: `/user/${user.id}`, state: { username: user.username } }}>
                             {isUserImageValid ? <UserImage src={user.avatar} alt="userImage" /> : <UserImage src="/imageNotFound.jpg" alt="NotFound" />}
                         </Link>
                         <div className="actionBox" data-tip={createTooltip()}>
@@ -341,6 +390,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 height="25px"
                                 width="25px"
                                 style={{ cursor: 'pointer' }}
+                                onClick={() => setConfirmRepostState(true)}
                             />
                             <p>{repostCount} reposts</p>
                         </div>
@@ -354,17 +404,17 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 <NavLink
                                     className="usernameLink"
                                     to={{
-                                        pathname:`/user/${user.id}`,
-                                        state:{
-                                              username:user.username
+                                        pathname: `/user/${user.id}`,
+                                        state: {
+                                            username: user.username
                                         }
                                     }}
                                 >
                                     <h3 className="username">{user.username}</h3>
                                 </NavLink>
-                                {geolocation ? <IconLocation onClick={() => setShowMap(true)}/> : ""}
+                                {geolocation ? <IconLocation onClick={() => setShowMap(true)} /> : ""}
                             </div>
-                            
+
                             {isPostFromLocalUser &&
                                 <div>
                                     <IconEdit onClick={toggleEditBox} />
@@ -393,21 +443,21 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                             <p className="description" onClick={toggleEditBox}>{renderDescription(text)}</p>
                         }
                         {
-                        youtubeId ? 
-                             <YouTbFrame youtubeId={youtubeId}/>
-                             :
-                            <LinkContent onClick={openIframe}>
-                                <div className="linkContent">
-                                    <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
-                                    <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
-                                    <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
-                                </div>
-                                <div class="imgContainer">
-                                    {linkImage ? <img src={linkImage} alt="link da imagem"/> : <img src="/imageNotFound.jpg" alt="image not found"/>}
-                                </div>
-                            </LinkContent>
+                            youtubeId ?
+                                <YouTbFrame youtubeId={youtubeId} />
+                                :
+                                <LinkContent onClick={openIframe}>
+                                    <div className="linkContent">
+                                        <h3 className="linkTitle">{linkTitle ? linkTitle : "xXx Title Not Found xXx"}</h3>
+                                        <p className="linkDescription">{linkDescription ? linkDescription : "xXx Description Not Found xXx"}</p>
+                                        <p className="linkUrl">{link ? link.toLowerCase() : "xXx Link Not Found xXx"}</p>
+                                    </div>
+                                    <div class="imgContainer">
+                                        {linkImage ? <img src={linkImage} alt="link da imagem" /> : <img src="/imageNotFound.jpg" alt="image not found" />}
+                                    </div>
+                                </LinkContent>
                         }
-                        { isIframeOpen &&
+                        {isIframeOpen &&
                             <IframeContainer onClick={closeIframe}>
                                 <section>
                                     <header>
@@ -420,7 +470,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                         }
                     </CardRigth>
                 </CardContainer>
-                
+
                 {isCommentsOpen &&
                     <>
                         {comments.map((comment) => <CommentCard user={comment.user} text={renderDescription(comment.text)} userId={user.id} />)}
@@ -431,7 +481,7 @@ export default function Card({ post, renderPosts, isMyLikesPage }) {
                                 value={commentText}
                                 placeholder="write a comment..."
                                 onChange={e => setCommentText(e.target.value)}
-                                onKeyUp={e => {if(e.key === "Enter") comment()}}
+                                onKeyUp={e => { if (e.key === "Enter") comment() }}
                             />
                             <div className="send">
                                 <PaperPlaneOutline
