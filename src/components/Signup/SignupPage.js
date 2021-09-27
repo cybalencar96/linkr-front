@@ -83,6 +83,8 @@ export default function SignupPage() {
                     onChange={e => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,10}$"
+                    title="example@example.com"
                 />
                 <FrontPageInput
                     placeholder="password"
@@ -107,7 +109,8 @@ export default function SignupPage() {
                     onChange={e => setPictureUrl(e.target.value)}
                     required
                     disabled={isLoading}
-                    pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)(.jpg|.png|.jpeg)"
+                    pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)(.jpg|.png|.jpeg|.gif)"
+                    title="https://example.(jpg, png, jpeg, gif)"
                 />
                 <FrontPageButton type="submit" disabled={isLoading}>Sign Up</FrontPageButton>
                 <Link to={isLoading ? "/sign-up" : "/"}>
